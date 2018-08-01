@@ -1,10 +1,15 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
-function mockReducer() {
+const sagaMiddleware = createSagaMiddleware();
 
-}
+function mockReducer() {}
 
-const store = createStore(mockReducer);
+const store = createStore(
+  mockReducer,
+  applyMiddleware(sagaMiddleware)
+);
+
 //  dev mode
 window.store = store;
 
