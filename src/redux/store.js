@@ -5,13 +5,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 function mockReducer() {}
 
-const store = createStore(
+export const store = createStore(
   mockReducer,
   applyMiddleware(sagaMiddleware)
 );
-
-//  dev mode
-window.store = store;
-
-export default store;
 
