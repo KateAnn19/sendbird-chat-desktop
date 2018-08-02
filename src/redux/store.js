@@ -1,12 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { reducer as setUserReducer } from './user/reducer';
 
 const sagaMiddleware = createSagaMiddleware();
 
-function mockReducer() {}
-
 export const store = createStore(
-  mockReducer,
+  setUserReducer,
   applyMiddleware(sagaMiddleware)
 );
 
