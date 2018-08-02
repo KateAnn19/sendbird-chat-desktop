@@ -6,7 +6,7 @@ import {
   Route
 } from 'react-router-dom';
 
-import { AuthorizationForm } from './components/AuthorizationForm';
+import AuthorizationForm from './components/AuthorizationForm';
 
 export const Navigator = () => (
   <Router>

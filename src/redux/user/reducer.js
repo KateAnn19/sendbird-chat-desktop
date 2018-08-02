@@ -4,7 +4,7 @@ import * as TYPES from './types';
 
 const initState = {};
 
-const setUser = (state, user) => user;
+const setUser = (state, user) => ({ ...state, user });
 const handlers = {
   [TYPES.SET_USER]: setUser
 };

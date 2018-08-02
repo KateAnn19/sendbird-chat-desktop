@@ -1,7 +1,4 @@
 import { api } from '../../services/api';
 
 
-export const loginUser = () => api.post('/users/login', {
-  username: 'tim',
-  password: '123456'
-});
+export const loginUser = (username, password, email) => api.post('/users/login', { username, password, email });

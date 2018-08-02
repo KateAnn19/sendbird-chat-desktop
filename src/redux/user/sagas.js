@@ -1,4 +1,4 @@
-import { call, put, fork } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { loginUser } from './requests';
 import { setUser } from './actions';
@@ -6,13 +6,13 @@ import { setUser } from './actions';
 
 function* fetchUser() {
   try {
-    const user = yield call(loginUser);
-    console.log(user);
+    const { name, id } = yield call(loginUser);
+    yield put(setUser({ name, id }));
   } catch (err) {
     console.log(err);
   }
 }
 
 export function* sagas() {
-  yield fork(fetchUser);
+  yield takeEvery(fetchUser);
 }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
+import { setUser } from '../../redux/user/actions';
 
 const Container = styled.div`
   width: 100%;
@@ -36,36 +38,39 @@ const SubmitButton = styled.input.attrs({
   font-size: 1.2rem;
 `;
 
-
-export class AuthorizationForm extends Component {
+class AuthorizationForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      login: '',
+      username: '',
       password: '',
       email: ''
     };
 
-    this.loginRef = React.createRef();
+    this.userRef = React.createRef();
     this.passRef = React.createRef();
     this.emailRef = React.createRef();
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { userRef, passRef, emailRef } = this;
     //console.log(`${this.loginRef.value} ${this.passRef.value} ${this.emailRef.value}`);
-    if (!this.loginRef.value) {
+    if (!userRef.value) {
       console.log('too short name');
-      return;
-    }
-    if (this.passRef.value.length > 5 && this.emailRef.value.length > 5) {
-      console.log('success');
-      return;
+    } else if (passRef.value.length > 5 && emailRef.value.length > 5) {
+      this.setState({
+        username: userRef.value,
+        password: passRef.value,
+        email: emailRef.value
+      });
+      console.log(this.state)
+      setUser({ ...this.state });
     } else {
       console.log('too short password or mail');
-      return;
     }
+    //console.log(this.state)
   };
 
   render() {
@@ -73,7 +78,7 @@ export class AuthorizationForm extends Component {
       <Container>
         <Form>
           <Legend>Войти</Legend>
-          <Input type="text" placeholder="Логин" innerRef={node => this.loginRef = node} />
+          <Input type="text" placeholder="Логин" innerRef={node => this.userRef = node} />
           <Input type="password" placeholder="Пароль" innerRef={node => this.passRef = node} />
           <Input type="email" placeholder="Email" innerRef={node => this.emailRef = node} />
           <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
@@ -82,3 +87,5 @@ export class AuthorizationForm extends Component {
     );
   }
 }
+
+export default connect(null, { setUser })(AuthorizationForm);
