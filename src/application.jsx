@@ -13,12 +13,6 @@ import { Banner } from './components/Banner';
 
 export const Application = hot(module)(() => (
   <Provider store={store}>
-    <Navigator>
-      <React.Fragment>
-        <h1 className="title">React Starter Template</h1>
-        <p>Build with Webpack 4</p>
-        <Banner />
-      </React.Fragment>
-    </Navigator>
+    <Navigator />
   </Provider>
 ));
