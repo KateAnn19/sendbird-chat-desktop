@@ -38,22 +38,44 @@ const SubmitButton = styled.input.attrs({
 
 
 export class AuthorizationForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = {};
+    this.state = {
+      login: '',
+      password: '',
+      email: ''
+    };
+
+    this.loginRef = React.createRef();
+    this.passRef = React.createRef();
+    this.emailRef = React.createRef();
   }
 
-  handleSubmit = () => {}
+  handleSubmit = (e) => {
+    e.preventDefault();
+    //console.log(`${this.loginRef.value} ${this.passRef.value} ${this.emailRef.value}`);
+    if (!this.loginRef.value) {
+      console.log('too short name');
+      return;
+    }
+    if (this.passRef.value.length > 5 && this.emailRef.value.length > 5) {
+      console.log('success');
+      return;
+    } else {
+      console.log('too short password or mail');
+      return;
+    }
+  };
 
   render() {
     return (
       <Container>
         <Form>
           <Legend>Войти</Legend>
-          <Input type="text" placeholder="Логин" />
-          <Input type="password" placeholder="Пароль" />
-          <Input type="email" placeholder="Email" />
+          <Input type="text" placeholder="Логин" innerRef={node => this.loginRef = node} />
+          <Input type="password" placeholder="Пароль" innerRef={node => this.passRef = node} />
+          <Input type="email" placeholder="Email" innerRef={node => this.emailRef = node} />
           <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
         </Form>
       </Container>
