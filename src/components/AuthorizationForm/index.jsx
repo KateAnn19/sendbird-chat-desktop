@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Form = styled.form`
-  position: absolute;
   display: flex;
   flex-direction: column;
   width: 15%;
-  right: 50%;
-  bottom: 50%;
-  transform: translateX(50%) translateY(50%);
 `;
 
 const Legend = styled.legend`
@@ -37,22 +42,21 @@ export class AuthorizationForm extends Component {
     super();
 
     this.state = {};
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
-
-  }
+  handleSubmit = () => {}
 
   render() {
     return (
-      <Form>
-        <Legend>Войти</Legend>
-        <Input type="text" placeholder="Логин" />
-        <Input type="password" placeholder="Пароль" />
-        <Input type="email" placeholder="Email" />
-        <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
-      </Form>
+      <Container>
+        <Form>
+          <Legend>Войти</Legend>
+          <Input type="text" placeholder="Логин" />
+          <Input type="password" placeholder="Пароль" />
+          <Input type="email" placeholder="Email" />
+          <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
+        </Form>
+      </Container>
     );
   }
 }

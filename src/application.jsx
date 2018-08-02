@@ -9,8 +9,6 @@ import { Navigator } from './navigation';
 import './assets/css/styles.css';
 import './assets/scss/styles.scss';
 
-import { Banner } from './components/Banner';
-
 export const Application = hot(module)(() => (
   <Provider store={store}>
     <Navigator />
