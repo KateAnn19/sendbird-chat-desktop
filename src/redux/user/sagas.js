@@ -15,6 +15,6 @@ function* fetchUserWorker(action) {
   }
 }
 
-export function* sagas(action) {
-  yield takeEvery(TYPES.FETCH_USER, fetchUserWorker, action);
+export function* sagas() {
+  yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
 }
