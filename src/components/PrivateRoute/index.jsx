@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
-class PrivateRoute extends React.Component {
+class PrivateRoute extends Component {
   render() {
-    const { component: Component, isLoggedIn, ...rest } = this.props;
+    const { component: InnerComponent, isLoggedIn, ...rest } = this.props;
     return (
       <Route
         {...rest}
         render={
           props => this.props.isLoggedIn
                                         ?
-                                          (<Component {...props} />)
+                                          (<InnerComponent {...props} />)
                                         :
                                           (<Redirect to={{ pathname: 'login/' }} />)
         }
