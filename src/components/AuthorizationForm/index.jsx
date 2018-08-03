@@ -23,18 +23,12 @@ const Legend = styled.legend`
   text-align: center;
 `;
 
-const Input = styled.input.attrs({
-  type: props => props.type,
-  placeholder: props => props.placeholder
-})`
+const Input = styled.input`
   margin-bottom: 5px;
   font-size: 0.8rem;
 `;
 
-const SubmitButton = styled.input.attrs({
-  type: 'submit',
-  value: props => props.value
-})`
+const SubmitButton = styled.input`
   font-size: 1.2rem;
 `;
 
@@ -56,7 +50,6 @@ class AuthorizationForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { userRef, passRef, emailRef } = this;
-    //console.log(`${this.loginRef.value} ${this.passRef.value} ${this.emailRef.value}`);
     if (!userRef.value) {
       console.log('too short name');
     } else if (passRef.value.length > 5 && emailRef.value.length > 5) {
@@ -65,12 +58,9 @@ class AuthorizationForm extends Component {
         password: passRef.value,
         email: emailRef.value
       });
-      console.log(this.state)
-      setUser({ ...this.state });
     } else {
       console.log('too short password or mail');
     }
-    //console.log(this.state)
   };
 
   render() {

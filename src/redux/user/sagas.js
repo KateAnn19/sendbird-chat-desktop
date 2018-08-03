@@ -1,12 +1,14 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { loginUser } from './requests';
-import { setUser } from './actions';
+import { setUser, getUserLoginData } from './actions';
+import * as TYPES from './types';
 
 
-function* fetchUser() {
+function* fetchUserWorker() {
   try {
-    const { name, id } = yield call(loginUser);
+    const { username, password, email } = yield call(getUserLoginData);
+    const { name, id } = yield call(loginUser, username, password, email);
     yield put(setUser({ name, id }));
   } catch (err) {
     console.log(err);
@@ -14,5 +16,5 @@ function* fetchUser() {
 }
 
 export function* sagas() {
-  yield takeEvery(fetchUser);
+  yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
 }
