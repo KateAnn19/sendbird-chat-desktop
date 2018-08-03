@@ -8,16 +8,13 @@ const initState = {
   error: null
 };
 
-const getUserLoginData = (state, user) => ({ ...user });
+const fetchUser = (state, user) => ({ ...user });
 
-const setUser = (state, user) => {
-  const { fetching, error } = state;
-  return { fetching, user, error };
-};
+const setUser = (state, user) => ({ fetching: false, user, error: null });
 
 const handlers = {
   [TYPES.SET_USER]: setUser,
-  [TYPES.GET_USER_LOGIN_DATA]: getUserLoginData
+  [TYPES.FETCH_USER]: fetchUser
 };
 
 export const reducer = createReducer(initState, handlers);

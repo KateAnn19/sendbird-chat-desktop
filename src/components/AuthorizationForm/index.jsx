@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { setUser } from '../../redux/user/actions';
+import { fetchUser } from '../../redux/user/actions';
 
 const Container = styled.div`
   width: 100%;
@@ -45,7 +45,6 @@ class AuthorizationForm extends Component {
 
   onHandleChange = ({ target }) => {
     const { name, value } = target;
-
     this.setState({ [name]: value });
   }
 
@@ -55,11 +54,11 @@ class AuthorizationForm extends Component {
     if (!username) {
       console.log('too short name');
     } else if (password.length > 5 && email.length > 5) {
-      console.log(this.state)
+      fetchUser(username, password, email);
     } else {
       console.log('too short password or mail');
     }
-  };
+  }
 
   render() {
     return (
@@ -76,4 +75,4 @@ class AuthorizationForm extends Component {
   }
 }
 
-export default connect(null, { setUser })(AuthorizationForm);
+export default connect(null, { fetchUser })(AuthorizationForm);

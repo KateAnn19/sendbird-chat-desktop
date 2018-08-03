@@ -11,8 +11,9 @@ export const getUserLoginData = data => ({
   payload: { data }
 });
 
-export const fetchUser = () => ({
-  type: TYPES.FETCH_USER
+export const fetchUser = user => ({
+  type: TYPES.FETCH_USER,
+  payload: { user }
 });
 
 export const fetchUserSuccess = () => ({
