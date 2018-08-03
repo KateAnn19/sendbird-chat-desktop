@@ -4,32 +4,22 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  Link
 } from 'react-router-dom';
 
 import AuthorizationForm from './components/AuthorizationForm';
-import ProtectedComponent from './components/ProtectedComponent';
-
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={
-      props =>
-        false
-          ?
-            (<Component {...props} />)
-          :
-            (<Redirect to={{ pathname: 'login/' }} />)
-        }
-  />
-);
+import { ProtectedComponent } from './components/ProtectedComponent';
+import PrivateRoute from './components/PrivateRoute';
 
 export const Navigator = () => (
   <Router>
-    <Switch>
-      <Route path="/login" component={AuthorizationForm} />
-      <PrivateRoute path="/protected" component={ProtectedComponent} />
-    </Switch>
+    <div>
+      <Link to="/protected">Go to protected</Link>
+      <Switch>
+        <Route path="/login" component={AuthorizationForm} />
+        <PrivateRoute path="/protected" component={ProtectedComponent} />
+      </Switch>
+    </div>
   </Router>
 );
