@@ -41,23 +41,21 @@ class AuthorizationForm extends Component {
       password: '',
       email: ''
     };
+  }
 
-    this.userRef = React.createRef();
-    this.passRef = React.createRef();
-    this.emailRef = React.createRef();
+  onHandleChange = ({ target }) => {
+    const { name, value } = target;
+
+    this.setState({ [name]: value });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { userRef, passRef, emailRef } = this;
-    if (!userRef.value) {
+    const { username, password, email } = this.state;
+    if (!username) {
       console.log('too short name');
-    } else if (passRef.value.length > 5 && emailRef.value.length > 5) {
-      this.setState({
-        username: userRef.value,
-        password: passRef.value,
-        email: emailRef.value
-      });
+    } else if (password.length > 5 && email.length > 5) {
+      console.log(this.state)
     } else {
       console.log('too short password or mail');
     }
@@ -68,9 +66,9 @@ class AuthorizationForm extends Component {
       <Container>
         <Form>
           <Legend>Войти</Legend>
-          <Input type="text" placeholder="Логин" innerRef={node => this.userRef = node} />
-          <Input type="password" placeholder="Пароль" innerRef={node => this.passRef = node} />
-          <Input type="email" placeholder="Email" innerRef={node => this.emailRef = node} />
+          <Input type="text" name="username" placeholder="Логин" onChange={this.onHandleChange} />
+          <Input type="password" name="password" placeholder="Пароль" onChange={this.onHandleChange} />
+          <Input type="email" name="email" placeholder="Email" onChange={this.onHandleChange} />
           <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
         </Form>
       </Container>
