@@ -14,7 +14,7 @@ class PrivateRoute extends Component {
                                         ?
                                           (<InnerComponent {...props} />)
                                         :
-                                          (<Redirect to={{ pathname: 'login/' }} />)
+                                          (<Redirect to={{ pathname: 'auth/login/' }} />)
         }
       />
     );

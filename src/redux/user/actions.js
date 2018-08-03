@@ -11,6 +11,11 @@ export const fetchUser = user => ({
   payload: { user }
 });
 
+export const createUser = user => ({
+  type: TYPES.CREATE_USER,
+  payload: { user }
+});
+
 export const fetchUserSuccess = () => ({
   type: TYPES.FETCH_USER_SUCCESS
 });

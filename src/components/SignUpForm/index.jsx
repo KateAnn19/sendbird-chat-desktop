@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { fetchUser } from '../../redux/user/actions';
+import { createUser } from '../../redux/user/actions';
 
 const Container = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const SubmitButton = styled.input`
   font-size: 1.2rem;
 `;
 
-class AuthorizationForm extends Component {
+class SignUpForm extends Component {
   constructor(props) {
     super(props);
 
@@ -54,7 +54,7 @@ class AuthorizationForm extends Component {
     if (!username) {
       console.log('too short name');
     } else if (password.length > 5 && email.length > 5) {
-      this.props.fetchUser({ username, password, email });
+      this.props.createUser({ username, password, email });
     } else {
       console.log('too short password or mail');
     }
@@ -64,15 +64,15 @@ class AuthorizationForm extends Component {
     return (
       <Container>
         <Form>
-          <Legend>Войти</Legend>
+          <Legend>Регистрация</Legend>
           <Input type="text" name="username" placeholder="Логин" onChange={this.onHandleChange} />
           <Input type="password" name="password" placeholder="Пароль" onChange={this.onHandleChange} />
           <Input type="email" name="email" placeholder="Email" onChange={this.onHandleChange} />
-          <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
+          <SubmitButton onClick={this.handleSubmit} type="submit" value="Создать" />
         </Form>
       </Container>
     );
   }
 }
 
-export default connect(null, { fetchUser })(AuthorizationForm);
+export default connect(null, { createUser })(SignUpForm);
