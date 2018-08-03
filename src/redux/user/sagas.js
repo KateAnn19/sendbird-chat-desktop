@@ -7,9 +7,10 @@ import * as TYPES from './types';
 
 function* fetchUserWorker(action) {
   try {
-    const { payload: { user } } = action;
-    const { name, id } = yield call(loginUser, user.username, user.password, user.email);
-    yield put(setUser({ name, id }));
+    const { name, password, email } = action.payload.user;
+    const { data } = yield call(loginUser, name, password, email);
+    const { id, username } = data;
+    yield put(setUser({ id, username }));
   } catch (err) {
     console.log(err);
   }

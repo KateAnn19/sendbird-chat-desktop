@@ -54,7 +54,7 @@ class AuthorizationForm extends Component {
     if (!username) {
       console.log('too short name');
     } else if (password.length > 5 && email.length > 5) {
-      fetchUser(username, password, email);
+      this.props.fetchUser({ username, password, email });
     } else {
       console.log('too short password or mail');
     }
