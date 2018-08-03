@@ -6,11 +6,6 @@ export const setUser = user => ({
   payload: { user }
 });
 
-export const getUserLoginData = data => ({
-  type: TYPES.GET_USER_LOGIN_DATA,
-  payload: { data }
-});
-
 export const fetchUser = user => ({
   type: TYPES.FETCH_USER,
   payload: { user }
