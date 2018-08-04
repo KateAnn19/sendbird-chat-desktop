@@ -32,7 +32,7 @@ const SubmitButton = styled.input`
   font-size: 1.2rem;
 `;
 
-class AuthorizationForm extends Component {
+class SignInForm extends Component {
   constructor(props) {
     super(props);
 
@@ -97,4 +97,4 @@ class AuthorizationForm extends Component {
 export default connect(
   null,
   { fetchUser }
-)(AuthorizationForm);
+)(SignInForm);

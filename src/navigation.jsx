@@ -8,7 +8,7 @@ import {
   NavLink,
 } from 'react-router-dom';
 
-import AuthorizationForm from './components/AuthorizationForm';
+import SignInForm from './components/SignInForm';
 import SignUpForm from './components/SignUpForm';
 import { ProtectedComponent } from './components/ProtectedComponent';
 import PrivateRoute from './components/PrivateRoute';
@@ -25,9 +25,10 @@ export const Navigator = () => (
         </li>
       </ul>
       <Switch>
-        <Route path="/auth/signin" component={AuthorizationForm} />
+        <Route path="/auth/signin" component={SignInForm} />
         <Route path="/auth/signup" component={SignUpForm} />
         <PrivateRoute path="/menu" component={ProtectedComponent} />
+        <Redirect to="/auth/signin" />
       </Switch>
     </div>
   </Router>

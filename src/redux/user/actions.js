@@ -5,19 +5,30 @@ export const setUser = user => ({
   payload: { user },
 });
 
-export const fetchUser = user => ({
-  type: TYPES.FETCH_USER,
+export const createUser = user => ({
+  type: TYPES.CREATE_USER,
   payload: { user },
 });
 
-export const createUser = user => ({
-  type: TYPES.CREATE_USER,
+export const createUserSuccess = () => ({
+  type: TYPES.CREATE_USER_SUCCESS,
+});
+
+export const createUserFailure = err => ({
+  type: TYPES.CREATE_USER_FAILURE,
+  err,
+});
+
+export const fetchUser = user => ({
+  type: TYPES.FETCH_USER,
   payload: { user },
 });
 
 export const fetchUserSuccess = () => ({
   type: TYPES.FETCH_USER_SUCCESS,
 });
-export const fetchUserFailure = () => ({
+
+export const fetchUserFailure = err => ({
   type: TYPES.FETCH_USER_FAILURE,
+  err,
 });

@@ -9,19 +9,19 @@ class PrivateRoute extends Component {
       <Route
         {...rest}
         render={props =>
-          this.props.isLoggedIn ? (
+          (this.props.isLoggedIn ? (
             <InnerComponent {...props} />
           ) : (
-            <Redirect to={{ pathname: 'auth/login/' }} />
-          )
+            <Redirect to={{ pathname: 'auth/signin/' }} />
+          ))
         }
       />
     );
   }
 }
 
-const defineIsLogged = ({ user }) => !!user.name;
+const defineIsLogged = user => !!user.name;
 
-export default connect(state => ({
-  isLoggedIn: defineIsLogged(state),
+export default connect(({ user }) => ({
+  isLoggedIn: defineIsLogged(user),
 }))(PrivateRoute);

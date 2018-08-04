@@ -10,8 +10,6 @@ const initState = {
   error: null,
 };
 
-const fetchUser = (state, user) => ({ ...user });
-
 const setUser = (state, newUser) => {
   const {
     user: { id, username },
@@ -36,10 +34,20 @@ const createUser = (state, newUser) => {
   };
 };
 
+const setError = (state, message) => ({
+  fetching: false,
+  user: {
+    id: null,
+    username: null,
+  },
+  error: message,
+});
+
 const handlers = {
   [TYPES.SET_USER]: setUser,
-  [TYPES.FETCH_USER]: fetchUser,
   [TYPES.CREATE_USER]: createUser,
+  [TYPES.FETCH_USER_FAILURE]: setError,
+  [TYPES.CREATE_USER_FAILURE]: setError,
 };
 
 export const reducer = createReducer(initState, handlers);
