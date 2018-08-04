@@ -4,7 +4,6 @@ import { loginUser } from './requests';
 import { setUser } from './actions';
 import * as TYPES from './types';
 
-
 function* fetchUserWorker(action) {
   try {
     const { name, password, email } = action.payload.user;

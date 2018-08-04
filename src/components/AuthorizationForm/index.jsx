@@ -39,14 +39,14 @@ class AuthorizationForm extends Component {
     this.state = {
       username: '',
       password: '',
-      email: ''
+      email: '',
     };
   }
 
   onHandleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -58,21 +58,43 @@ class AuthorizationForm extends Component {
     } else {
       console.log('too short password or mail');
     }
-  }
+  };
 
   render() {
     return (
       <Container>
         <Form>
           <Legend>Войти</Legend>
-          <Input type="text" name="username" placeholder="Логин" onChange={this.onHandleChange} />
-          <Input type="password" name="password" placeholder="Пароль" onChange={this.onHandleChange} />
-          <Input type="email" name="email" placeholder="Email" onChange={this.onHandleChange} />
-          <SubmitButton onClick={this.handleSubmit} type="submit" value="Вход" />
+          <Input
+            type="text"
+            name="username"
+            placeholder="Логин"
+            onChange={this.onHandleChange}
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            onChange={this.onHandleChange}
+          />
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={this.onHandleChange}
+          />
+          <SubmitButton
+            onClick={this.handleSubmit}
+            type="submit"
+            value="Вход"
+          />
         </Form>
       </Container>
     );
   }
 }
 
-export default connect(null, { fetchUser })(AuthorizationForm);
+export default connect(
+  null,
+  { fetchUser }
+)(AuthorizationForm);
