@@ -26,7 +26,6 @@ function* fetchUserWorker(action) {
     yield put({ type: TYPES.FETCH_USER_SUCCESS });
   } catch (err) {
     const { message } = err;
-    console.log(message);
     yield put({ type: TYPES.FETCH_USER_FAILURE, message });
   }
 }

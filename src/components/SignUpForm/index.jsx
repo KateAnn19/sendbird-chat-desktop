@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { createUser } from '../../redux/user/actions';
 
@@ -93,6 +94,10 @@ class SignUpForm extends Component {
     );
   }
 }
+
+SignUpForm.propTypes = {
+  createUser: PropTypes.func,
+};
 
 export default connect(
   null,
