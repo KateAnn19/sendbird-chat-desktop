@@ -3,10 +3,7 @@ import * as TYPES from './types';
 
 const initState = {
   fetching: false,
-  user: {
-    id: null,
-    username: null,
-  },
+  user: null,
   error: null,
 };
 
