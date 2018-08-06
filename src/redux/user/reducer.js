@@ -5,42 +5,19 @@ const initState = {
   fetching: false,
   user: {
     id: null,
-    name: null,
+    username: null,
   },
   error: null,
 };
 
-const setUser = (state, newUser) => {
-  const {
-    user: { id, username },
-  } = newUser;
+const setUser = (_, user) => ({ user, fetching: false, error: null });
 
-  return {
-    fetching: false,
-    user: { id, name: username },
-    error: null,
-  };
-};
+const createUser = (_, user) => ({ user, fetching: false, error: null });
 
-const createUser = (state, newUser) => {
-  const {
-    user: { id, username },
-  } = newUser;
-
-  return {
-    fetching: false,
-    user: { id, name: username },
-    error: null,
-  };
-};
-
-const setError = (state, message) => ({
+const setError = (_, error) => ({
+  user: { id: null, username: null },
   fetching: false,
-  user: {
-    id: null,
-    username: null,
-  },
-  error: message,
+  error,
 });
 
 const handlers = {
