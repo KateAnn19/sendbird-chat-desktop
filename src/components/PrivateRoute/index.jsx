@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class PrivateRoute extends Component {
   render() {
@@ -19,6 +20,11 @@ class PrivateRoute extends Component {
     );
   }
 }
+
+PrivateRoute.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  component: PropTypes.func.isRequired,
+};
 
 const defineIsLogged = user => !!user.user.username;
 
