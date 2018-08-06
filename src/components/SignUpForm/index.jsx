@@ -95,9 +95,7 @@ class SignUpForm extends Component {
   }
 }
 
-SignUpForm.propTypes = {
-  createUser: PropTypes.func,
-};
+SignUpForm.propTypes = { createUser: PropTypes.func };
 
 export default connect(
   null,

@@ -6,27 +6,23 @@ import * as TYPES from './types';
 
 function* addUserWorker(action) {
   try {
-    const { name, password, email } = action.payload.user;
-    const { data } = yield call(registerUser, name, password, email);
-    const { id, username } = data;
+    const { username, password, email } = action.payload.user;
+    const { data } = yield call(registerUser, username, password, email);
+    const { id } = data;
     yield put(createUser({ id, username }));
-    yield put({ type: TYPES.CREATE_USER_SUCCESS });
   } catch (err) {
-    const { message } = err;
-    yield put({ type: TYPES.CREATE_USER_FAILURE, message });
+    console.log(err);
   }
 }
 
 function* fetchUserWorker(action) {
   try {
-    const { name, password, email } = action.payload.user;
-    const { data } = yield call(loginUser, name, password, email);
-    const { id, username } = data;
+    const { username, password, email } = action.payload.user;
+    const { data } = yield call(loginUser, username, password, email);
+    const { id } = data;
     yield put(setUser({ id, username }));
-    yield put({ type: TYPES.FETCH_USER_SUCCESS });
   } catch (err) {
-    const { message } = err;
-    yield put({ type: TYPES.FETCH_USER_FAILURE, message });
+    console.log(err);
   }
 }
 

@@ -95,9 +95,7 @@ class SignInForm extends Component {
   }
 }
 
-SignInForm.propTypes = {
-  fetchUser: PropTypes.func,
-};
+SignInForm.propTypes = { fetchUser: PropTypes.func };
 
 export default connect(
   null,
