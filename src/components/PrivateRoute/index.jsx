@@ -20,7 +20,7 @@ class PrivateRoute extends Component {
   }
 }
 
-const defineIsLogged = user => !!user.username;
+const defineIsLogged = user => !!user.user.username;
 
 export default connect(({ user }) => ({
   isLoggedIn: defineIsLogged(user),
