@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { loginUser, registerUser } from './requests';
-import { setUser, createUser } from './actions';
+import { setUser } from './actions';
 import * as TYPES from './types';
 
 function* addUserWorker(action) {
@@ -9,7 +9,7 @@ function* addUserWorker(action) {
     const { username, password, email } = action.payload.user;
     const { data } = yield call(registerUser, username, password, email);
     const { id } = data;
-    yield put(createUser({ id, username }));
+    yield put(setUser({ id, username }));
   } catch (err) {
     console.log(err);
   }
