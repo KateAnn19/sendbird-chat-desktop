@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 
 import { loginUser, registerUser } from './requests';
 import { setUser } from './actions';
@@ -10,6 +11,7 @@ function* addUserWorker(action) {
     const { data } = yield call(registerUser, username, password, email);
     const { id } = data;
     yield put(setUser({ id, username }));
+    yield put(push('/menu'));
   } catch (err) {
     console.log(err);
   }
@@ -21,6 +23,7 @@ function* fetchUserWorker(action) {
     const { data } = yield call(loginUser, username, password, email);
     const { id } = data;
     yield put(setUser({ id, username }));
+    yield put(push('/menu'));
   } catch (err) {
     console.log(err);
   }
