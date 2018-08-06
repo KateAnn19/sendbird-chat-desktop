@@ -5,6 +5,10 @@ export const setUser = user => ({
   payload: { user },
 });
 
+export const unsetUser = () => ({
+  type: TYPES.UNSET_USER,
+});
+
 export const createUser = user => ({
   type: TYPES.CREATE_USER,
   payload: { user },

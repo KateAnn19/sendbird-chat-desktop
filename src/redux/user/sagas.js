@@ -3,18 +3,18 @@ import { push } from 'connected-react-router';
 import { REHYDRATE } from 'redux-persist/lib/constants';
 
 import { loginUser, registerUser, checkUserSession } from './requests';
-import { setUser } from './actions';
+import { setUser, unsetUser } from './actions';
 import * as TYPES from './types';
 
 function* checkUserSessionWorker(action) {
   try {
     const { id, token } = action.payload.user.user;
-    const res = yield call(checkUserSession, id, token);
-    if (res.status === 200) {
-      console.log('success');
+    const { status, data } = yield call(checkUserSession, id, token);
+    if (status === 200) {
+      yield put(setUser({ ...data }));
     }
   } catch (err) {
-    console.log(err);
+    yield put(unsetUser());
   }
 }
 
