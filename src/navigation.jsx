@@ -1,12 +1,9 @@
 import React from 'react';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  NavLink,
-} from 'react-router-dom';
+import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
+
+import { ConnectedRouter } from 'connected-react-router';
+import { history } from './redux/store';
 
 import SignInForm from './components/SignInForm';
 import SignUpForm from './components/SignUpForm';
@@ -14,7 +11,7 @@ import { ProtectedComponent } from './components/ProtectedComponent';
 import PrivateRoute from './components/PrivateRoute';
 
 export const Navigator = () => (
-  <Router>
+  <ConnectedRouter history={history}>
     <div>
       <ul>
         <li>
@@ -31,5 +28,5 @@ export const Navigator = () => (
         <Redirect to="/auth/signin" />
       </Switch>
     </div>
-  </Router>
+  </ConnectedRouter>
 );
