@@ -20,6 +20,7 @@ function* checkUserSessionWorker(action) {
     }
   } catch (err) {
     yield put(unsetUser());
+    yield put(push('/auth/signin'));
   }
 }
 

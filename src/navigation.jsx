@@ -7,7 +7,7 @@ import { history } from './redux/store';
 
 import SignInForm from './components/SignInForm';
 import SignUpForm from './components/SignUpForm';
-import { RoomsList } from './components/RoomsList';
+import RoomsList from './components/RoomsList';
 import PrivateRoute from './components/PrivateRoute';
 
 export const Navigator = () => (
