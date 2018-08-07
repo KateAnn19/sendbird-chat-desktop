@@ -34,29 +34,29 @@ const RoomButton = styled.button`
   width: 100%;
 `;
 
-export class RoomsList extends Component {
+class RoomsList extends Component {
+  renderRooms = rooms => (
+    <Rooms>
+      {rooms.map(room => (
+        <RoomsItem>
+          <RoomButton>room.name</RoomButton>
+        </RoomsItem>
+      ))}
+    </Rooms>
+  );
+
   render() {
     return (
       <Container>
         <Header>Available Rooms</Header>
-        <Rooms>
-          <RoomsItem>
-            <RoomButton>i am the 1 room</RoomButton>
-          </RoomsItem>
-          <RoomsItem>
-            <RoomButton>i am the 2 room</RoomButton>
-          </RoomsItem>
-          <RoomsItem>
-            <RoomButton>i am the 3 room</RoomButton>
-          </RoomsItem>
-          <RoomsItem>
-            <RoomButton>i am the 4 room</RoomButton>
-          </RoomsItem>
-          <RoomsItem>
-            <RoomButton>i am the 5 room</RoomButton>
-          </RoomsItem>
-        </Rooms>
+        {this.renderRooms(this.props.rooms)}
       </Container>
     );
   }
 }
+
+RoomsList.propTypes = { rooms: PropTypes.object.isRequired };
+
+export default connect(({ channels }) => ({
+  rooms: channels,
+}))(RoomsList);
