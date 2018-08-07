@@ -17,6 +17,7 @@ function* checkUserSessionWorker(action) {
       yield call(SBconnect, sbUserId, sbAccessToken);
       const channels = yield call(getChannelList);
       yield put(getUserChannels(channels));
+      yield put(push('/menu'));
     }
   } catch (err) {
     yield put(unsetUser());
@@ -40,6 +41,10 @@ function* fetchUserWorker(action) {
     const { username, password, email } = action.payload.user;
     const { data } = yield call(loginUser, username, password, email);
     yield put(setUser({ ...data }));
+    const { sbUserId, sbAccessToken } = data;
+    yield call(SBconnect, sbUserId, sbAccessToken);
+    const channels = yield call(getChannelList);
+    yield put(getUserChannels(channels));
     yield put(push('/menu'));
   } catch (err) {
     console.log(err);
