@@ -1,7 +1,7 @@
 import SendBird from 'sendbird';
 
 const sb = new SendBird({
-  appId: 'ed3effd5867104cf65b4d3fb7f35b427850bb232',
+  appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
 });
 
 export const SBconnect = (sbUserId, sbAccessToken) =>
@@ -11,14 +11,14 @@ export const SBconnect = (sbUserId, sbAccessToken) =>
     (user, error) =>
       new Promise((res, rej) => {
         if (user) {
-          res('ok');
+          res(user);
         } else {
           rej(error);
         }
       })
   );
 
-export const getChannelList = () => {
+export const getChannelsList = () => {
   const channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
   channelListQuery.includeEmpty = true;
   channelListQuery.limit = 20;

@@ -5,7 +5,7 @@ import { REHYDRATE } from 'redux-persist/lib/constants';
 import { loginUser, registerUser, checkUserSession } from './requests';
 import { setUser, unsetUser, getUserChannels } from './actions';
 import * as TYPES from './types';
-import { SBconnect, getChannelList } from '../../services/SendBird';
+import { SBconnect, getChannelsList } from '../../services/SendBird';
 
 function* checkUserSessionWorker(action) {
   try {
@@ -15,7 +15,7 @@ function* checkUserSessionWorker(action) {
     if (status === 200) {
       yield put(setUser({ ...data }));
       yield call(SBconnect, sbUserId, sbAccessToken);
-      const channels = yield call(getChannelList);
+      const channels = yield call(getChannelsList);
       yield put(getUserChannels(channels));
       yield put(push('/menu'));
     }
@@ -43,7 +43,7 @@ function* fetchUserWorker(action) {
     yield put(setUser({ ...data }));
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
-    const channels = yield call(getChannelList);
+    const channels = yield call(getChannelsList);
     yield put(getUserChannels(channels));
     yield put(push('/menu'));
   } catch (err) {

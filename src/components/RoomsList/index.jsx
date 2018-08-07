@@ -35,7 +35,7 @@ const RoomButton = styled.button`
 `;
 
 class RoomsList extends Component {
-  renderRooms = rooms => (
+  renderRooms = (rooms = []) => (
     <Rooms>
       {rooms.map(room => (
         <RoomsItem>
