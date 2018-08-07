@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { REHYDRATE } from 'redux-persist/lib/constants';
 
 import { loginUser, registerUser, checkUserSession } from './requests';
-import { setUser, unsetUser } from './actions';
+import { setUser, unsetUser, getUserChannels } from './actions';
 import * as TYPES from './types';
 import { SBconnect, getChannelList } from '../../services/SendBird';
 
@@ -16,7 +16,7 @@ function* checkUserSessionWorker(action) {
       yield put(setUser({ ...data }));
       yield call(SBconnect, sbUserId, sbAccessToken);
       const channels = yield call(getChannelList);
-      console.log(channels);
+      yield put(getUserChannels(channels));
     }
   } catch (err) {
     yield put(unsetUser());
