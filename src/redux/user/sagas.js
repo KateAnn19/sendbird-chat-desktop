@@ -5,13 +5,18 @@ import { REHYDRATE } from 'redux-persist/lib/constants';
 import { loginUser, registerUser, checkUserSession } from './requests';
 import { setUser, unsetUser } from './actions';
 import * as TYPES from './types';
+import { SBconnect, getChannelList } from '../../services/SendBird';
 
 function* checkUserSessionWorker(action) {
   try {
     const { id, token } = action.payload.user.user;
     const { status, data } = yield call(checkUserSession, id, token);
+    const { sbUserId, sbAccessToken } = data;
     if (status === 200) {
       yield put(setUser({ ...data }));
+      yield call(SBconnect, sbUserId, sbAccessToken);
+      const channels = yield call(getChannelList);
+      console.log(channels);
     }
   } catch (err) {
     yield put(unsetUser());

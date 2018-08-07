@@ -18,3 +18,8 @@ export const fetchUser = user => ({
   type: TYPES.FETCH_USER,
   payload: { user },
 });
+
+export const getUserChannels = channels => ({
+  type: TYPES.GET_USER_CHANNELS,
+  payload: { channels },
+});
