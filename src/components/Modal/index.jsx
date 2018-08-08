@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Overlay = styled.div`
-  display: ${props => (props.active ? 'block' : 'none')};
+  display: ${props => (props.show ? 'block' : 'none')};
   position: absolute;
   z-index: 5;
   margin: -8px;
@@ -37,6 +37,7 @@ const Header = styled.h2`
 const Text = styled.p`
   font-size: 1rem;
   text-align: center;
+  margin-bottom: 50px;
 `;
 
 const ButtonsContainer = styled.div`
@@ -55,15 +56,23 @@ const Button = styled.button`
 `;
 
 const Label = styled.label`
-  color: red;
+  margin-right: 10px;
+  width: 25%;
+  display: inline-block;
 `;
 
-const RoomType = styled.select`
-  width: 50%;
+const InputContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
 `;
 
-const RoomNameInput = styled.input`
-  width: 50%;
+const RoomTypeSelect = styled.select`
+  width: 30%;
+`;
+
+const RoomTextInput = styled.input`
+  width: 30%;
 `;
 
 export class Modal extends Component {
@@ -77,16 +86,27 @@ export class Modal extends Component {
   }
 
   render() {
+    const { show } = this.props;
     return (
-      <Overlay show={this.props.show}>
+      <Overlay show={show}>
         <Container>
           <Header>Новая комната</Header>
           <Text>Укажите параметры:</Text>
-          <RoomType name="roomType">
-            <option value="private">Приватная</option>
-            <option value="public">Публичная</option>
-          </RoomType>
-          <RoomNameInput type="text" placeholder="Имя комнаты" />
+          <InputContainer>
+            <Label htmlFor="roomType">Тип</Label>
+            <RoomTypeSelect id="roomType" name="roomType">
+              <option value="private">Приватная</option>
+              <option value="public">Публичная</option>
+            </RoomTypeSelect>
+          </InputContainer>
+          <InputContainer>
+            <Label htmlFor="roomName">Название</Label>
+            <RoomTextInput id="roomName" type="text" />
+          </InputContainer>
+          <InputContainer>
+            <Label htmlFor="coverUrl">Обложка (URL)</Label>
+            <RoomTextInput id="coverUrl" type="text" />
+          </InputContainer>
           <ButtonsContainer>
             <Button>Создать</Button>
           </ButtonsContainer>
