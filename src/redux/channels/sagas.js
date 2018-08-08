@@ -8,7 +8,7 @@ import { CONNECTION_SUCCESS } from '../user/types';
 
 function* createChannelWorker(action) {
   try {
-    const { roomType, roomName, coverUrl } = action.payload.channel;
+    const { roomName, coverUrl } = action.payload.channel;
     yield call(createOpenChannel, roomName, coverUrl);
   } catch (err) {
     console.log(err);

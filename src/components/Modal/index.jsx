@@ -98,8 +98,12 @@ class Modal extends Component {
     const { callback } = this.props;
     const { roomType, roomName, coverUrl } = this.state;
 
-    this.props.createChannel({ roomType, roomName, coverUrl });
-    callback();
+    if (roomName.length > 5) {
+      this.props.createChannel({ roomType, roomName, coverUrl });
+      callback();
+    } else {
+      console.log('too short roomname');
+    }
   };
 
   render() {
