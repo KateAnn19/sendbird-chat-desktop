@@ -7,7 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 import { rootReducer } from './reducer';
-import { sagas as userSaga } from './user/sagas';
+import { rootSaga } from './saga';
 
 export const history = createBrowserHistory();
 
@@ -29,4 +29,4 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store);
-sagaMiddleware.run(userSaga);
+sagaMiddleware.run(rootSaga);

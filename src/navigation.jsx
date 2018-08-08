@@ -7,7 +7,7 @@ import { history } from './redux/store';
 
 import SignInForm from './components/SignInForm';
 import SignUpForm from './components/SignUpForm';
-import { ProtectedComponent } from './components/ProtectedComponent';
+import RoomsList from './components/RoomsList';
 import PrivateRoute from './components/PrivateRoute';
 
 export const Navigator = () => (
@@ -24,7 +24,7 @@ export const Navigator = () => (
       <Switch>
         <Route path="/auth/signin" component={SignInForm} />
         <Route path="/auth/signup" component={SignUpForm} />
-        <PrivateRoute path="/menu" component={ProtectedComponent} />
+        <PrivateRoute path="/menu" component={RoomsList} />
         <Redirect to="/auth/signin" />
       </Switch>
     </div>

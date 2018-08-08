@@ -34,6 +34,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-saga": "^0.16.0",
+    "sendbird": "^3.0.70",
     "styled-components": "^3.3.3"
   },
   "devDependencies": {
