@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Modal } from '../Modal';
+
 const Container = styled.div`
   width: 30%;
   height: 100vh;
@@ -44,6 +46,16 @@ const CreateRoomButton = styled.button`
 `;
 
 class RoomsList extends Component {
+  state = {
+    showModal: false,
+  };
+
+  handleClick = () => {
+    this.setState({
+      showModal: true,
+    });
+  };
+
   renderRooms = rooms => (
     <Rooms>
       {rooms.map(room => (
@@ -59,7 +71,10 @@ class RoomsList extends Component {
       <Container>
         <Header>Доступные комнаты</Header>
         {this.renderRooms(this.props.rooms)}
-        <CreateRoomButton>Создать комнату</CreateRoomButton>
+        <CreateRoomButton onClick={this.handleClick}>
+          Создать комнату
+        </CreateRoomButton>
+        <Modal show={this.state.showModal} />
       </Container>
     );
   }
