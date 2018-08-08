@@ -81,9 +81,19 @@ export class Modal extends Component {
     this.state = {
       roomType: '',
       roomName: '',
-      coverURL: '',
+      coverUrl: '',
     };
   }
+
+  onHandleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { roomType, roomName, coverUrl } = this.state;
+  };
 
   render() {
     const { show } = this.props;
@@ -94,21 +104,35 @@ export class Modal extends Component {
           <Text>Укажите параметры:</Text>
           <InputContainer>
             <Label htmlFor="roomType">Тип</Label>
-            <RoomTypeSelect id="roomType" name="roomType">
+            <RoomTypeSelect
+              id="roomType"
+              name="roomType"
+              onChange={this.onHandleChange}
+            >
               <option value="private">Приватная</option>
               <option value="public">Публичная</option>
             </RoomTypeSelect>
           </InputContainer>
           <InputContainer>
             <Label htmlFor="roomName">Название</Label>
-            <RoomTextInput id="roomName" type="text" />
+            <RoomTextInput
+              id="roomName"
+              name="roomName"
+              type="text"
+              onChange={this.onHandleChange}
+            />
           </InputContainer>
           <InputContainer>
             <Label htmlFor="coverUrl">Обложка (URL)</Label>
-            <RoomTextInput id="coverUrl" type="text" />
+            <RoomTextInput
+              id="coverUrl"
+              name="coverUrl"
+              type="text"
+              onChange={this.onHandleChange}
+            />
           </InputContainer>
           <ButtonsContainer>
-            <Button>Создать</Button>
+            <Button onClick={this.handleSubmit}>Создать</Button>
           </ButtonsContainer>
         </Container>
       </Overlay>
