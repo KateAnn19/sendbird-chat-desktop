@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { REHYDRATE } from 'redux-persist/lib/constants';
 
 import { loginUser, registerUser, checkUserSession } from './requests';
-import { setUser, unsetUser, getUserChannels } from './actions';
+import { setUser, unsetUser } from './actions';
 import { getChannelsWorker } from '../channels/sagas';
 import * as TYPES from './types';
 import { SBconnect } from '../../services/SendBird';

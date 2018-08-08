@@ -4,8 +4,8 @@ import { getChannelsList } from '../../services/SendBird';
 
 export function* getChannelsWorker() {
   try {
-    console.log('called');
     const channels = yield call(getChannelsList);
+    console.log(channels);
     yield put(getChannels(channels));
   } catch (err) {
     console.log(err);
