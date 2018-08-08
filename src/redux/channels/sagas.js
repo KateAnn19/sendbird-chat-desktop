@@ -1,8 +1,18 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+
 import { getChannels } from './actions';
-import { getChannelsList } from '../../services/SendBird';
+import { getChannelsList, createOpenChannel } from '../../services/SendBird';
+import * as TYPES from './types';
 import { CONNECTION_SUCCESS } from '../user/types';
+
+function* createChannelWorker(action) {
+  try {
+    yield createOpenChannel();
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 function* getChannelsWorker() {
   try {
@@ -16,4 +26,5 @@ function* getChannelsWorker() {
 
 export function* sagas() {
   yield takeEvery(CONNECTION_SUCCESS, getChannelsWorker);
+  yield takeEvery(TYPES.CREATE_CHANNEL, createChannelWorker);
 }

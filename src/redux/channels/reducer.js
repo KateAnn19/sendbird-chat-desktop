@@ -7,7 +7,10 @@ const initState = {
 
 const getChannels = (_, channels) => ({ channels });
 
-const createChannel = (_, { channel }) => ({ channels.concat(channel) })
+const createChannel = ({ channels }, { channel }) => {
+  const newChannels = channels.concat(channel);
+  return { newChannels };
+};
 
 const handlers = {
   [TYPES.GET_CHANNELS]: getChannels,

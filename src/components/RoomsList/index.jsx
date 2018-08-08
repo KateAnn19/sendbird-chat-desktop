@@ -56,10 +56,16 @@ class RoomsList extends Component {
     });
   };
 
+  handleModalClose = () => {
+    this.setState({
+      showModal: false,
+    });
+  };
+
   renderRooms = rooms => (
     <Rooms>
       {rooms.map(room => (
-        <RoomsItem>
+        <RoomsItem key={room.id}>
           <RoomButton>room.name</RoomButton>
         </RoomsItem>
       ))}
@@ -74,7 +80,7 @@ class RoomsList extends Component {
         <CreateRoomButton onClick={this.handleClick}>
           Создать комнату
         </CreateRoomButton>
-        <Modal show={this.state.showModal} />
+        <Modal show={this.state.showModal} callback={this.handleModalClose} />
       </Container>
     );
   }

@@ -19,19 +19,33 @@ export const SBconnect = (sbUserId, sbAccessToken) =>
     )
   );
 
-export const getChannelsList = () => {
-  const channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
-  channelListQuery.includeEmpty = true;
-  channelListQuery.limit = 20;
+export const getChannelsList = () =>
+  new Promise((res, rej) => {
+    const channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
+    channelListQuery.includeEmpty = true;
+    channelListQuery.limit = 20;
 
-  if (channelListQuery.hasNext) {
-    channelListQuery.next((channelList, error) => {
+    if (channelListQuery.hasNext) {
+      channelListQuery.next((channelList, error) => {
+        if (error) {
+          console.error(error);
+          rej();
+        }
+
+        console.log(channelList);
+      });
+    }
+  });
+
+export const createOpenChannel = (name, coverUrl) =>
+  new Promise((res, rej) =>
+    sb.OpenChannel.createChannel(name, coverUrl, (createdChannel, error) => {
       if (error) {
         console.error(error);
-        return;
+        rej();
       }
 
-      console.log(channelList);
-    });
-  }
-};
+      console.log(createdChannel);
+      res();
+    })
+  );
