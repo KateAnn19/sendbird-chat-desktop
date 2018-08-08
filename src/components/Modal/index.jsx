@@ -92,7 +92,9 @@ export class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { callback } = this.props;
     const { roomType, roomName, coverUrl } = this.state;
+    //  callback(roomType, roomName, coverUrl);
   };
 
   render() {
