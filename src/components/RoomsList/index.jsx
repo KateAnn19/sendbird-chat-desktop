@@ -35,7 +35,7 @@ const RoomButton = styled.button`
 `;
 
 class RoomsList extends Component {
-  renderRooms = (rooms = []) => (
+  renderRooms = rooms => (
     <Rooms>
       {rooms.map(room => (
         <RoomsItem>
@@ -55,8 +55,8 @@ class RoomsList extends Component {
   }
 }
 
-RoomsList.propTypes = { rooms: PropTypes.object.isRequired };
+RoomsList.propTypes = { rooms: PropTypes.array.isRequired };
 
 export default connect(({ channels }) => ({
-  rooms: channels,
+  rooms: Array.from(channels),
 }))(RoomsList);

@@ -1,10 +1,9 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
 import { REHYDRATE } from 'redux-persist/lib/constants';
+import { push } from 'connected-react-router';
 
 import { loginUser, registerUser, checkUserSession } from './requests';
-import { setUser, unsetUser } from './actions';
-import { getChannelsWorker } from '../channels/sagas';
+import { setUser, unsetUser, connectionSuccess } from './actions';
 import * as TYPES from './types';
 import { SBconnect } from '../../services/SendBird';
 
@@ -16,8 +15,7 @@ function* checkUserSessionWorker(action) {
     if (status === 200) {
       yield put(setUser({ ...data }));
       yield call(SBconnect, sbUserId, sbAccessToken);
-      yield call(getChannelsWorker);
-      yield put(push('/menu'));
+      yield put(connectionSuccess);
     }
   } catch (err) {
     yield put(unsetUser());
@@ -43,8 +41,7 @@ function* fetchUserWorker(action) {
     yield put(setUser({ ...data }));
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
-    yield call(getChannelsWorker);
-    yield put(push('/menu'));
+    yield put(connectionSuccess);
   } catch (err) {
     console.log(err);
   }

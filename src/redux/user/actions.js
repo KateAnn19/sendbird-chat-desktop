@@ -18,3 +18,7 @@ export const fetchUser = user => ({
   type: TYPES.FETCH_USER,
   payload: { user },
 });
+
+export const connectionSuccess = () => ({
+  type: TYPES.CONNECTION_SUCCESS,
+});
