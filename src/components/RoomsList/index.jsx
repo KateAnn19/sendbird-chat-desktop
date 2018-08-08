@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Modal } from '../Modal';
+import Modal from '../Modal';
 
 const Container = styled.div`
   width: 30%;

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+
+import { createChannel } from '../../redux/channels/actions';
 
 const Overlay = styled.div`
   display: ${props => (props.show ? 'block' : 'none')};
@@ -75,11 +78,11 @@ const RoomTextInput = styled.input`
   width: 30%;
 `;
 
-export class Modal extends Component {
+class Modal extends Component {
   constructor() {
     super();
     this.state = {
-      roomType: '',
+      roomType: 'private',
       roomName: '',
       coverUrl: '',
     };
@@ -94,7 +97,9 @@ export class Modal extends Component {
     e.preventDefault();
     const { callback } = this.props;
     const { roomType, roomName, coverUrl } = this.state;
-    //  callback(roomType, roomName, coverUrl);
+
+    this.props.createChannel({ roomType, roomName, coverUrl });
+    callback();
   };
 
   render() {
@@ -130,6 +135,7 @@ export class Modal extends Component {
               id="coverUrl"
               name="coverUrl"
               type="text"
+              placeholder="необязательно"
               onChange={this.onHandleChange}
             />
           </InputContainer>
@@ -142,4 +148,13 @@ export class Modal extends Component {
   }
 }
 
-Modal.propTypes = { show: PropTypes.bool.isRequired };
+Modal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  callback: PropTypes.func.isRequired,
+  createChannel: PropTypes.func.isRequired,
+};
+
+export default connect(
+  null,
+  { createChannel }
+)(Modal);

@@ -35,17 +35,19 @@ export const getChannelsList = () => {
   }
 };
 
-export const createOpenChannel = (name, coverUrl) => {
-  sb.OpenChannel.createChannel(name, coverUrl, data, (
-    createdChannel,
-    error
-  ) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
+export const createOpenChannel = (name, coverUrl, data = null) => {
+  sb.OpenChannel.createChannel(
+    name,
+    coverUrl,
+    data,
+    (createdChannel, error) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-    // onCreated
-    console.log(createdChannel);
-  });
+      // onCreated
+      console.log(createdChannel);
+    }
+  );
 };

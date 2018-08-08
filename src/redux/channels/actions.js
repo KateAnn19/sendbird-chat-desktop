@@ -6,6 +6,6 @@ export const getChannels = channels => ({
 });
 
 export const createChannel = channel => ({
-  type: TYPES.GET_CHANNELS,
+  type: TYPES.CREATE_CHANNEL,
   payload: { channel },
 });
