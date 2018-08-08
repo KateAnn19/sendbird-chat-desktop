@@ -1,0 +1,1 @@
+export const GET_CHANNELS = 'CHANNELS/GET_CHANNELS';
