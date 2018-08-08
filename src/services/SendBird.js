@@ -5,17 +5,18 @@ const sb = new SendBird({
 });
 
 export const SBconnect = (sbUserId, sbAccessToken) =>
-  sb.connect(
-    sbUserId,
-    sbAccessToken,
-    (user, error) =>
-      new Promise((res, rej) => {
+  new Promise((res, rej) =>
+    sb.connect(
+      sbUserId,
+      sbAccessToken,
+      (user, error) => {
         if (user) {
           res(user);
         } else {
           rej(error);
         }
-      })
+      }
+    )
   );
 
 export const getChannelsList = () => {

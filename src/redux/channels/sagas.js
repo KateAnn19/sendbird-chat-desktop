@@ -2,7 +2,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { getChannels } from './actions';
 import { getChannelsList } from '../../services/SendBird';
-import { CONNECTION_SUCCESS } from '../user/actions';
+import { CONNECTION_SUCCESS } from '../user/types';
 
 function* getChannelsWorker() {
   try {
