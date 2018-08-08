@@ -9,6 +9,8 @@ const Container = styled.div`
   margin: -8px;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.h3`
@@ -34,6 +36,13 @@ const RoomButton = styled.button`
   width: 100%;
 `;
 
+const CreateRoomButton = styled.button`
+  margin: 30px auto 0;
+  text-align: center;
+  width: 50%;
+  height: 30px;
+`;
+
 class RoomsList extends Component {
   renderRooms = rooms => (
     <Rooms>
@@ -48,8 +57,9 @@ class RoomsList extends Component {
   render() {
     return (
       <Container>
-        <Header>Available Rooms</Header>
+        <Header>Доступные комнаты</Header>
         {this.renderRooms(this.props.rooms)}
+        <CreateRoomButton>Создать комнату</CreateRoomButton>
       </Container>
     );
   }
