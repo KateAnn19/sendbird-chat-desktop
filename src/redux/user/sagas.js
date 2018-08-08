@@ -15,7 +15,7 @@ function* checkUserSessionWorker(action) {
     if (status === 200) {
       yield put(setUser({ ...data }));
       yield call(SBconnect, sbUserId, sbAccessToken);
-      yield put(connectionSuccess);
+      yield put(connectionSuccess());
     }
   } catch (err) {
     yield put(unsetUser());
@@ -41,7 +41,7 @@ function* fetchUserWorker(action) {
     yield put(setUser({ ...data }));
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
-    yield put(connectionSuccess);
+     yield put(connectionSuccess());
   } catch (err) {
     console.log(err);
   }
