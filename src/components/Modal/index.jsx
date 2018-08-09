@@ -106,6 +106,12 @@ class Modal extends Component {
     }
   };
 
+  handleCancel = (e) => {
+    e.preventDefault();
+    const { callback } = this.props;
+    callback();
+  };
+
   render() {
     const { show } = this.props;
     return (
@@ -145,6 +151,7 @@ class Modal extends Component {
           </InputContainer>
           <ButtonsContainer>
             <Button onClick={this.handleSubmit}>Создать</Button>
+            <Button onClick={this.handleCancel}>Отмена</Button>
           </ButtonsContainer>
         </Container>
       </Overlay>
