@@ -123,7 +123,9 @@ class Modal extends Component {
 
   validateParams = () => {
     const { roomType, roomName, userTwoId } = this.state;
-    if (roomType === 'open' && roomName.length > 5) return true;
+    if (roomType === 'open' && roomName.length > 5) {
+      return true;
+    }
     if (roomType === 'group' && userTwoId.length > 5 && roomName.length > 5) {
       return true;
     }
