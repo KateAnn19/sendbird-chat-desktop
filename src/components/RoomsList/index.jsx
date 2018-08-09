@@ -62,21 +62,20 @@ class RoomsList extends Component {
     });
   };
 
-  renderRooms = rooms => (
-    <Rooms>
-      {rooms.map(room => (
-        <RoomsItem key={room.id}>
-          <RoomButton>room.name</RoomButton>
-        </RoomsItem>
-      ))}
-    </Rooms>
-  );
+  renderRooms = rooms =>
+    rooms.map(room => (
+      <RoomsItem key={room.createdAt}>
+        <RoomButton>{room.name}</RoomButton>
+      </RoomsItem>
+    ));
 
   render() {
+    const { rooms } = this.props;
+    // console.log(rooms);
     return (
       <Container>
         <Header>Доступные комнаты</Header>
-        {this.renderRooms(this.props.rooms)}
+        <Rooms>{this.renderRooms(rooms)}</Rooms>
         <CreateRoomButton onClick={this.handleClick}>
           Создать комнату
         </CreateRoomButton>
@@ -89,5 +88,5 @@ class RoomsList extends Component {
 RoomsList.propTypes = { rooms: PropTypes.array.isRequired };
 
 export default connect(({ channels }) => ({
-  rooms: Array.from(channels),
+  rooms: channels.channels,
 }))(RoomsList);
