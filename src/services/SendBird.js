@@ -20,19 +20,18 @@ export const SBconnect = (sbUserId, sbAccessToken) =>
   );
 
 export const getChannelsList = () => {
-  const channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
-  channelListQuery.includeEmpty = true;
-  channelListQuery.limit = 20;
+  const openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
+  const channelsList = [];
 
-  if (channelListQuery.hasNext) {
-    channelListQuery.next((channelList, error) => {
-      if (error) {
-        console.error(error);
-      }
+  openChannelListQuery.next((channels, error) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
 
-      console.log(channelList);
-    });
-  }
+    channels.forEach(channel => channelsList.push(channel));
+  });
+  return channelsList;
 };
 
 export const createOpenChannel = (name, coverUrl, data = null) => {
