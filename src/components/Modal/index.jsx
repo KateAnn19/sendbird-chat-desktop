@@ -82,9 +82,10 @@ class Modal extends Component {
   constructor() {
     super();
     this.state = {
-      roomType: 'private',
+      roomType: 'group',
       roomName: '',
       coverUrl: '',
+      userTwoId: '',
     };
   }
 
@@ -95,14 +96,22 @@ class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { callback } = this.props;
-    const { roomType, roomName, coverUrl } = this.state;
+    const { callback, userOneId } = this.props;
+    const {
+      roomType, roomName, coverUrl, userTwoId
+    } = this.state;
 
-    if (roomName.length > 5) {
-      this.props.createChannel({ roomType, roomName, coverUrl });
+    if (this.validateParams()) {
+      this.props.createChannel({
+        roomType,
+        roomName,
+        coverUrl,
+        userOneId,
+        userTwoId,
+      });
       callback();
     } else {
-      console.log('too short roomname');
+      console.log('wrong params');
     }
   };
 
@@ -110,6 +119,15 @@ class Modal extends Component {
     e.preventDefault();
     const { callback } = this.props;
     callback();
+  };
+
+  validateParams = () => {
+    const { roomType, roomName, userTwoId } = this.state;
+    if (roomType === 'open' && roomName.length > 5) return true;
+    if (roomType === 'group' && userTwoId.length > 5 && roomName.length > 5) {
+      return true;
+    }
+    return false;
   };
 
   render() {
@@ -126,10 +144,21 @@ class Modal extends Component {
               name="roomType"
               onChange={this.onHandleChange}
             >
-              <option value="private">Приватная</option>
-              <option value="public">Публичная</option>
+              <option value="group">Закрытая</option>
+              <option value="open">Публичная</option>
             </RoomTypeSelect>
           </InputContainer>
+          {this.state.roomType === 'group' && (
+            <InputContainer>
+              <Label htmlFor="userTwoId">ID пользователя</Label>
+              <RoomTextInput
+                id="userTwoId"
+                name="userTwoId"
+                type="text"
+                onChange={this.onHandleChange}
+              />
+            </InputContainer>
+          )}
           <InputContainer>
             <Label htmlFor="roomName">Название</Label>
             <RoomTextInput
@@ -163,9 +192,10 @@ Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   callback: PropTypes.func.isRequired,
   createChannel: PropTypes.func.isRequired,
+  userOneId: PropTypes.string.isRequired,
 };
 
 export default connect(
-  null,
+  ({ user }) => ({ userOneId: user.user.sbUserId }),
   { createChannel }
 )(Modal);

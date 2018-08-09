@@ -28,7 +28,7 @@ function* addUserWorker(action) {
     const { username, password, email } = action.payload.user;
     const { data } = yield call(registerUser, username, password, email);
     yield put(setUser({ ...data }));
-    yield put(push('/menu'));
+    yield put(connectionSuccess());
   } catch (err) {
     console.log(err);
   }

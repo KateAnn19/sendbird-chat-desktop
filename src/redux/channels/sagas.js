@@ -2,14 +2,29 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 
 import { getChannels } from './actions';
-import { getChannelsList, createOpenChannel } from '../../services/SendBird';
+import {
+  getChannelsList,
+  createOpenChannel,
+  createGroupChannel,
+} from '../../services/SendBird';
 import * as TYPES from './types';
 import { CONNECTION_SUCCESS } from '../user/types';
 
 function* createChannelWorker(action) {
   try {
-    const { roomName, coverUrl } = action.payload;
-    yield call(createOpenChannel, roomName, coverUrl);
+    const {
+      roomType,
+      roomName,
+      coverUrl,
+      userOneId,
+      userTwoId,
+    } = action.payload;
+    if (roomType === 'open') {
+      yield call(createOpenChannel, roomName, coverUrl);
+    } else {
+      const users = [userOneId, userTwoId];
+      yield call(createGroupChannel, users, roomName, coverUrl);
+    }
   } catch (err) {
     console.log(err);
   }
