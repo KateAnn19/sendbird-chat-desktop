@@ -19,34 +19,32 @@ export const SBconnect = (sbUserId, sbAccessToken) =>
     )
   );
 
-export const getChannelsList = () => {
-  const openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
-  const channelsList = [];
-
-  openChannelListQuery.next((channels, error) => {
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    channels.forEach(channel => channelsList.push(channel));
-  });
-  return channelsList;
-};
-
-export const createOpenChannel = (name, coverUrl, data = null) => {
-  sb.OpenChannel.createChannel(
-    name,
-    coverUrl,
-    data,
-    (createdChannel, error) => {
+export const getChannelsList = () =>
+  new Promise((res, rej) => {
+    const openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
+    openChannelListQuery.next((channels, error) => {
       if (error) {
-        console.error(error);
-        return;
+        console.log(error);
+        rej();
       }
+      res(channels);
+    });
+  });
 
-      // onCreated
-      console.log(createdChannel);
-    }
-  );
-};
+export const createOpenChannel = (name, coverUrl, data = null) =>
+  new Promise((res, rej) => {
+    sb.OpenChannel.createChannel(
+      name,
+      coverUrl,
+      data,
+      (createdChannel, error) => {
+        if (error) {
+          console.error(error);
+          rej();
+        }
+
+        // onCreated
+        res(createdChannel);
+      }
+    );
+  });

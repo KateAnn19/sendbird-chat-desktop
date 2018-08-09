@@ -71,7 +71,7 @@ class RoomsList extends Component {
 
   render() {
     const { rooms } = this.props;
-    // console.log(rooms);
+    const { showModal } = this.state;
     return (
       <Container>
         <Header>Доступные комнаты</Header>
@@ -79,13 +79,13 @@ class RoomsList extends Component {
         <CreateRoomButton onClick={this.handleClick}>
           Создать комнату
         </CreateRoomButton>
-        <Modal show={this.state.showModal} callback={this.handleModalClose} />
+        <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
     );
   }
 }
 
-RoomsList.propTypes = { rooms: PropTypes.array.isRequired };
+RoomsList.propTypes = { rooms: PropTypes.arrayOf(PropTypes.object).isRequired };
 
 export default connect(({ channels }) => ({
   rooms: channels.channels,

@@ -2,7 +2,7 @@ import { createReducer } from '../../utils/createReducer';
 import * as TYPES from './types';
 
 const initState = {
-  channels: null,
+  channels: [],
 };
 
 const getChannels = (_, channels) => ({ channels });
