@@ -3,12 +3,19 @@ import { REHYDRATE } from 'redux-persist/lib/constants';
 import { push } from 'connected-react-router';
 
 import { loginUser, registerUser, checkUserSession } from './requests';
-import { setUser, unsetUser, connectionSuccess } from './actions';
+import {
+  setUser,
+  unsetUser,
+  connectionSuccess,
+  connectionCheckingStart,
+  connectionCheckingFinish,
+} from './actions';
 import * as TYPES from './types';
 import { SBconnect } from '../../services/SendBird';
 
 function* checkUserSessionWorker(action) {
   try {
+    yield put(connectionCheckingStart());
     const { id, token } = action.payload.user.user;
     const { status, data } = yield call(checkUserSession, id, token);
     const { sbUserId, sbAccessToken } = data;

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { fetchUser } from '../../redux/user/actions';
+import { Loader } from '../Loader';
 
 const Container = styled.div`
   width: 100%;
@@ -73,7 +74,11 @@ class SignInForm extends Component {
   };
 
   render() {
-    return (
+    const { loading } = this.props;
+    console.log(loading);
+    const data = loading ? (
+      <Loader />
+    ) : (
       <Container>
         <Link to="/auth/signup">Новый пользователь?</Link>
         <Form>
@@ -104,12 +109,16 @@ class SignInForm extends Component {
         </Form>
       </Container>
     );
+    return data;
   }
 }
 
-SignInForm.propTypes = { fetchUser: PropTypes.func };
+SignInForm.propTypes = {
+  fetchUser: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default connect(
-  null,
+  ({ user }) => ({ loading: user.loading }),
   { fetchUser }
 )(SignInForm);

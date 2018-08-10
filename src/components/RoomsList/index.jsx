@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Loader } from '../Loader';
 import Modal from '../Modal';
 
 const Container = styled.div`
@@ -70,9 +71,11 @@ class RoomsList extends Component {
     ));
 
   render() {
-    const { rooms } = this.props;
+    const { rooms, loading } = this.props;
     const { showModal } = this.state;
-    return (
+    const data = loading ? (
+      <Loader />
+    ) : (
       <Container>
         <Header>Доступные комнаты</Header>
         <Rooms>{this.renderRooms(rooms)}</Rooms>
@@ -82,11 +85,14 @@ class RoomsList extends Component {
         <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
     );
+
+    return data;
   }
 }
 
 RoomsList.propTypes = { rooms: PropTypes.arrayOf(PropTypes.object).isRequired };
 
-export default connect(({ channels }) => ({
+export default connect(({ channels, user }) => ({
   rooms: channels.channels,
+  loading: user.loading,
 }))(RoomsList);

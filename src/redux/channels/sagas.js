@@ -9,9 +9,14 @@ import {
 } from '../../services/SendBird';
 import * as TYPES from './types';
 import { CONNECTION_SUCCESS } from '../user/types';
+import {
+  connectionCheckingStart,
+  connectionCheckingFinish,
+} from '../user/actions';
 
 function* createChannelWorker(action) {
   try {
+    yield put(connectionCheckingStart());
     const {
       roomType,
       roomName,
@@ -25,6 +30,7 @@ function* createChannelWorker(action) {
       const users = [userOneId, userTwoId];
       yield call(createGroupChannel, users, roomName, coverUrl);
     }
+    yield put(connectionCheckingFinish());
   } catch (err) {
     console.log(err);
   }
@@ -34,6 +40,7 @@ function* getChannelsWorker() {
   try {
     const channels = yield call(getChannelsList);
     yield put(setChannels(channels));
+    yield put(connectionCheckingFinish());
     yield put(push('/'));
   } catch (err) {
     console.log(err);

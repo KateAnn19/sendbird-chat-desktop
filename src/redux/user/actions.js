@@ -22,3 +22,11 @@ export const fetchUser = user => ({
 export const connectionSuccess = () => ({
   type: TYPES.CONNECTION_SUCCESS,
 });
+
+export const connectionCheckingStart = () => ({
+  type: TYPES.CONNECTION_CHECKING_START,
+});
+
+export const connectionCheckingFinish = () => ({
+  type: TYPES.CONNECTION_CHECKING_FINISH,
+});
