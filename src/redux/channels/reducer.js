@@ -5,10 +5,10 @@ const initState = {
   channels: [],
 };
 
-const getChannels = (_, channels) => ({ channels });
+const setChannels = (_, channels) => ({ channels });
 
 const handlers = {
-  [TYPES.GET_CHANNELS]: getChannels,
+  [TYPES.SET_CHANNELS]: setChannels,
 };
 
 export const reducer = createReducer(initState, handlers);

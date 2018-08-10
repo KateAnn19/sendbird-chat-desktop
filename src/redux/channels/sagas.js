@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 
-import { getChannels } from './actions';
+import { setChannels } from './actions';
 import {
   getChannelsList,
   createOpenChannel,
@@ -33,7 +33,7 @@ function* createChannelWorker(action) {
 function* getChannelsWorker() {
   try {
     const channels = yield call(getChannelsList);
-    yield put(getChannels(channels));
+    yield put(setChannels(channels));
     yield put(push('/menu'));
   } catch (err) {
     console.log(err);
