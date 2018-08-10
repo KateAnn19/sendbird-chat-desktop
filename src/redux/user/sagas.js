@@ -8,7 +8,6 @@ import {
   unsetUser,
   connectionSuccess,
   connectionCheckingStart,
-  connectionCheckingFinish,
 } from './actions';
 import * as TYPES from './types';
 import { SBconnect } from '../../services/SendBird';
@@ -32,8 +31,11 @@ function* checkUserSessionWorker(action) {
 
 function* addUserWorker(action) {
   try {
+    yield put(connectionCheckingStart());
     const { username, password, email } = action.payload.user;
     const { data } = yield call(registerUser, username, password, email);
+    const { sbUserId, sbAccessToken } = data;
+    yield call(SBconnect, sbUserId, sbAccessToken);
     yield put(setUser({ ...data }));
     yield put(connectionSuccess());
   } catch (err) {
@@ -43,6 +45,7 @@ function* addUserWorker(action) {
 
 function* fetchUserWorker(action) {
   try {
+    yield put(connectionCheckingStart());
     const { username, password, email } = action.payload.user;
     const { data } = yield call(loginUser, username, password, email);
     yield put(setUser({ ...data }));
