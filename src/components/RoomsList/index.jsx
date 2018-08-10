@@ -3,12 +3,16 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import Modal from '../Modal';
+
 const Container = styled.div`
   width: 30%;
-  height: 100vh;
+  min-height: 100vh;
   margin: -8px;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.h3`
@@ -34,29 +38,57 @@ const RoomButton = styled.button`
   width: 100%;
 `;
 
+const CreateRoomButton = styled.button`
+  margin: 30px auto;
+  text-align: center;
+  width: 50%;
+  height: 30px;
+`;
+
 class RoomsList extends Component {
-  renderRooms = rooms => (
-    <Rooms>
-      {rooms.map(room => (
-        <RoomsItem>
-          <RoomButton>room.name</RoomButton>
-        </RoomsItem>
-      ))}
-    </Rooms>
-  );
+  state = {
+    showModal: false,
+  };
+
+  handleClick = () => {
+    this.setState({
+      showModal: true,
+    });
+  };
+
+  handleModalClose = () => {
+    this.setState({
+      showModal: false,
+    });
+  };
+
+  renderRooms = rooms =>
+    rooms.map(room => (
+      <RoomsItem key={room.createdAt}>
+        <RoomButton>{room.name}</RoomButton>
+      </RoomsItem>
+    ));
 
   render() {
+    const { rooms } = this.props;
+    const { showModal } = this.state;
     return (
       <Container>
-        <Header>Available Rooms</Header>
-        {this.renderRooms(this.props.rooms)}
+        <Header>Доступные комнаты</Header>
+        <Rooms>{this.renderRooms(rooms)}</Rooms>
+        <Modal show={showModal} callback={this.handleModalClose} />
+        <CreateRoomButton onClick={this.handleClick}>
+          Создать комнату
+        </CreateRoomButton>
       </Container>
     );
   }
 }
 
-RoomsList.propTypes = { rooms: PropTypes.array.isRequired };
+RoomsList.propTypes = {
+  rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default connect(({ channels }) => ({
-  rooms: Array.from(channels),
+  rooms: channels.channels,
 }))(RoomsList);

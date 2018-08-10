@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 import { createUser } from '../../redux/user/actions';
+import { AuthLoader } from '../Loaders';
 
 const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -31,6 +34,15 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   font-size: 1.2rem;
+`;
+
+const Link = styled(NavLink)`
+  color: blue;
+  margin-bottom: 20px;
+  text-decoration: none;
+  &:hover {
+    color: red;
+  }
 `;
 
 class SignUpForm extends Component {
@@ -62,8 +74,12 @@ class SignUpForm extends Component {
   };
 
   render() {
-    return (
+    const { loading } = this.props;
+    const data = loading ? (
+      <AuthLoader />
+    ) : (
       <Container>
+        <Link to="/auth/signin">Уже есть аккаунт?</Link>
         <Form>
           <Legend>Регистрация</Legend>
           <Input
@@ -92,12 +108,16 @@ class SignUpForm extends Component {
         </Form>
       </Container>
     );
+    return data;
   }
 }
 
-SignUpForm.propTypes = { createUser: PropTypes.func };
+SignUpForm.propTypes = {
+  createUser: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default connect(
-  null,
+  ({ user }) => ({ loading: user.loading }),
   { createUser }
 )(SignUpForm);

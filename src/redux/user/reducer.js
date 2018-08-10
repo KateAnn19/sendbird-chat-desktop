@@ -2,21 +2,27 @@ import { createReducer } from '../../utils/createReducer';
 import * as TYPES from './types';
 
 const initState = {
-  fetching: false,
+  loading: false,
   user: null,
   error: null,
 };
 
-const setUser = (_, { user }) => ({ user, fetching: false, error: null });
+const setUser = (state, { user }) => ({ ...state, user });
 
-const createUser = (_, { user }) => ({ user, fetching: false, error: null });
+const createUser = (state, { user }) => ({ ...state, user });
 
-const unsetUser = _ => ({ user: null, fetching: false, error: null });
+const unsetUser = () => ({ user: null, loading: false, error: null });
+
+const startLoading = state => ({ ...state, loading: true });
+
+const finishLoading = state => ({ ...state, loading: false });
 
 const handlers = {
   [TYPES.SET_USER]: setUser,
   [TYPES.UNSET_USER]: unsetUser,
   [TYPES.CREATE_USER]: createUser,
+  [TYPES.CONNECTION_CHECKING_START]: startLoading,
+  [TYPES.CONNECTION_CHECKING_FINISH]: finishLoading,
 };
 
 export const reducer = createReducer(initState, handlers);

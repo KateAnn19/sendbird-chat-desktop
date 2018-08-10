@@ -18,6 +18,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const persistConfig = {
   key: 'root',
   storage,
+  whiteList: ['user'],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -29,4 +30,5 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store);
+// persistor.purge();
 sagaMiddleware.run(rootSaga);

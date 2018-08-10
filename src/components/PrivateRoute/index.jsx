@@ -26,7 +26,7 @@ PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
 };
 
-const defineIsLogged = user => !!user.user.username;
+const defineIsLogged = user => !!user.user;
 
 export default connect(({ user }) => ({
   isLoggedIn: defineIsLogged(user),
