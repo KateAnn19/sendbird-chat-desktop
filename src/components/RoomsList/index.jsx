@@ -8,7 +8,7 @@ import Modal from '../Modal';
 
 const Container = styled.div`
   width: 30%;
-  height: 100vh;
+  min-height: 100vh;
   margin: -8px;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
@@ -40,7 +40,7 @@ const RoomButton = styled.button`
 `;
 
 const CreateRoomButton = styled.button`
-  margin: 30px auto 0;
+  margin: 30px auto;
   text-align: center;
   width: 50%;
   height: 30px;
@@ -90,7 +90,10 @@ class RoomsList extends Component {
   }
 }
 
-RoomsList.propTypes = { rooms: PropTypes.arrayOf(PropTypes.object).isRequired };
+RoomsList.propTypes = {
+  rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default connect(({ channels, user }) => ({
   rooms: channels.channels,
