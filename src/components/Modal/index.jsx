@@ -97,7 +97,7 @@ class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { callback, userOneId, loading } = this.props;
+    const { userOneId } = this.props;
     const {
       roomType, roomName, coverUrl, userTwoId
     } = this.state;
