@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { fetchUser } from '../../redux/user/actions';
-import { Loader } from '../Loader';
+import { AuthLoader } from '../Loaders';
 
 const Container = styled.div`
   width: 100%;
@@ -76,7 +76,7 @@ class SignInForm extends Component {
   render() {
     const { loading } = this.props;
     const data = loading ? (
-      <Loader />
+      <AuthLoader />
     ) : (
       <Container>
         <Link to="/auth/signup">Новый пользователь?</Link>

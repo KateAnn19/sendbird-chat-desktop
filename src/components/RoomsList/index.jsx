@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Loader } from '../Loader';
 import Modal from '../Modal';
 
 const Container = styled.div`
@@ -71,31 +70,25 @@ class RoomsList extends Component {
     ));
 
   render() {
-    const { rooms, loading } = this.props;
+    const { rooms } = this.props;
     const { showModal } = this.state;
-    const data = loading ? (
-      <Loader />
-    ) : (
+    return (
       <Container>
         <Header>Доступные комнаты</Header>
-        <Rooms>{this.renderRooms(rooms)}</Rooms>
         <CreateRoomButton onClick={this.handleClick}>
           Создать комнату
         </CreateRoomButton>
+        <Rooms>{this.renderRooms(rooms)}</Rooms>
         <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
     );
-
-    return data;
   }
 }
 
 RoomsList.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loading: PropTypes.bool.isRequired,
 };
 
-export default connect(({ channels, user }) => ({
+export default connect(({ channels }) => ({
   rooms: channels.channels,
-  loading: user.loading,
 }))(RoomsList);

@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import { createChannel } from '../../redux/channels/actions';
+import { RoomsLoader } from '../Loaders';
 
 const Overlay = styled.div`
   display: ${props => (props.show ? 'block' : 'none')};
-  position: absolute;
+  position: fixed;
   z-index: 5;
   margin: -8px;
   width: 100%;
@@ -16,7 +17,7 @@ const Overlay = styled.div`
 `;
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 10p;
   width: 40%;
   height: 50%;
@@ -96,7 +97,7 @@ class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { callback, userOneId } = this.props;
+    const { callback, userOneId, loading } = this.props;
     const {
       roomType, roomName, coverUrl, userTwoId
     } = this.state;
@@ -109,7 +110,6 @@ class Modal extends Component {
         userOneId,
         userTwoId,
       });
-      callback();
     } else {
       console.log('wrong params');
     }
@@ -133,8 +133,14 @@ class Modal extends Component {
   };
 
   render() {
-    const { show } = this.props;
-    return (
+    const { show, loading } = this.props;
+    const data = loading ? (
+      <Overlay show={show}>
+        <Container>
+          <RoomsLoader />
+        </Container>
+      </Overlay>
+    ) : (
       <Overlay show={show}>
         <Container>
           <Header>Новая комната</Header>
@@ -182,11 +188,13 @@ class Modal extends Component {
           </InputContainer>
           <ButtonsContainer>
             <Button onClick={this.handleSubmit}>Создать</Button>
-            <Button onClick={this.handleCancel}>Отмена</Button>
+            <Button onClick={this.handleCancel}>Готово</Button>
           </ButtonsContainer>
         </Container>
       </Overlay>
     );
+
+    return data;
   }
 }
 
@@ -195,9 +203,13 @@ Modal.propTypes = {
   callback: PropTypes.func.isRequired,
   createChannel: PropTypes.func.isRequired,
   userOneId: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default connect(
-  ({ user }) => ({ userOneId: user.user.sbUserId }),
+  ({ user }) => ({
+    userOneId: user.user.sbUserId,
+    loading: user.loading,
+  }),
   { createChannel }
 )(Modal);
