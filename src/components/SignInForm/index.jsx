@@ -75,7 +75,6 @@ class SignInForm extends Component {
 
   render() {
     const { loading } = this.props;
-    console.log(loading);
     const data = loading ? (
       <Loader />
     ) : (

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { createUser } from '../../redux/user/actions';
+import { Loader } from '../Loader';
 
 const Container = styled.div`
   width: 100%;
@@ -73,7 +74,10 @@ class SignUpForm extends Component {
   };
 
   render() {
-    return (
+    const { loading } = this.props;
+    const data = loading ? (
+      <Loader />
+    ) : (
       <Container>
         <Link to="/auth/signin">Уже есть аккаунт?</Link>
         <Form>
@@ -104,12 +108,16 @@ class SignUpForm extends Component {
         </Form>
       </Container>
     );
+    return data;
   }
 }
 
-SignUpForm.propTypes = { createUser: PropTypes.func };
+SignUpForm.propTypes = {
+  createUser: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default connect(
-  null,
+  ({ user }) => ({ loading: user.loading }),
   { createUser }
 )(SignUpForm);
