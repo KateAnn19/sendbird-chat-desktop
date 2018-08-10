@@ -34,7 +34,7 @@ function* getChannelsWorker() {
   try {
     const channels = yield call(getChannelsList);
     yield put(setChannels(channels));
-    yield put(push('/menu'));
+    yield put(push('/'));
   } catch (err) {
     console.log(err);
   }

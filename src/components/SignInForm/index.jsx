@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 import { fetchUser } from '../../redux/user/actions';
 
@@ -9,6 +10,7 @@ const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -31,6 +33,15 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   font-size: 1.2rem;
+`;
+
+const Link = styled(NavLink)`
+  color: blue;
+  margin-bottom: 20px;
+  text-decoration: none;
+  &:hover {
+    color: red;
+  }
 `;
 
 class SignInForm extends Component {
@@ -64,6 +75,7 @@ class SignInForm extends Component {
   render() {
     return (
       <Container>
+        <Link to="/auth/signup">Новый пользователь?</Link>
         <Form>
           <Legend>Войти</Legend>
           <Input
