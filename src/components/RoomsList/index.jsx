@@ -75,11 +75,11 @@ class RoomsList extends Component {
     return (
       <Container>
         <Header>Доступные комнаты</Header>
+        <Rooms>{this.renderRooms(rooms)}</Rooms>
+        <Modal show={showModal} callback={this.handleModalClose} />
         <CreateRoomButton onClick={this.handleClick}>
           Создать комнату
         </CreateRoomButton>
-        <Rooms>{this.renderRooms(rooms)}</Rooms>
-        <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
     );
   }
