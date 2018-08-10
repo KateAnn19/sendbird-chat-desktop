@@ -8,9 +8,10 @@ import {
   createGroupChannel,
 } from '../../services/SendBird';
 import * as TYPES from './types';
-import { CONNECTION_SUCCESS } from '../user/types';
+import { CONNECTION_CHECKING_SUCCESS } from '../user/types';
 import {
   connectionCheckingStart,
+  connectionCheckingSuccess,
   connectionCheckingFinish,
 } from '../user/actions';
 
@@ -30,7 +31,7 @@ function* createChannelWorker(action) {
       const users = [userOneId, userTwoId];
       yield call(createGroupChannel, users, roomName, coverUrl);
     }
-    yield put(connectionCheckingFinish());
+    yield put(connectionCheckingSuccess());
   } catch (err) {
     console.log(err);
   }
@@ -48,6 +49,6 @@ function* getChannelsWorker() {
 }
 
 export function* sagas() {
-  yield takeEvery(CONNECTION_SUCCESS, getChannelsWorker);
+  yield takeEvery(CONNECTION_CHECKING_SUCCESS, getChannelsWorker);
   yield takeEvery(TYPES.CREATE_CHANNEL, createChannelWorker);
 }

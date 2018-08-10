@@ -6,7 +6,7 @@ import { loginUser, registerUser, checkUserSession } from './requests';
 import {
   setUser,
   unsetUser,
-  connectionSuccess,
+  connectionCheckingSuccess,
   connectionCheckingStart,
 } from './actions';
 import * as TYPES from './types';
@@ -21,7 +21,7 @@ function* checkUserSessionWorker(action) {
     if (status === 200) {
       yield put(setUser({ ...data }));
       yield call(SBconnect, sbUserId, sbAccessToken);
-      yield put(connectionSuccess());
+      yield put(connectionCheckingSuccess());
     }
   } catch (err) {
     yield put(unsetUser());
@@ -37,7 +37,7 @@ function* addUserWorker(action) {
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
     yield put(setUser({ ...data }));
-    yield put(connectionSuccess());
+    yield put(connectionCheckingSuccess());
   } catch (err) {
     console.log(err);
   }
@@ -48,10 +48,10 @@ function* fetchUserWorker(action) {
     yield put(connectionCheckingStart());
     const { username, password, email } = action.payload.user;
     const { data } = yield call(loginUser, username, password, email);
-    yield put(setUser({ ...data }));
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
-    yield put(connectionSuccess());
+    yield put(setUser({ ...data }));
+    yield put(connectionCheckingSuccess());
   } catch (err) {
     console.log(err);
   }

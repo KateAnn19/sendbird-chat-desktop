@@ -19,8 +19,8 @@ export const fetchUser = user => ({
   payload: { user },
 });
 
-export const connectionSuccess = () => ({
-  type: TYPES.CONNECTION_SUCCESS,
+export const connectionCheckingSuccess = () => ({
+  type: TYPES.CONNECTION_CHECKING_SUCCESS,
 });
 
 export const connectionCheckingStart = () => ({
