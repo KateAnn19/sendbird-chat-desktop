@@ -4,36 +4,39 @@ import { connect } from 'react-redux';
 
 const Container = styled.div`
   position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 30%;
 `;
 
 const InputField = styled.input`
-  width: 20%;
-  position: absolute;
   padding: 0;
+  height: 15px;
+  width: 100%;
 `;
 
 const List = styled.ul`
+  position: absolute;
   list-style: none;
-  width: 20%;
   margin: 0;
-  padding: 20px 0 0 0;
-  text-align: end;
+  padding: 0;
+  width: 103%;
+  background-color: white;
 `;
 
 const ListItem = styled.li`
-  border-bottom: 1px solid grey;
+  border: 1px solid grey;
 `;
 
 const ClearButton = styled.button`
   position: absolute;
-  left: 19%;
+  right: 10px;
   height: 14px;
   line-height: 0;
-  top: 1px;
+  top: 2px;
   padding: 3px;
   background-color: #8eb2ed;
   border-radius: 50%;
-  border-color: none;
   opacity: 0.8;
   color: grey;
   z-index: 10;
@@ -80,8 +83,6 @@ class Combobox extends Component {
   };
 
   renderOptions = () => {
-    //  logic for dynamic rendering options
-
     const { options, query } = this.state;
     return options
       .filter(option => option.name.startsWith(query))
@@ -89,11 +90,12 @@ class Combobox extends Component {
   };
 
   render() {
+    const { id } = this.props;
     const { isOpen, query } = this.state;
     return (
       <Container>
         <InputField
-          id="myInput"
+          id={id}
           value={query}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
