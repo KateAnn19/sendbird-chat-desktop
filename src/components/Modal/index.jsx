@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { createChannel } from '../../redux/channels/actions';
 import { RoomsLoader } from '../Loaders';
+import Combobox from '../Combobox';
 
 const Overlay = styled.div`
   display: ${props => (props.show ? 'block' : 'none')};
@@ -158,13 +159,8 @@ class Modal extends Component {
           </InputContainer>
           {this.state.roomType === 'group' && (
             <InputContainer>
-              <Label htmlFor="userTwoId">ID пользователя</Label>
-              <RoomTextInput
-                id="userTwoId"
-                name="userTwoId"
-                type="text"
-                onChange={this.onHandleChange}
-              />
+              <Label htmlFor="userTwoId">Имя/почта юзера</Label>
+              <Combobox id="userTwoId" />
             </InputContainer>
           )}
           <InputContainer>
