@@ -24,14 +24,18 @@ const List = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 103%;
+  min-width: 102%;
   background-color: white;
 `;
 
 const ListItem = styled.li`
   width: 100%;
   border: 1px solid grey;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: white;
+  &:hover {
+    background-color: green;
+    color: white;
+  }
 `;
 
 const ClearButton = styled.button`
@@ -71,6 +75,14 @@ class Combobox extends Component {
     findUsers(query);
   };
 
+  handleChoose = (e) => {
+    e.preventDefault();
+    this.setState({
+      query: e.target.textContent,
+      isOpen: false,
+    });
+  };
+
   handleClear = (e) => {
     const { unsetUsers } = this.props;
     e.preventDefault();
@@ -89,7 +101,11 @@ class Combobox extends Component {
     if (successful) {
       return options
         .filter(option => option.username.startsWith(query))
-        .map(option => <ListItem>{option.username}</ListItem>);
+        .map(option => (
+          <ListItem key={option._id} onClick={this.handleChoose}>
+            {option.username}
+          </ListItem>
+        ));
     }
     return null;
   };
