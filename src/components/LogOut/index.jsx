@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { disconnectUser } from '../../redux/user/actions';
 
 const Overlay = styled.div`
   position: fixed;
@@ -54,11 +57,14 @@ const Header = styled.h1`
 `;
 
 class LogOut extends Component {
-  handleLogOut = () => {};
+  handleLogOut = () => {
+    const { disconnectUser } = this.props;
+    disconnectUser();
+  };
 
   handleCalcel = () => {
     const { history } = this.props;
-    return history.goBack();
+    history.goBack();
   };
 
   render() {
@@ -67,7 +73,7 @@ class LogOut extends Component {
         <Container>
           <Header>Выйти из учетной записи</Header>
           <ButtonContainer>
-            <Button>Выход</Button>
+            <Button onClick={this.handleLogOut}>Выход</Button>
             <Button onClick={this.handleCalcel}>Отмена</Button>
           </ButtonContainer>
         </Container>
@@ -78,4 +84,9 @@ class LogOut extends Component {
 
 LogOut.propTypes = { history: PropTypes.shape({}).isRequired };
 
-export default withRouter(LogOut);
+export default withRouter(
+  connect(
+    null,
+    { disconnectUser }
+  )(LogOut)
+);
