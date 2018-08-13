@@ -10,7 +10,7 @@ import {
   connectionCheckingStart,
 } from './actions';
 import * as TYPES from './types';
-import { SBconnect } from '../../services/SendBird';
+import { SBconnect, SBdisconnect } from '../../services/SendBird';
 
 function* checkUserSessionWorker(action) {
   try {
@@ -57,8 +57,19 @@ function* fetchUserWorker(action) {
   }
 }
 
+function* logOutWorker() {
+  try {
+    yield call(SBdisconnect);
+    yield put({ type: 'RESET' });
+    yield push('auth/login');
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* sagas() {
   yield takeEvery(REHYDRATE, checkUserSessionWorker);
   yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
   yield takeEvery(TYPES.CREATE_USER, addUserWorker);
+  yield takeEvery(TYPES.DISCONNECT_USER, logOutWorker);
 }

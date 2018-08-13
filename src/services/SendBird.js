@@ -19,6 +19,14 @@ export const SBconnect = (sbUserId, sbAccessToken) =>
     )
   );
 
+export const SBdisconnect = () =>
+  new Promise(res =>
+    sb.disconnect(() => {
+      console.log('disconnected');
+      res();
+    })
+  );
+
 const getOpenChannels = () =>
   new Promise((res, rej) => {
     const openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
@@ -87,4 +95,4 @@ export const createGroupChannel = (userIds, name, coverUrl, data = null) =>
         res(createdChannel);
       }
     );
-  }); // need to be implemented
+  });

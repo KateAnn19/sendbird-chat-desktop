@@ -19,6 +19,10 @@ export const fetchUser = user => ({
   payload: { user },
 });
 
+export const disconnectUser = () => ({
+  type: TYPES.DISCONNECT_USER,
+});
+
 export const connectionCheckingSuccess = () => ({
   type: TYPES.CONNECTION_CHECKING_SUCCESS,
 });
