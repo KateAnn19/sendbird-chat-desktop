@@ -64,7 +64,7 @@ class RoomsList extends Component {
 
   renderRooms = rooms =>
     rooms.map(room => (
-      <RoomsItem key={room.createdAt}>
+      <RoomsItem key={room.url}>
         <RoomButton>{room.name}</RoomButton>
       </RoomsItem>
     ));
