@@ -4,16 +4,20 @@ import * as TYPES from './types';
 const initState = {
   users: [],
   searching: false,
-  successful: false
+  successful: false,
 };
 
-const setUsers = (state, { users }) => ({ ...state, users });
+const setUsers = (state, users) => ({ ...state, users });
 
-const startSearching = () => ({ users: [], searching: true, successful: false });
+const startSearching = () => ({
+  users: [],
+  searching: true,
+  successful: false,
+});
 
-const successfulSearch = state => ({ ...state, successful: true })
+const successfulSearch = state => ({ ...state, successful: true });
 
-const failureSearch = state => ({ ...state,  successful: false});
+const failureSearch = state => ({ ...state, successful: false });
 
 const finishSearching = state => ({ ...state, searching: false });
 

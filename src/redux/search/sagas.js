@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import {
   searchStart,
@@ -7,14 +7,17 @@ import {
   searchFailure,
   setUsers,
 } from './actions';
+import { userSelector } from '../selectors';
 import { searchUser } from './requests';
 import * as TYPES from './types';
 
 function* searchUserWorker(action) {
   try {
     yield put(searchStart());
+    const { token } = yield select(userSelector);
     const { query } = action.payload;
-    const { data } = yield call(searchUser, query);
+    console.log(query);
+    const { data } = yield call(searchUser, query, token);
     yield put(searchSuccess());
     yield put(setUsers(data));
     yield put(searchFinish());
