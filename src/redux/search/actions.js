@@ -14,6 +14,10 @@ export const searchStart = () => ({
   type: TYPES.SEARCH_START,
 });
 
+export const searchFailure = () => ({
+  type: TYPES.SEARCH_FAILURE,
+});
+
 export const searchSuccess = () => ({
   type: TYPES.SEARCH_SUCCESS,
 });

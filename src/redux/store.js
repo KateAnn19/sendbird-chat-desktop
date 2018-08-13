@@ -30,5 +30,4 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store);
-// persistor.purge();
 sagaMiddleware.run(rootSaga);

@@ -56,18 +56,13 @@ class Combobox extends Component {
     query: '',
   };
 
-  getOptions = (query) => {
-    const { findUsers } = this.props;
-    findUsers(query);
-  };
-
   handleFocus = (e) => {
     const { query } = this.state;
     e.preventDefault();
     this.setState({ isOpen: true });
 
     //  need debouncing logic
-    setTimeout(() => this.getOptions(query), 1000);
+    setTimeout(() => this.props.findUsers(query), 1000);
   };
 
   handleChange = (e) => {
@@ -86,11 +81,15 @@ class Combobox extends Component {
   };
 
   renderOptions = () => {
-    const { options } = this.props;
+    const { options, successful } = this.props;
     const { query } = this.state;
-    return options
-      .filter(option => option.name.startsWith(query))
-      .map(option => <ListItem>{option.name}</ListItem>);
+    if (successful) {
+      return options
+        .filter(option => option.name.startsWith(query))
+        .map(option => <ListItem>{option.name}</ListItem>);
+    } else {
+      return null;
+    }
   };
 
   render() {
@@ -123,12 +122,14 @@ Combobox.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   searching: PropTypes.bool.isRequired,
   findUsers: PropTypes.func.isRequired,
+  successful: PropTypes.bool.isRequired,
 };
 
 export default connect(
   ({ search }) => ({
     options: search.users,
     searching: search.searching,
+    successful: search.successful,
   }),
   { findUsers }
 )(Combobox);

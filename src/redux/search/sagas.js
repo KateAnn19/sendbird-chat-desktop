@@ -1,6 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { searchStart, searchSuccess, searchFinish, setUsers } from './actions';
+import {
+  searchStart,
+  searchSuccess,
+  searchFinish,
+  searchFailure,
+  setUsers,
+} from './actions';
 import { searchUser } from './requests';
 import * as TYPES from './types';
 
@@ -8,12 +14,13 @@ function* searchUserWorker(action) {
   try {
     yield put(searchStart());
     const { query } = action.payload;
-    const users = yield call(searchUser, query);
-    console.log(users);
+    const { data } = yield call(searchUser, query);
     yield put(searchSuccess());
-    yield put(setUsers(users));
+    yield put(setUsers(data));
     yield put(searchFinish());
   } catch (err) {
+    yield put(searchFailure());
+    yield put(searchFinish());
     console.log(err);
   }
 }
