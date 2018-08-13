@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { findUsers } from '../../redux/search/actions';
+import { SearchUserLoader } from '../Loaders';
 
 const Container = styled.div`
   position: relative;
@@ -30,7 +34,7 @@ const ListItem = styled.li`
 
 const ClearButton = styled.button`
   position: absolute;
-  right: 10px;
+  right: 0;
   height: 14px;
   line-height: 0;
   top: 2px;
@@ -48,23 +52,22 @@ const ClearButton = styled.button`
 
 class Combobox extends Component {
   state = {
-    options: [
-      { id: 1, value: 1, name: 'tim2' },
-      { id: 2, value: 2, name: 'tim3' },
-      { id: 3, value: 3, name: 'tim4' },
-    ],
-
     isOpen: false,
     query: '',
   };
 
-  getOptions() {
-    //  some logic for receiveing options
-  }
+  getOptions = (query) => {
+    const { findUsers } = this.props;
+    findUsers(query);
+  };
 
   handleFocus = (e) => {
+    const { query } = this.state;
     e.preventDefault();
     this.setState({ isOpen: true });
+
+    //  need debouncing logic
+    setTimeout(() => this.getOptions(query), 1000);
   };
 
   handleChange = (e) => {
@@ -83,16 +86,22 @@ class Combobox extends Component {
   };
 
   renderOptions = () => {
-    const { options, query } = this.state;
+    const { options } = this.props;
+    const { query } = this.state;
     return options
       .filter(option => option.name.startsWith(query))
-      .map(option => <ListItem key={option.id}>{option.name}</ListItem>);
+      .map(option => <ListItem>{option.name}</ListItem>);
   };
 
   render() {
-    const { id } = this.props;
+    const { id, searching } = this.props;
     const { isOpen, query } = this.state;
-    return (
+
+    const data = searching ? (
+      <Container>
+        <SearchUserLoader />
+      </Container>
+    ) : (
       <Container>
         <InputField
           id={id}
@@ -105,7 +114,21 @@ class Combobox extends Component {
         <List id="mySelect">{isOpen && this.renderOptions()}</List>
       </Container>
     );
+    return data;
   }
 }
 
-export default connect()(Combobox);
+Combobox.propTypes = {
+  id: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searching: PropTypes.bool.isRequired,
+  findUsers: PropTypes.func.isRequired,
+};
+
+export default connect(
+  ({ search }) => ({
+    options: search.users,
+    searching: search.searching,
+  }),
+  { findUsers }
+)(Combobox);
