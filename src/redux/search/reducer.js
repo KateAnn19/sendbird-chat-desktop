@@ -21,10 +21,13 @@ const failureSearch = state => ({ ...state, successful: false });
 
 const finishSearching = state => ({ ...state, searching: false });
 
+const unsetUsers = () => initState;
+
 const handlers = {
   [TYPES.SEARCH_START]: startSearching,
   [TYPES.SEARCH_FINISH]: finishSearching,
   [TYPES.SET_USERS]: setUsers,
+  [TYPES.UNSET_USERS]: unsetUsers,
   [TYPES.SEARCH_SUCCESS]: successfulSearch,
   [TYPES.SEARCH_FAILURE]: failureSearch,
 };

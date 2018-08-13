@@ -1,4 +1,5 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import {
   searchStart,
@@ -13,13 +14,17 @@ import * as TYPES from './types';
 
 function* searchUserWorker(action) {
   try {
+    yield delay(1000);
     yield put(searchStart());
     const { token } = yield select(userSelector);
-    const { query } = action.payload;
-    console.log(query);
-    const { data } = yield call(searchUser, query, token);
-    yield put(searchSuccess());
-    yield put(setUsers(data));
+    const { data } = yield call(searchUser, action.payload, token);
+    if (data === undefined) {
+      yield put(setUsers([]));
+      yield put(searchFailure());
+    } else {
+      yield put(setUsers(data));
+      yield put(searchSuccess());
+    }
     yield put(searchFinish());
   } catch (err) {
     yield put(searchFailure());
@@ -29,5 +34,5 @@ function* searchUserWorker(action) {
 }
 
 export function* sagas() {
-  yield takeEvery(TYPES.FIND_USERS, searchUserWorker);
+  yield takeLatest(TYPES.FIND_USERS, searchUserWorker);
 }

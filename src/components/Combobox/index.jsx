@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { findUsers } from '../../redux/search/actions';
+import { findUsers, unsetUsers } from '../../redux/search/actions';
 import { SearchUserLoader } from '../Loaders';
 
 const Container = styled.div`
@@ -29,7 +29,9 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
+  width: 100%;
   border: 1px solid grey;
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const ClearButton = styled.button`
@@ -57,22 +59,23 @@ class Combobox extends Component {
   };
 
   handleFocus = (e) => {
-    const { query } = this.state;
     e.preventDefault();
     this.setState({ isOpen: true });
-
-    //  need debouncing logic
-    setTimeout(() => this.props.findUsers(query), 1000);
   };
 
   handleChange = (e) => {
+    const { query } = this.state;
     const { value } = e.target;
+    const { findUsers } = this.props;
     this.setState({ query: value });
+    findUsers(query);
   };
 
   handleClear = (e) => {
+    const { unsetUsers } = this.props;
     e.preventDefault();
     this.setState({ query: '' });
+    unsetUsers();
   };
 
   handleBlur = (e) => {
@@ -85,11 +88,10 @@ class Combobox extends Component {
     const { query } = this.state;
     if (successful) {
       return options
-        .filter(option => option.name.startsWith(query))
-        .map(option => <ListItem>{option.name}</ListItem>);
-    } else {
-      return null;
+        .filter(option => option.username.startsWith(query))
+        .map(option => <ListItem>{option.username}</ListItem>);
     }
+    return null;
   };
 
   render() {
@@ -122,6 +124,7 @@ Combobox.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   searching: PropTypes.bool.isRequired,
   findUsers: PropTypes.func.isRequired,
+  unsetUsers: PropTypes.func.isRequired,
   successful: PropTypes.bool.isRequired,
 };
 
@@ -131,5 +134,5 @@ export default connect(
     searching: search.searching,
     successful: search.successful,
   }),
-  { findUsers }
+  { findUsers, unsetUsers }
 )(Combobox);

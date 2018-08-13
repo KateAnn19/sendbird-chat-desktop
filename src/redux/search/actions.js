@@ -10,6 +10,10 @@ export const setUsers = users => ({
   payload: users,
 });
 
+export const unsetUsers = () => ({
+  type: TYPES.UNSET_USERS,
+});
+
 export const searchStart = () => ({
   type: TYPES.SEARCH_START,
 });
