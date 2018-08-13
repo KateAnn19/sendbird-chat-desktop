@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Modal from '../Modal';
+import { NavLink } from 'react-router-dom';
 
 const Container = styled.div`
   width: 30%;
@@ -45,6 +46,16 @@ const CreateRoomButton = styled.button`
   height: 30px;
 `;
 
+const Link = styled(NavLink)`
+  color: blue;
+  text-decoration: none;
+  margin-left: 10px;
+  margin-top: 10px;
+  &:hover {
+    color: red;
+  }
+`;
+
 class RoomsList extends Component {
   state = {
     showModal: false,
@@ -74,6 +85,7 @@ class RoomsList extends Component {
     const { showModal } = this.state;
     return (
       <Container>
+        <Link to="/auth/logout">Выйти из учетной записи</Link>
         <Header>Доступные комнаты</Header>
         <Rooms>{this.renderRooms(rooms)}</Rooms>
         <Modal show={showModal} callback={this.handleModalClose} />
