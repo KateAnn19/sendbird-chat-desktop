@@ -70,23 +70,27 @@ class Combobox extends Component {
   handleChange = (e) => {
     const { query } = this.state;
     const { value } = e.target;
-    const { findUsers } = this.props;
+    const { findUsers, changeInviteeData } = this.props;
     this.setState({ query: value });
+    changeInviteeData(e);
     findUsers(query);
   };
 
   handleChoose = (e) => {
     e.preventDefault();
+    const { changeInviteeData } = this.props;
     this.setState({
       query: e.target.textContent,
       isOpen: false,
     });
+    changeInviteeData(e);
   };
 
   handleClear = (e) => {
-    const { unsetUsers } = this.props;
+    const { unsetUsers, changeInviteeData } = this.props;
     e.preventDefault();
     this.setState({ query: '' });
+    changeInviteeData({}, true);
     unsetUsers();
   };
 
@@ -122,6 +126,7 @@ class Combobox extends Component {
       <Container>
         <InputField
           id={id}
+          name="inviteeData"
           value={query}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}

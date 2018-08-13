@@ -87,20 +87,24 @@ class Modal extends Component {
       roomType: 'group',
       roomName: '',
       coverUrl: '',
-      userTwoId: '',
+      inviteeData: '',
     };
   }
 
-  onHandleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value });
+  onHandleChange = ({ target }, clearInviteeData = false) => {
+    if (!clearInviteeData) {
+      const { name, value } = target;
+      this.setState({ [name]: value });
+    } else {
+      this.setState({ inviteeData: '' });
+    }
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { userOneId } = this.props;
+    const { inviterId } = this.props;
     const {
-      roomType, roomName, coverUrl, userTwoId
+      roomType, roomName, coverUrl, inviteeData
     } = this.state;
 
     if (this.validateParams()) {
@@ -108,8 +112,8 @@ class Modal extends Component {
         roomType,
         roomName,
         coverUrl,
-        userOneId,
-        userTwoId,
+        inviterId,
+        inviteeData,
       });
     } else {
       console.log('wrong params');
@@ -122,12 +126,14 @@ class Modal extends Component {
     callback();
   };
 
+  validateUser = (users, userToCheck) =>
+    users.some(user => user === userToCheck);
+
   validateParams = () => {
-    const { roomType, roomName, userTwoId } = this.state;
-    if (roomType === 'open' && roomName.length > 5) {
-      return true;
-    }
-    if (roomType === 'group' && userTwoId.length > 5 && roomName.length > 5) {
+    const { foundUsers } = this.props;
+    const { roomName, inviteeData } = this.state;
+    const acceptableUser = this.validateUser(foundUsers, inviteeData);
+    if (roomName.length > 4 && acceptableUser) {
       return true;
     }
     return false;
@@ -159,8 +165,11 @@ class Modal extends Component {
           </InputContainer>
           {this.state.roomType === 'group' && (
             <InputContainer>
-              <Label htmlFor="userTwoId">Имя/почта юзера</Label>
-              <Combobox id="userTwoId" />
+              <Label htmlFor="inviteeData">Имя/почта юзера</Label>
+              <Combobox
+                changeInviteeData={this.onHandleChange}
+                id="inviteeData"
+              />
             </InputContainer>
           )}
           <InputContainer>
@@ -198,13 +207,25 @@ Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   callback: PropTypes.func.isRequired,
   createChannel: PropTypes.func.isRequired,
-  userOneId: PropTypes.string.isRequired,
+  inviterId: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
+  foundUsers: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+const getNamesAndEmails = (users) => {
+  const names = [];
+  const emails = [];
+  users.map((user) => {
+    names.push(user.username);
+    emails.push(user.email);
+  });
+  return [...names, ...emails];
 };
 
 export default connect(
-  ({ user }) => ({
-    userOneId: user.user.sbUserId,
+  ({ user, search }) => ({
+    foundUsers: getNamesAndEmails(search.users),
+    inviterId: user.user.sbUserId,
     loading: user.loading,
   }),
   { createChannel }
