@@ -18,7 +18,7 @@ const Overlay = styled.div`
 
 const Container = styled.div`
   position: fixed;
-  z-index: 10p;
+  z-index: 10;
   width: 40%;
   height: 50%;
   top: 50%;
