@@ -19,17 +19,10 @@ export const fetchUser = user => ({
   payload: { user },
 });
 
-<<<<<<< HEAD
 export const disconnectUser = () => ({
   type: TYPES.DISCONNECT_USER,
 });
 
-export const connectionCheckingSuccess = () => ({
-  type: TYPES.CONNECTION_CHECKING_SUCCESS,
-});
-
-=======
->>>>>>> features/user-search
 export const connectionCheckingStart = () => ({
   type: TYPES.CONNECTION_CHECKING_START,
 });
@@ -41,4 +34,3 @@ export const connectionCheckingSuccess = () => ({
 export const connectionCheckingFinish = () => ({
   type: TYPES.CONNECTION_CHECKING_FINISH,
 });
-
