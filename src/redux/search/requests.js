@@ -1,3 +1,8 @@
 import { api } from '../../services/api';
 
-export const searchUser = (query = '') => api.get(`/users?search=${query}`);
+export const searchUser = (query = '', token) =>
+  api.get(`/users?search=${query}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
