@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import { createChannel } from '../../redux/channels/actions';
+import { findUsers, unsetUsers } from '../../redux/search/actions';
 import { RoomsLoader } from '../Loaders';
 import Combobox from '../Combobox';
 
@@ -93,7 +94,45 @@ class Modal extends Component {
 
   onHandleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => console.log(this.state));
+  };
+
+  handleCancel = (e) => {
+    e.preventDefault();
+    const { callback } = this.props;
+    callback();
+  };
+
+  inputChangeCallback = (e) => {
+    this.setState({ query: e.target.value }, () => {
+      console.log(this.state.query);
+      this.props.findUsers(this.state.query);
+    });
+  };
+
+  choosePositionCallback = (e) => {
+    this.setState({ query: e.target.value }, () => {
+      console.log(this.state.query);
+      this.props.unsetUsers();
+    });
+  };
+
+  clearCallback = () => {
+    this.setState({ query: '' }, () => {
+      this.props.unsetUsers();
+    });
+  };
+
+  validateUser = (users, userToCheck) =>
+    users.find(user => user === userToCheck);
+
+  validateParams = () => {
+    const { foundUsersData } = this.props;
+    const { roomName, query } = this.state;
+    if (roomName.length > 4 && this.validateUser(foundUsersData, query)) {
+      return true;
+    }
+    return false;
   };
 
   getInviteeId = invitee =>
@@ -103,12 +142,14 @@ class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { inviterId, inviteeData } = this.props;
-    const { roomType, roomName, coverUrl } = this.state;
+    const { inviterId } = this.props;
+    const {
+      roomType, roomName, coverUrl, query
+    } = this.state;
     console.log(this.state);
 
     if (this.validateParams()) {
-      const inviteeId = this.getInviteeId(inviteeData);
+      const inviteeId = this.getInviteeId(query);
       this.props.createChannel({
         roomType,
         roomName,
@@ -121,42 +162,9 @@ class Modal extends Component {
     }
   };
 
-  handleCancel = (e) => {
-    e.preventDefault();
-    const { callback } = this.props;
-    callback();
-  };
-
-  inputChangeCallback = (e) => {
-    this.setState({ query: e.target.value }, () => {
-      console.log(this.state.query);
-    });
-  };
-
-  choosePositionCallback = (e) => {
-    //  need to implement
-  };
-
-  clearCallback = () => {
-    this.setState({ query: '' });
-  };
-
-  validateUser = (users, userToCheck) =>
-    users.find(user => user === userToCheck);
-
-  validateParams = () => {
-    const { foundUsersData, inviteeData } = this.props;
-    const { roomName } = this.state;
-    const acceptableUser = this.validateUser(foundUsersData, inviteeData);
-    if (roomName.length > 4 && acceptableUser) {
-      return true;
-    }
-    return false;
-  };
-
   render() {
     const {
-      show, loading, foundUsersData, searching, successful
+      show, loading, foundUsers, searching, successful
     } = this.props;
     const data = loading ? (
       <Overlay show={show}>
@@ -182,17 +190,17 @@ class Modal extends Component {
           </InputContainer>
           {this.state.roomType === 'group' && (
             <InputContainer>
-              <Label htmlFor="inviteeDataInput">Имя/почта юзера</Label>
+              <Label htmlFor="queryInput">Имя/почта юзера</Label>
               <Combobox
-                id="inviteeDataInput"
-                options={foundUsersData}
+                id="queryInput"
+                value={this.state.query}
+                options={foundUsers}
                 searching={searching}
                 inputChangeCallback={this.inputChangeCallback}
                 choosePositionCallback={this.choosePositionCallback}
                 clearCallback={this.clearCallback}
                 successful={successful}
                 displayValue="username"
-                filterValue={this.state.query}
                 customKey="_id"
               />
             </InputContainer>
@@ -231,13 +239,15 @@ class Modal extends Component {
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   callback: PropTypes.func.isRequired,
+  unsetUsers: PropTypes.func.isRequired,
+  findUsers: PropTypes.func.isRequired,
   createChannel: PropTypes.func.isRequired,
   inviterId: PropTypes.string.isRequired,
-  inviteeData: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   foundUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
   foundUsersData: PropTypes.arrayOf(PropTypes.string).isRequired,
   successful: PropTypes.bool.isRequired,
+  searching: PropTypes.bool,
 };
 
 const getNamesAndEmails = users =>
@@ -248,10 +258,9 @@ export default connect(
     foundUsers: search.users,
     foundUsersData: getNamesAndEmails(search.users),
     inviterId: user.user.sbUserId,
-    inviteeData: search.query,
     loading: user.loading,
-    seaching: search.searching,
+    searching: search.searching,
     successful: search.successful,
   }),
-  { createChannel }
+  { createChannel, findUsers, unsetUsers }
 )(Modal);

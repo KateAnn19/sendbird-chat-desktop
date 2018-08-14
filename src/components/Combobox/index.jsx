@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -64,18 +64,15 @@ const Combobox = ({
   clearCallback,
   successful,
   displayValue,
-  filterValue,
   customKey,
 }) => {
   const renderOptions = () => {
     if (successful) {
-      return options
-        .filter(option => option[displayValue].startsWith(filterValue))
-        .map(option => (
-          <ListItem key={customKey} onClick={choosePositionCallback}>
-            {option[displayValue]}
-          </ListItem>
-        ));
+      return options.map(option => (
+        <ListItem key={option[customKey]} onClick={choosePositionCallback}>
+          {option[displayValue]}
+        </ListItem>
+      ));
     }
     return null;
   };
@@ -99,7 +96,6 @@ Combobox.propTypes = {
   clearCallback: PropTypes.func.isRequired,
   successful: PropTypes.bool.isRequired,
   displayValue: PropTypes.string.isRequired,
-  filterValue: PropTypes.string.isRequired,
   customKey: PropTypes.string.isRequired,
 };
 
