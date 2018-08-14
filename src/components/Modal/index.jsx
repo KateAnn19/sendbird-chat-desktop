@@ -100,6 +100,8 @@ class Modal extends Component {
     }
   };
 
+  // getInviteeData = invitee =>
+
   handleSubmit = (e) => {
     e.preventDefault();
     const { inviterId } = this.props;
@@ -212,15 +214,8 @@ Modal.propTypes = {
   foundUsers: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const getNamesAndEmails = (users) => {
-  const names = [];
-  const emails = [];
-  users.map((user) => {
-    names.push(user.username);
-    emails.push(user.email);
-  });
-  return [...names, ...emails];
-};
+const getNamesAndEmails = users =>
+  users.reduce((acc, user) => acc.concat(user.username, user.email), []);
 
 export default connect(
   ({ user, search }) => ({
