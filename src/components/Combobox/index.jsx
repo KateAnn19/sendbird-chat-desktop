@@ -70,10 +70,9 @@ class Combobox extends Component {
 
   handleChange = (e) => {
     const { value } = e.target;
-    const { findUsers, setQuery } = this.props;
     this.setState({ query: value }, () => {
-      findUsers(this.state.query);
-      setQuery(this.state.query);
+      this.props.findUsers(this.state.query);
+      this.props.setQuery(this.state.query);
     });
   };
 
@@ -85,19 +84,16 @@ class Combobox extends Component {
         isOpen: false,
       },
       () => {
-        const { setQuery } = this.props;
-        setQuery(this.state.query);
+        this.props.setQuery(this.state.query);
       }
     );
   };
 
   handleClear = (e) => {
-    const { unsetUsers } = this.props;
     e.preventDefault();
     this.setState({ query: '' }, () => {
-      const { setQuery } = this.props;
-      setQuery(this.state.query);
-      unsetUsers();
+      this.props.setQuery(this.state.query);
+      this.props.unsetUsers();
     });
   };
 
@@ -125,14 +121,8 @@ class Combobox extends Component {
     const { id, searching } = this.props;
     const { isOpen, query } = this.state;
     return (
-      <Container>
-        <InputField
-          id={id}
-          value={query}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
-          onChange={this.handleChange}
-        />
+      <Container onFocus={this.handleFocus} onBlur={this.handleBlur}>
+        <InputField id={id} value={query} onChange={this.handleChange} />
         {searching && <SearchUserLoader />}
         <ClearButton onClick={this.handleClear}>x</ClearButton>
         <List id="mySelect">{isOpen && this.renderOptions()}</List>
