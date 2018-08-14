@@ -10,11 +10,6 @@ export const setUsers = users => ({
   payload: users,
 });
 
-export const setQuery = query => ({
-  type: TYPES.SET_QUERY,
-  payload: query
-});
-
 export const unsetUsers = () => ({
   type: TYPES.UNSET_USERS,
 });
