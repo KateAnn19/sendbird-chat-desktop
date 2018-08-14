@@ -81,11 +81,10 @@ class Combobox extends Component {
     e.preventDefault();
     this.setState(
       {
-        isOpen: false,
         query: e.target.textContent,
+        isOpen: false,
       },
       () => {
-        console.log(e.taget.textContent);
         const { setQuery } = this.props;
         setQuery(this.state.query);
       }
@@ -134,6 +133,7 @@ class Combobox extends Component {
           onBlur={this.handleBlur}
           onChange={this.handleChange}
         />
+        {searching && <SearchUserLoader />}
         <ClearButton onClick={this.handleClear}>x</ClearButton>
         <List id="mySelect">{isOpen && this.renderOptions()}</List>
       </Container>

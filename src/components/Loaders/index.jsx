@@ -20,7 +20,8 @@ export const RoomsLoader = () => (
 );
 
 const SearchUserLoaderStyled = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
   width: 10px;
   height: 10px;
   left: 50%;
@@ -28,7 +29,6 @@ const SearchUserLoaderStyled = styled.div`
     content: '...';
     position: absolute;
     display: block;
-    left: 50%;
   }
 `;
 
