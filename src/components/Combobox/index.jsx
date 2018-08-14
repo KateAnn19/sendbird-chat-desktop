@@ -68,29 +68,28 @@ class Combobox extends Component {
   };
 
   handleChange = (e) => {
-    const { query } = this.state;
     const { value } = e.target;
-    const { findUsers, changeInviteeData } = this.props;
-    this.setState({ query: value });
-    changeInviteeData(e);
-    findUsers(query);
+    const { findUsers } = this.props;
+    this.setState({ query: value }, () => {
+      findUsers(this.state.query);
+    });
   };
 
   handleChoose = (e) => {
     e.preventDefault();
-    const { changeInviteeData } = this.props;
-    this.setState({
-      query: e.target.textContent,
-      isOpen: false,
-    });
-    changeInviteeData(e);
+    this.setState(
+      {
+        query: e.target.textContent,
+        isOpen: false,
+      },
+      () => console.log(this.state)
+    );
   };
 
   handleClear = (e) => {
-    const { unsetUsers, changeInviteeData } = this.props;
+    const { unsetUsers } = this.props;
     e.preventDefault();
-    this.setState({ query: '' });
-    changeInviteeData({}, true);
+    this.setState({ query: '' }, () => console.log(this.state));
     unsetUsers();
   };
 

@@ -91,13 +91,9 @@ class Modal extends Component {
     };
   }
 
-  onHandleChange = ({ target }, clearInviteeData = false) => {
-    if (!clearInviteeData) {
-      const { name, value } = target;
-      this.setState({ [name]: value });
-    } else {
-      this.setState({ inviteeData: '' });
-    }
+  onHandleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
   };
 
   getInviteeId = invitee =>
@@ -114,7 +110,7 @@ class Modal extends Component {
 
     if (this.validateParams()) {
       const inviteeId = this.getInviteeId(inviteeData);
-      console.log(inviteeId);
+      console.log('validate success');
       // this.props.createChannel({
       // roomType,
       // roomName,
@@ -140,6 +136,7 @@ class Modal extends Component {
     const { foundUsersData } = this.props;
     const { roomName, inviteeData } = this.state;
     const acceptableUser = this.validateUser(foundUsersData, inviteeData);
+    console.log(this.state);
     if (roomName.length > 4 && acceptableUser) {
       return true;
     }
@@ -174,7 +171,6 @@ class Modal extends Component {
             <InputContainer>
               <Label htmlFor="inviteeData">Имя/почта юзера</Label>
               <Combobox
-                changeInviteeData={this.onHandleChange}
                 id="inviteeData"
               />
             </InputContainer>
