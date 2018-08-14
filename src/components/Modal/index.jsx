@@ -87,7 +87,6 @@ class Modal extends Component {
       roomType: 'group',
       roomName: '',
       coverUrl: '',
-      inviteeData: '',
     };
   }
 
@@ -103,21 +102,18 @@ class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { inviterId } = this.props;
-    const {
-      roomType, roomName, coverUrl, inviteeData
-    } = this.state;
+    const { inviterId, inviteeData, createChannel } = this.props;
+    const { roomType, roomName, coverUrl } = this.state;
 
     if (this.validateParams()) {
       const inviteeId = this.getInviteeId(inviteeData);
-      console.log('validate success');
-      // this.props.createChannel({
-      // roomType,
-      // roomName,
-      // coverUrl,
-      // inviterId,
-      // inviteeId,
-      // });
+      createChannel({
+        roomType,
+        roomName,
+        coverUrl,
+        inviterId,
+        inviteeId,
+      });
     } else {
       console.log('wrong params');
     }
@@ -133,10 +129,9 @@ class Modal extends Component {
     users.find(user => user === userToCheck);
 
   validateParams = () => {
-    const { foundUsersData } = this.props;
-    const { roomName, inviteeData } = this.state;
+    const { foundUsersData, inviteeData } = this.props;
+    const { roomName } = this.state;
     const acceptableUser = this.validateUser(foundUsersData, inviteeData);
-    console.log(this.state);
     if (roomName.length > 4 && acceptableUser) {
       return true;
     }
@@ -169,10 +164,8 @@ class Modal extends Component {
           </InputContainer>
           {this.state.roomType === 'group' && (
             <InputContainer>
-              <Label htmlFor="inviteeData">Имя/почта юзера</Label>
-              <Combobox
-                id="inviteeData"
-              />
+              <Label htmlFor="inviteeDataInput">Имя/почта юзера</Label>
+              <Combobox id="inviteeDataInput" />
             </InputContainer>
           )}
           <InputContainer>
@@ -211,6 +204,7 @@ Modal.propTypes = {
   callback: PropTypes.func.isRequired,
   createChannel: PropTypes.func.isRequired,
   inviterId: PropTypes.string.isRequired,
+  inviteeData: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   foundUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
   foundUsersData: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -224,6 +218,7 @@ export default connect(
     foundUsers: search.users,
     foundUsersData: getNamesAndEmails(search.users),
     inviterId: user.user.sbUserId,
+    inviteeData: search.query,
     loading: user.loading,
   }),
   { createChannel }

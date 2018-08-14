@@ -5,6 +5,7 @@ const initState = {
   users: [],
   searching: false,
   successful: false,
+  query: '',
 };
 
 const setUsers = (state, users) => ({ ...state, users });
@@ -14,6 +15,8 @@ const startSearching = () => ({
   searching: true,
   successful: false,
 });
+
+const setQuery = (state, query) => ({ ...state, query });
 
 const successfulSearch = state => ({ ...state, successful: true });
 
@@ -30,6 +33,7 @@ const handlers = {
   [TYPES.UNSET_USERS]: unsetUsers,
   [TYPES.SEARCH_SUCCESS]: successfulSearch,
   [TYPES.SEARCH_FAILURE]: failureSearch,
+  [TYPES.SET_QUERY]: setQuery,
 };
 
 export const reducer = createReducer(initState, handlers);

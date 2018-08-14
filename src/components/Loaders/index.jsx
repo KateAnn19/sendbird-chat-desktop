@@ -19,13 +19,17 @@ export const RoomsLoader = () => (
   <RoomsLoaderStyled>Обновление комнат...</RoomsLoaderStyled>
 );
 
-const SearchUserLoaderStyled = styled.h3`
-  vertical-align: middle;
-  text-align: center;
-  font-size: 12px;
-  margin: 0;
+const SearchUserLoaderStyled = styled.div`
+  position: relative;
+  width: 10px;
+  height: 10px;
+  left: 50%;
+  &::before {
+    content: '...';
+    position: absolute;
+    display: block;
+    left: 50%;
+  }
 `;
 
-export const SearchUserLoader = () => (
-  <SearchUserLoaderStyled>Поиск пользователей...</SearchUserLoaderStyled>
-);
+export const SearchUserLoader = () => <SearchUserLoaderStyled />;

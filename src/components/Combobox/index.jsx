@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { findUsers, unsetUsers } from '../../redux/search/actions';
+import { findUsers, unsetUsers, setQuery } from '../../redux/search/actions';
 import { SearchUserLoader } from '../Loaders';
 
 const Container = styled.div`
@@ -35,6 +35,7 @@ const ListItem = styled.li`
   &:hover {
     background-color: green;
     color: white;
+    cursor: pointer;
   }
 `;
 
@@ -69,9 +70,10 @@ class Combobox extends Component {
 
   handleChange = (e) => {
     const { value } = e.target;
-    const { findUsers } = this.props;
+    const { findUsers, setQuery } = this.props;
     this.setState({ query: value }, () => {
       findUsers(this.state.query);
+      setQuery(this.state.query);
     });
   };
 
@@ -79,18 +81,25 @@ class Combobox extends Component {
     e.preventDefault();
     this.setState(
       {
-        query: e.target.textContent,
         isOpen: false,
+        query: e.target.textContent,
       },
-      () => console.log(this.state)
+      () => {
+        console.log(e.taget.textContent);
+        const { setQuery } = this.props;
+        setQuery(this.state.query);
+      }
     );
   };
 
   handleClear = (e) => {
     const { unsetUsers } = this.props;
     e.preventDefault();
-    this.setState({ query: '' }, () => console.log(this.state));
-    unsetUsers();
+    this.setState({ query: '' }, () => {
+      const { setQuery } = this.props;
+      setQuery(this.state.query);
+      unsetUsers();
+    });
   };
 
   handleBlur = (e) => {
@@ -116,16 +125,10 @@ class Combobox extends Component {
   render() {
     const { id, searching } = this.props;
     const { isOpen, query } = this.state;
-
-    const data = searching ? (
-      <Container>
-        <SearchUserLoader />
-      </Container>
-    ) : (
+    return (
       <Container>
         <InputField
           id={id}
-          name="inviteeData"
           value={query}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
@@ -135,7 +138,6 @@ class Combobox extends Component {
         <List id="mySelect">{isOpen && this.renderOptions()}</List>
       </Container>
     );
-    return data;
   }
 }
 
@@ -154,5 +156,5 @@ export default connect(
     searching: search.searching,
     successful: search.successful,
   }),
-  { findUsers, unsetUsers }
+  { findUsers, unsetUsers, setQuery }
 )(Combobox);

@@ -7,6 +7,7 @@ import {
   searchFinish,
   searchFailure,
   setUsers,
+  setQuery,
 } from './actions';
 import { userSelector } from '../selectors';
 import { searchUser } from './requests';
@@ -14,7 +15,7 @@ import * as TYPES from './types';
 
 function* searchUserWorker(action) {
   try {
-    yield delay(1000);
+    yield delay(500);
     yield put(searchStart());
     const { token } = yield select(userSelector);
     const { data } = yield call(searchUser, action.payload, token);
@@ -33,6 +34,16 @@ function* searchUserWorker(action) {
   }
 }
 
+function* setQueryWorker(action) {
+  try {
+    yield delay(500);
+    yield put(setQuery(action.payload));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* sagas() {
   yield takeLatest(TYPES.FIND_USERS, searchUserWorker);
+  yield takeLatest(TYPES.FIND_USERS, setQueryWorker);
 }
