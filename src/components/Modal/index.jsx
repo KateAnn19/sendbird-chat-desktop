@@ -100,7 +100,10 @@ class Modal extends Component {
     }
   };
 
-  // getInviteeData = invitee =>
+  getInviteeId = invitee =>
+    this.props.foundUsers.find(
+      foundUser => foundUser.username === invitee || foundUser.email === invitee
+    ).sbUserId;
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -110,13 +113,15 @@ class Modal extends Component {
     } = this.state;
 
     if (this.validateParams()) {
-      this.props.createChannel({
-        roomType,
-        roomName,
-        coverUrl,
-        inviterId,
-        inviteeData,
-      });
+      const inviteeId = this.getInviteeId(inviteeData);
+      console.log(inviteeId);
+      // this.props.createChannel({
+      // roomType,
+      // roomName,
+      // coverUrl,
+      // inviterId,
+      // inviteeId,
+      // });
     } else {
       console.log('wrong params');
     }
@@ -129,12 +134,12 @@ class Modal extends Component {
   };
 
   validateUser = (users, userToCheck) =>
-    users.some(user => user === userToCheck);
+    users.find(user => user === userToCheck);
 
   validateParams = () => {
-    const { foundUsers } = this.props;
+    const { foundUsersData } = this.props;
     const { roomName, inviteeData } = this.state;
-    const acceptableUser = this.validateUser(foundUsers, inviteeData);
+    const acceptableUser = this.validateUser(foundUsersData, inviteeData);
     if (roomName.length > 4 && acceptableUser) {
       return true;
     }
@@ -211,7 +216,8 @@ Modal.propTypes = {
   createChannel: PropTypes.func.isRequired,
   inviterId: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
-  foundUsers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  foundUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  foundUsersData: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const getNamesAndEmails = users =>
@@ -219,7 +225,8 @@ const getNamesAndEmails = users =>
 
 export default connect(
   ({ user, search }) => ({
-    foundUsers: getNamesAndEmails(search.users),
+    foundUsers: search.users,
+    foundUsersData: getNamesAndEmails(search.users),
     inviterId: user.user.sbUserId,
     loading: user.loading,
   }),
