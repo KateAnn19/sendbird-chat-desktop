@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { findUsers, unsetUsers, setQuery } from '../../redux/search/actions';
 import { SearchUserLoader } from '../Loaders';
 
 const Container = styled.div`
@@ -57,94 +55,52 @@ const ClearButton = styled.button`
   }
 `;
 
-class Combobox extends Component {
-  state = {
-    isOpen: false,
-    query: '',
-  };
-
-  handleFocus = (e) => {
-    e.preventDefault();
-    this.setState({ isOpen: true });
-  };
-
-  handleChange = (e) => {
-    const { value } = e.target;
-    this.setState({ query: value }, () => {
-      this.props.findUsers(this.state.query);
-      this.props.setQuery(this.state.query);
-    });
-  };
-
-  handleChoose = (e) => {
-    e.preventDefault();
-    this.setState(
-      {
-        query: e.target.textContent,
-        isOpen: false,
-      },
-      () => {
-        this.props.setQuery(this.state.query);
-      }
-    );
-  };
-
-  handleClear = (e) => {
-    e.preventDefault();
-    this.setState({ query: '' }, () => {
-      this.props.setQuery(this.state.query);
-      this.props.unsetUsers();
-    });
-  };
-
-  handleBlur = (e) => {
-    e.preventDefault();
-    this.setState({ isOpen: false });
-  };
-
-  renderOptions = () => {
-    const { options, successful } = this.props;
-    const { query } = this.state;
+const Combobox = ({
+  id,
+  options,
+  searching,
+  inputChangeCallback,
+  choosePositionCallback,
+  clearCallback,
+  successful,
+  displayValue,
+  filterValue,
+  customKey,
+}) => {
+  const renderOptions = () => {
     if (successful) {
       return options
-        .filter(option => option.username.startsWith(query))
+        .filter(option => option[displayValue].startsWith(filterValue))
         .map(option => (
-          <ListItem key={option._id} onClick={this.handleChoose}>
-            {option.username}
+          <ListItem key={customKey} onClick={choosePositionCallback}>
+            {option[displayValue]}
           </ListItem>
         ));
     }
     return null;
   };
 
-  render() {
-    const { id, searching } = this.props;
-    const { isOpen, query } = this.state;
-    return (
-      <Container onFocus={this.handleFocus} onBlur={this.handleBlur}>
-        <InputField id={id} value={query} onChange={this.handleChange} />
-        {searching && <SearchUserLoader />}
-        <ClearButton onClick={this.handleClear}>x</ClearButton>
-        <List id="mySelect">{isOpen && this.renderOptions()}</List>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <InputField id={id} onChange={inputChangeCallback} />
+      {searching && <SearchUserLoader />}
+      <ClearButton onClick={clearCallback}>x</ClearButton>
+      <List id="mySelect">{renderOptions()}</List>
+    </Container>
+  );
+};
 
 Combobox.propTypes = {
   id: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
-  searching: PropTypes.bool.isRequired,
-  findUsers: PropTypes.func.isRequired,
-  unsetUsers: PropTypes.func.isRequired,
+  searching: PropTypes.bool,
+  inputChangeCallback: PropTypes.func.isRequired,
+  choosePositionCallback: PropTypes.func.isRequired,
+  clearCallback: PropTypes.func.isRequired,
   successful: PropTypes.bool.isRequired,
+  displayValue: PropTypes.string.isRequired,
+  filterValue: PropTypes.string.isRequired,
+  customKey: PropTypes.string.isRequired,
 };
 
-export default connect(
-  ({ search }) => ({
-    options: search.users,
-    searching: search.searching,
-    successful: search.successful,
-  }),
-  { findUsers, unsetUsers, setQuery }
-)(Combobox);
+export default Combobox;

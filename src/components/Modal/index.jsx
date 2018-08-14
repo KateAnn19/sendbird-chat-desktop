@@ -87,6 +87,7 @@ class Modal extends Component {
       roomType: 'group',
       roomName: '',
       coverUrl: '',
+      query: '',
     };
   }
 
@@ -102,12 +103,13 @@ class Modal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { inviterId, inviteeData, createChannel } = this.props;
+    const { inviterId, inviteeData } = this.props;
     const { roomType, roomName, coverUrl } = this.state;
+    console.log(this.state);
 
     if (this.validateParams()) {
       const inviteeId = this.getInviteeId(inviteeData);
-      createChannel({
+      this.props.createChannel({
         roomType,
         roomName,
         coverUrl,
@@ -125,6 +127,20 @@ class Modal extends Component {
     callback();
   };
 
+  inputChangeCallback = (e) => {
+    this.setState({ query: e.target.value }, () => {
+      console.log(this.state.query);
+    });
+  };
+
+  choosePositionCallback = (e) => {
+    //  need to implement
+  };
+
+  clearCallback = () => {
+    this.setState({ query: '' });
+  };
+
   validateUser = (users, userToCheck) =>
     users.find(user => user === userToCheck);
 
@@ -139,7 +155,9 @@ class Modal extends Component {
   };
 
   render() {
-    const { show, loading } = this.props;
+    const {
+      show, loading, foundUsersData, searching, successful
+    } = this.props;
     const data = loading ? (
       <Overlay show={show}>
         <Container>
@@ -165,7 +183,18 @@ class Modal extends Component {
           {this.state.roomType === 'group' && (
             <InputContainer>
               <Label htmlFor="inviteeDataInput">Имя/почта юзера</Label>
-              <Combobox id="inviteeDataInput" />
+              <Combobox
+                id="inviteeDataInput"
+                options={foundUsersData}
+                searching={searching}
+                inputChangeCallback={this.inputChangeCallback}
+                choosePositionCallback={this.choosePositionCallback}
+                clearCallback={this.clearCallback}
+                successful={successful}
+                displayValue="username"
+                filterValue={this.state.query}
+                customKey="_id"
+              />
             </InputContainer>
           )}
           <InputContainer>
@@ -208,6 +237,7 @@ Modal.propTypes = {
   loading: PropTypes.bool.isRequired,
   foundUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
   foundUsersData: PropTypes.arrayOf(PropTypes.string).isRequired,
+  successful: PropTypes.bool.isRequired,
 };
 
 const getNamesAndEmails = users =>
@@ -220,6 +250,8 @@ export default connect(
     inviterId: user.user.sbUserId,
     inviteeData: search.query,
     loading: user.loading,
+    seaching: search.searching,
+    successful: search.successful,
   }),
   { createChannel }
 )(Modal);
