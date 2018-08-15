@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import Modal from '../Modal';
-import { NavLink } from 'react-router-dom';
 
 const Container = styled.div`
   width: 30%;
   min-height: 100vh;
-  margin: -8px;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
   display: flex;
