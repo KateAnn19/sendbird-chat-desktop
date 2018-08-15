@@ -4,10 +4,9 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 50%;
-  margin: auto 10px 20px;
-  position: fixed;
-  bottom: 20px;
-  right: 100px;
+  margin: 20px auto 20px;
+  height: 40px;
+  flex-shrink: 0;
   display: flex;
 `;
 
@@ -15,6 +14,7 @@ const Input = styled.input`
   width: 80%;
   padding: 5px;
   margin-right: 5px;
+  font-size: 15px;
 `;
 
 const SendButton = styled.button`
