@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import RoomsList from '../RoomsList';
 import { MessageInput } from '../MessageInput';
+import { Message } from '../Message';
 
 injectGlobal`
   body {
@@ -31,6 +32,12 @@ class ChatScreen extends Component {
       <Container>
         <RoomsList />
         <Chat>
+          <Message />
+          <Message />
+          <Message />
+          <Message />
+          <Message />
+          <Message />
           <MessageInput />
         </Chat>
       </Container>
