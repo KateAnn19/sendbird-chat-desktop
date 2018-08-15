@@ -6,6 +6,7 @@ const Container = styled.div`
   width: 30%;
   margin: 20px;
   background-color: cyan;
+  border: 1px solid black;
   border-radius: 15px;
   position: relative;
 `;
@@ -28,10 +29,18 @@ const MessageText = styled.p`
   padding: 10px;
 `;
 
-export const Message = () => (
+const Message = ({ user, time, message }) => (
   <Container>
-    <User>user</User>
-    <Time>time</Time>
-    <MessageText>message</MessageText>
+    <User>{user}</User>
+    <Time>{time}</Time>
+    <MessageText>{message}</MessageText>
   </Container>
 );
+
+Message.propTypes = {
+  user: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+};
+
+export default Message;

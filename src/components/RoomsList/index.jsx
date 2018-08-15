@@ -7,7 +7,7 @@ import Modal from '../Modal';
 
 const Container = styled.div`
   width: 30%;
-  height: 100vh;
+  max-height: 100vh;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
   display: flex;

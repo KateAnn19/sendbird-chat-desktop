@@ -27,9 +27,13 @@ const SendButton = styled.button`
   }
 `;
 
-export const MessageInput = () => (
+export const MessageInput = ({
+  value,
+  handleInputCallback,
+  sendMessageCallback,
+}) => (
   <Container>
-    <Input />
-    <SendButton>Отправить</SendButton>
+    <Input value={value} onChange={handleInputCallback} />
+    <SendButton onClick={sendMessageCallback}>Отправить</SendButton>
   </Container>
 );
