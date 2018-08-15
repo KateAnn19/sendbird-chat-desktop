@@ -4,7 +4,7 @@ import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
 
 import RoomsList from '../RoomsList';
-import { MessageInput } from '../MessageInput';
+import MessageInput from '../MessageInput';
 import MessagesList from '../MessagesList';
 
 injectGlobal`
