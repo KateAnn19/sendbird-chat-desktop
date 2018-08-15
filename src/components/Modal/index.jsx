@@ -137,7 +137,11 @@ class Modal extends Component {
       roomType, roomName, coverUrl, inviteeId
     } = this.state;
 
-    if (roomName.length > 4) {
+    if (inviterId === inviteeId) {
+      console.log('you cannot create room with yourself');
+    } else if (roomName.length < 4) {
+      console.log('too short room name');
+    } else {
       this.props.createChannel({
         roomType,
         roomName,
@@ -145,8 +149,6 @@ class Modal extends Component {
         inviterId,
         inviteeId,
       });
-    } else {
-      console.log('wrong params');
     }
   };
 
