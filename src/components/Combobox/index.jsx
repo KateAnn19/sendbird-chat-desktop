@@ -59,6 +59,7 @@ const Combobox = ({
   id,
   options,
   searching,
+  value,
   inputChangeCallback,
   choosePositionCallback,
   clearCallback,
@@ -79,7 +80,7 @@ const Combobox = ({
 
   return (
     <Container>
-      <InputField id={id} onChange={inputChangeCallback} />
+      <InputField value={value} id={id} onChange={inputChangeCallback} />
       {searching && <SearchUserLoader />}
       <ClearButton onClick={clearCallback}>x</ClearButton>
       <List id="mySelect">{renderOptions()}</List>
