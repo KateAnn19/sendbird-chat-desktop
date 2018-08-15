@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
 
 import RoomsList from '../RoomsList';
 import { MessageInput } from '../MessageInput';
-import Message from '../Message';
+import MessagesList from '../MessagesList';
 
 injectGlobal`
   body {
@@ -24,6 +23,11 @@ const Chat = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
+`;
+
+const Messages = styled.ul`
+  list-style: none;
+  padding-left: 0;
 `;
 
 class ChatScreen extends Component {
@@ -78,11 +82,7 @@ class ChatScreen extends Component {
         ],
       },
       () => {
-        console.log(this.refs);
-        // this.refs[Object.keys(this.refs).length - 1].scrollIntoView({
-        // block: 'end',
-        // behavior: 'smooth',
-        // });
+        console.log(this.state);
       }
     );
   };
@@ -96,23 +96,12 @@ class ChatScreen extends Component {
     );
   };
 
-  renderMessages = () =>
-    this.state.mockMessages.map((message, index) => (
-      <Message
-        ref={index}
-        key={message.id}
-        user={message.user}
-        time={message.time}
-        message={message.text}
-      />
-    ));
-
   render() {
     return (
       <Container>
         <RoomsList />
         <Chat>
-          {this.renderMessages()}
+          <MessagesList messages={this.state.mockMessages} />
           <MessageInput
             value={this.state.currentMessage}
             handleInputCallback={this.handleInputCallback}

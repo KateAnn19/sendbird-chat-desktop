@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const MessageContainer = styled.div`
   width: 30%;
   margin: 20px;
   background-color: cyan;
@@ -30,11 +30,11 @@ const MessageText = styled.p`
 `;
 
 const Message = ({ user, time, message }) => (
-  <Container>
+  <MessageContainer>
     <User>{user}</User>
     <Time>{time}</Time>
     <MessageText>{message}</MessageText>
-  </Container>
+  </MessageContainer>
 );
 
 Message.propTypes = {
