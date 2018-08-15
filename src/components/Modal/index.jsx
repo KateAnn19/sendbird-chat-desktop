@@ -89,6 +89,7 @@ class Modal extends Component {
       roomName: '',
       coverUrl: '',
       query: '',
+      inviteeId: '',
     };
   }
 
@@ -104,14 +105,15 @@ class Modal extends Component {
   };
 
   inputChangeCallback = (e) => {
-    this.setState({ query: e.target.value }, () => {
+    this.setState({ query: e.target.value, inviteeId: '' }, () => {
       console.log(this.state.query);
       this.props.findUsers(this.state.query);
     });
   };
 
   choosePositionCallback = (e) => {
-    this.setState({ query: e.target.value }, () => {
+    const id = this.getInviteeId(e.target.textContent);
+    this.setState({ query: e.target.textContent, inviteeId: id }, () => {
       console.log(this.state.query);
       this.props.unsetUsers();
     });
@@ -123,18 +125,6 @@ class Modal extends Component {
     });
   };
 
-  validateUser = (users, userToCheck) =>
-    users.find(user => user === userToCheck);
-
-  validateParams = () => {
-    const { foundUsersData } = this.props;
-    const { roomName, query } = this.state;
-    if (roomName.length > 4 && this.validateUser(foundUsersData, query)) {
-      return true;
-    }
-    return false;
-  };
-
   getInviteeId = invitee =>
     this.props.foundUsers.find(
       foundUser => foundUser.username === invitee || foundUser.email === invitee
@@ -144,12 +134,10 @@ class Modal extends Component {
     e.preventDefault();
     const { inviterId } = this.props;
     const {
-      roomType, roomName, coverUrl, query
+      roomType, roomName, coverUrl, inviteeId
     } = this.state;
-    console.log(this.state);
 
-    if (this.validateParams()) {
-      const inviteeId = this.getInviteeId(query);
+    if (roomName.length > 4) {
       this.props.createChannel({
         roomType,
         roomName,
@@ -245,18 +233,13 @@ Modal.propTypes = {
   inviterId: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   foundUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  foundUsersData: PropTypes.arrayOf(PropTypes.string).isRequired,
   successful: PropTypes.bool.isRequired,
   searching: PropTypes.bool,
 };
 
-const getNamesAndEmails = users =>
-  users.reduce((acc, user) => acc.concat(user.username, user.email), []);
-
 export default connect(
   ({ user, search }) => ({
     foundUsers: search.users,
-    foundUsersData: getNamesAndEmails(search.users),
     inviterId: user.user.sbUserId,
     loading: user.loading,
     searching: search.searching,
