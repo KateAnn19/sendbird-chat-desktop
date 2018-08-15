@@ -98,6 +98,7 @@ Combobox.propTypes = {
   successful: PropTypes.bool.isRequired,
   displayValue: PropTypes.string.isRequired,
   customKey: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default Combobox;
