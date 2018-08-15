@@ -29,8 +29,10 @@ const MessageText = styled.p`
   padding: 10px;
 `;
 
-const Message = ({ user, time, message }) => (
-  <MessageContainer>
+const Message = ({
+  user, time, message, innerRef
+}) => (
+  <MessageContainer innerRef={innerRef}>
     <User>{user}</User>
     <Time>{time}</Time>
     <MessageText>{message}</MessageText>

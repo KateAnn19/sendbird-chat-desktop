@@ -16,8 +16,7 @@ class MessagesList extends Component {
 
   scrollToMessage = index => (node) => {
     if (index === this.props.messages.length - 1) {
-      // node.scrollToView();
-      console.log('now here goes the scroll');
+      node.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -25,7 +24,7 @@ class MessagesList extends Component {
     console.log('rendering messages');
     return this.props.messages.map((message, index) => (
       <Message
-        ref={this.scrollToMessage(index)}
+        innerRef={this.scrollToMessage(index)}
         key={message.id}
         user={message.user}
         time={message.time}
