@@ -7,17 +7,18 @@ import Modal from '../Modal';
 
 const Container = styled.div`
   width: 30%;
-  min-height: 100vh;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 `;
 
 const Header = styled.h3`
   text-align: center;
   padding-top: 20px;
-  margin: 0 0 50px;
+  margin: 0 0 20px;
 `;
 
 const Rooms = styled.ul`
@@ -85,11 +86,11 @@ class RoomsList extends Component {
       <Container>
         <Link to="/auth/logout">Выйти из учетной записи</Link>
         <Header>Доступные комнаты</Header>
-        <Rooms>{this.renderRooms(rooms)}</Rooms>
-        <Modal show={showModal} callback={this.handleModalClose} />
         <CreateRoomButton onClick={this.handleClick}>
           Создать комнату
         </CreateRoomButton>
+        <Rooms>{this.renderRooms(rooms)}</Rooms>
+        <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
     );
   }

@@ -4,6 +4,7 @@ import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
 
 import RoomsList from '../RoomsList';
+import { MessageInput } from '../MessageInput';
 
 injectGlobal`
   body {
@@ -17,7 +18,11 @@ const Container = styled.div`
 
 const Chat = styled.div`
   width: 70%;
-  background-color: red;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: scroll;
 `;
 
 class ChatScreen extends Component {
@@ -26,7 +31,7 @@ class ChatScreen extends Component {
       <Container>
         <RoomsList />
         <Chat>
-          <p>hello</p>
+          <MessageInput />
         </Chat>
       </Container>
     );
