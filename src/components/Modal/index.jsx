@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import { createChannel } from '../../redux/channels/actions';
+import { findUsers, unsetUsers } from '../../redux/search/actions';
 import { RoomsLoader } from '../Loaders';
+import Combobox from '../Combobox';
 
 const Overlay = styled.div`
   display: ${props => (props.show ? 'block' : 'none')};
@@ -86,33 +88,14 @@ class Modal extends Component {
       roomType: 'group',
       roomName: '',
       coverUrl: '',
-      userTwoId: '',
+      query: '',
+      inviteeId: '',
     };
   }
 
   onHandleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { userOneId } = this.props;
-    const {
-      roomType, roomName, coverUrl, userTwoId
-    } = this.state;
-
-    if (this.validateParams()) {
-      this.props.createChannel({
-        roomType,
-        roomName,
-        coverUrl,
-        userOneId,
-        userTwoId,
-      });
-    } else {
-      console.log('wrong params');
-    }
+    this.setState({ [name]: value }, () => console.log(this.state));
   };
 
   handleCancel = (e) => {
@@ -121,19 +104,58 @@ class Modal extends Component {
     callback();
   };
 
-  validateParams = () => {
-    const { roomType, roomName, userTwoId } = this.state;
-    if (roomType === 'open' && roomName.length > 5) {
-      return true;
+  inputChangeCallback = (e) => {
+    this.setState({ query: e.target.value, inviteeId: '' }, () => {
+      console.log(this.state.query);
+      this.props.findUsers(this.state.query);
+    });
+  };
+
+  choosePositionCallback = (e) => {
+    const id = this.getInviteeId(e.target.textContent);
+    this.setState({ query: e.target.textContent, inviteeId: id }, () => {
+      console.log(this.state.query);
+      this.props.unsetUsers();
+    });
+  };
+
+  clearCallback = () => {
+    this.setState({ query: '' }, () => {
+      this.props.unsetUsers();
+    });
+  };
+
+  getInviteeId = invitee =>
+    this.props.foundUsers.find(
+      foundUser => foundUser.username === invitee || foundUser.email === invitee
+    ).sbUserId;
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { inviterId } = this.props;
+    const {
+      roomType, roomName, coverUrl, inviteeId
+    } = this.state;
+
+    if (inviterId === inviteeId) {
+      console.log('you cannot create room with yourself');
+    } else if (roomName.length < 4) {
+      console.log('too short room name');
+    } else {
+      this.props.createChannel({
+        roomType,
+        roomName,
+        coverUrl,
+        inviterId,
+        inviteeId,
+      });
     }
-    if (roomType === 'group' && userTwoId.length > 5 && roomName.length > 5) {
-      return true;
-    }
-    return false;
   };
 
   render() {
-    const { show, loading } = this.props;
+    const {
+      show, loading, foundUsers, searching, successful
+    } = this.props;
     const data = loading ? (
       <Overlay show={show}>
         <Container>
@@ -158,12 +180,18 @@ class Modal extends Component {
           </InputContainer>
           {this.state.roomType === 'group' && (
             <InputContainer>
-              <Label htmlFor="userTwoId">ID пользователя</Label>
-              <RoomTextInput
-                id="userTwoId"
-                name="userTwoId"
-                type="text"
-                onChange={this.onHandleChange}
+              <Label htmlFor="queryInput">Имя/почта юзера</Label>
+              <Combobox
+                id="queryInput"
+                value={this.state.query}
+                options={foundUsers}
+                searching={searching}
+                inputChangeCallback={this.inputChangeCallback}
+                choosePositionCallback={this.choosePositionCallback}
+                clearCallback={this.clearCallback}
+                successful={successful}
+                displayValue="username"
+                customKey="_id"
               />
             </InputContainer>
           )}
@@ -201,15 +229,23 @@ class Modal extends Component {
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   callback: PropTypes.func.isRequired,
+  unsetUsers: PropTypes.func.isRequired,
+  findUsers: PropTypes.func.isRequired,
   createChannel: PropTypes.func.isRequired,
-  userOneId: PropTypes.string.isRequired,
+  inviterId: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
+  foundUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  successful: PropTypes.bool.isRequired,
+  searching: PropTypes.bool,
 };
 
 export default connect(
-  ({ user }) => ({
-    userOneId: user.user.sbUserId,
+  ({ user, search }) => ({
+    foundUsers: search.users,
+    inviterId: user.user.sbUserId,
     loading: user.loading,
+    searching: search.searching,
+    successful: search.successful,
   }),
-  { createChannel }
+  { createChannel, findUsers, unsetUsers }
 )(Modal);

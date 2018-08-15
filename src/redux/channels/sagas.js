@@ -22,14 +22,18 @@ function* createChannelWorker(action) {
       roomType,
       roomName,
       coverUrl,
-      userOneId,
-      userTwoId,
+      inviterId,
+      inviteeId,
     } = action.payload;
     if (roomType === 'open') {
       yield call(createOpenChannel, roomName, coverUrl);
     } else {
-      const users = [userOneId, userTwoId];
-      yield call(createGroupChannel, users, roomName, coverUrl);
+      yield call(
+        createGroupChannel,
+        [inviterId, inviteeId],
+        roomName,
+        coverUrl
+      );
     }
     yield put(connectionCheckingSuccess());
   } catch (err) {
