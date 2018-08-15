@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
@@ -76,7 +77,13 @@ class ChatScreen extends Component {
           },
         ],
       },
-      () => console.log(this.state.currentMessage)
+      () => {
+        console.log(this.refs);
+        // this.refs[Object.keys(this.refs).length - 1].scrollIntoView({
+        // block: 'end',
+        // behavior: 'smooth',
+        // });
+      }
     );
   };
 
@@ -90,8 +97,9 @@ class ChatScreen extends Component {
   };
 
   renderMessages = () =>
-    this.state.mockMessages.map(message => (
+    this.state.mockMessages.map((message, index) => (
       <Message
+        ref={index}
         key={message.id}
         user={message.user}
         time={message.time}
