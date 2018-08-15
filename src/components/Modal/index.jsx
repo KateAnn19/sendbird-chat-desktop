@@ -141,6 +141,8 @@ class Modal extends Component {
       console.log('you cannot create room with yourself');
     } else if (roomName.length < 4) {
       console.log('too short room name');
+    } else if (!this.props.successful) {
+      console.log('this user doesnt exist');
     } else {
       this.props.createChannel({
         roomType,

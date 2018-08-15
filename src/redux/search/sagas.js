@@ -18,7 +18,8 @@ function* searchUserWorker(action) {
     yield put(searchStart());
     const { token } = yield select(userSelector);
     const { data } = yield call(searchUser, action.payload, token);
-    if (data === undefined) {
+    console.log(data);
+    if (Array.isArray(data) && data.length === 0) {
       yield put(setUsers([]));
       yield put(searchFailure());
     } else {
