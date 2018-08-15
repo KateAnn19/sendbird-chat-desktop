@@ -27,13 +27,26 @@ const SendButton = styled.button`
   }
 `;
 
-export const MessageInput = ({
-  value,
-  handleInputCallback,
-  sendMessageCallback,
-}) => (
-  <Container>
-    <Input value={value} onChange={handleInputCallback} />
-    <SendButton onClick={sendMessageCallback}>Отправить</SendButton>
-  </Container>
-);
+const MessageInput = ({ value, handleInputCallback, sendMessageCallback }) => {
+  const handlePressKey = (e) => {
+    e.key === 'Enter' ? sendMessageCallback() : null;
+  };
+  return (
+    <Container>
+      <Input
+        value={value}
+        onChange={handleInputCallback}
+        onKeyPress={handlePressKey}
+      />
+      <SendButton onClick={sendMessageCallback}>Отправить</SendButton>
+    </Container>
+  );
+};
+
+MessageInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  handleInputCallback: PropTypes.func.isRequired,
+  sendMessageCallback: PropTypes.func.isRequired,
+};
+
+export default MessageInput;
