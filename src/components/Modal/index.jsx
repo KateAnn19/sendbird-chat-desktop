@@ -90,6 +90,7 @@ class Modal extends Component {
       coverUrl: '',
       query: '',
       inviteeId: '',
+      chosenUser: false,
     };
   }
 
@@ -105,22 +106,28 @@ class Modal extends Component {
   };
 
   inputChangeCallback = (e) => {
-    this.setState({ query: e.target.value, inviteeId: '' }, () => {
-      console.log(this.state.query);
-      this.props.findUsers(this.state.query);
-    });
+    this.setState(
+      { query: e.target.value, inviteeId: '', chosenUser: false },
+      () => {
+        console.log(this.state.query);
+        this.props.findUsers(this.state.query);
+      }
+    );
   };
 
   choosePositionCallback = (e) => {
     const id = this.getInviteeId(e.target.textContent);
-    this.setState({ query: e.target.textContent, inviteeId: id }, () => {
-      console.log(this.state.query);
-      this.props.unsetUsers();
-    });
+    this.setState(
+      { query: e.target.textContent, inviteeId: id, chosenUser: true },
+      () => {
+        console.log(this.state.query);
+        this.props.unsetUsers();
+      }
+    );
   };
 
   clearCallback = () => {
-    this.setState({ query: '' }, () => {
+    this.setState({ query: '', chosenUser: false }, () => {
       this.props.unsetUsers();
     });
   };
@@ -134,7 +141,7 @@ class Modal extends Component {
     e.preventDefault();
     const { inviterId } = this.props;
     const {
-      roomType, roomName, coverUrl, inviteeId
+      roomType, roomName, coverUrl, inviteeId, chosenUser
     } = this.state;
 
     if (roomType === 'group') {
@@ -142,7 +149,7 @@ class Modal extends Component {
         console.log('you cannot create room with yourself');
       } else if (roomName.length < 4) {
         console.log('too short room name');
-      } else if (!this.props.successful) {
+      } else if (!chosenUser) {
         console.log('this user doesnt exist');
       } else {
         this.props.createChannel({
@@ -254,7 +261,7 @@ Modal.propTypes = {
 };
 
 export default connect(
-  ({ user, search }) => ({
+  ({ user, search, channels }) => ({
     foundUsers: search.users,
     inviterId: user.user.sbUserId,
     loading: user.loading,
