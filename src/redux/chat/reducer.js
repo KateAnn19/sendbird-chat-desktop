@@ -10,7 +10,7 @@ const setMessage = (state, message) => ({
 });
 
 const handlers = {
-  [TYPES.SEND_MESSAGE]: setMessage,
+  [TYPES.SET_MESSAGE]: setMessage,
 };
 
 export const reducer = createReducer(initState, handlers);

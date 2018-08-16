@@ -126,6 +126,6 @@ export const sendUserMessage = (
         rej(error);
       }
 
-      console.log(msg);
+      res(msg);
     });
   });

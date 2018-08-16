@@ -33,42 +33,11 @@ const Messages = styled.ul`
 
 class ChatScreen extends Component {
   state = {
-    mockMessages: [
-      {
-        id: '1',
-        user: 'tim1',
-        time: '12-34',
-        text: 'hello from tim1',
-      },
-      {
-        id: '2',
-        user: 'tim2',
-        time: '12-34',
-        text: 'hello from tim2',
-      },
-      {
-        id: '3',
-        user: 'tim3',
-        time: '12-34',
-        text: 'hello from tim3',
-      },
-      {
-        id: '4',
-        user: 'tim4',
-        time: '12-34',
-        text: 'hello from tim4',
-      },
-      {
-        id: '5',
-        user: 'tim5',
-        time: '12-34',
-        text: 'hello from tim5',
-      },
-    ],
     currentMessage: '',
   };
 
   sendMessageCallback = () => {
+    this.props.sendMessage(this.state.currentMessage);
     // this.setState(
     // {
     // currentMessage: '',
@@ -86,13 +55,10 @@ class ChatScreen extends Component {
     // console.log(this.state);
     // }
     // );
-    this.props.sendMessage(
-      this.state.currentMessage
-    );
-    this.setState({
-      currentMessage: '',
-      mockMessages: [...this.state.mockMessages],
-    });
+    // this.setState({
+    // currentMessage: '',
+    // mockMessages: [...this.state.mockMessages],
+    // });
   };
 
   handleInputCallback = (e) => {
@@ -109,7 +75,7 @@ class ChatScreen extends Component {
       <Container>
         <RoomsList />
         <Chat>
-          <MessagesList messages={this.state.mockMessages} />
+          <MessagesList messages={this.props.messages} />
           <MessageInput
             value={this.state.currentMessage}
             handleInputCallback={this.handleInputCallback}
@@ -122,6 +88,9 @@ class ChatScreen extends Component {
 }
 
 export default connect(
-  ({ channels }) => ({ currentChannel: channels.currentChannel }),
+  ({ channels, chat }) => ({
+    currentChannel: channels.currentChannel,
+    messages: chat.messages,
+  }),
   { sendMessage }
 )(ChatScreen);

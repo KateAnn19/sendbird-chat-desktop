@@ -1,5 +1,6 @@
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { sendUserMessage } from '../../services/SendBird';
+import { setMessage } from './actions';
 import * as TYPES from './types';
 
 import { currentChannelSelector } from '../selectors';
@@ -7,7 +8,8 @@ import { currentChannelSelector } from '../selectors';
 function* sendMessageWorker(action) {
   try {
     const channel = yield select(currentChannelSelector);
-    yield call(sendUserMessage, channel, action.payload);
+    const message = yield call(sendUserMessage, channel, action.payload);
+    yield put(setMessage(message));
   } catch (err) {
     console.log(err);
   }
