@@ -91,11 +91,6 @@ class RoomsList extends Component {
       </RoomsItem>
     ));
 
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.channels === this.props.channels) return false;
-    return true;
-  }
-
   render() {
     const { rooms, loading } = this.props;
     const { showModal } = this.state;
@@ -123,6 +118,7 @@ class RoomsList extends Component {
 
 RoomsList.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default connect(
