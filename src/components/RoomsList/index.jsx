@@ -24,6 +24,33 @@ const Header = styled.h3`
   margin: 0 0 20px;
 `;
 
+const RoomsTypeHeader = styled.h4`
+  text-align: center;
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 5px;
+    width: 20%;
+    border-bottom: 1px solid black;
+    transform: translateY(-50%);
+  }
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    height: 5px;
+    width: 20%;
+    border-bottom: 1px solid black;
+    transform: translateY(-50%);
+  }
+`;
+
 const Rooms = styled.ul`
   margin: 0;
   list-style: none;
@@ -39,10 +66,11 @@ const RoomsItem = styled.li`
 const RoomButton = styled.button`
   height: 30px;
   width: 100%;
+  flex: 1;
 `;
 
 const CreateRoomButton = styled.button`
-  margin: 30px auto;
+  margin: 0px auto;
   text-align: center;
   height: 50px;
   padding: 10px 20px;
@@ -84,8 +112,8 @@ class RoomsList extends Component {
     });
   };
 
-  renderRooms = rooms =>
-    rooms.map(room => (
+  renderRooms = (rooms, type) =>
+    rooms.filter(room => room.channelType === type).map(room => (
       <RoomsItem key={room.url}>
         <RoomButton onClick={this.handleEnterRoom}>{room.name}</RoomButton>
       </RoomsItem>
@@ -107,6 +135,10 @@ class RoomsList extends Component {
         <CreateRoomButton onClick={this.handleOpenModal}>
           Создать комнату
         </CreateRoomButton>
+        <RoomsTypeHeader>Закрытые</RoomsTypeHeader>
+        <Rooms>{this.renderRooms(rooms, 'group')}</Rooms>
+        <RoomsTypeHeader>Публичные</RoomsTypeHeader>
+        <Rooms>{this.renderRooms(rooms, 'open')}</Rooms>
         <Rooms>{this.renderRooms(rooms)}</Rooms>
         <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
