@@ -66,7 +66,6 @@ const RoomsItem = styled.li`
 const RoomButton = styled.button`
   height: 30px;
   width: 100%;
-  flex: 1;
 `;
 
 const CreateRoomButton = styled.button`
@@ -94,10 +93,15 @@ class RoomsList extends Component {
   getRoomUrl = (rooms, roomToFindName) =>
     rooms.find(room => room.name === roomToFindName).url;
 
+  getRoomType = (rooms, roomToFindName) =>
+    rooms.find(room => room.name === roomToFindName).channelType;
+
   handleEnterRoom = ({ target }) => {
     const roomName = target.textContent;
     const { rooms } = this.props;
-    this.props.enterChannel(this.getRoomUrl(rooms, roomName));
+    const type = this.getRoomType(rooms, roomName);
+    const url = this.getRoomUrl(rooms, roomName);
+    this.props.enterChannel(url, type);
   };
 
   handleOpenModal = () => {
@@ -151,6 +155,7 @@ class RoomsList extends Component {
 RoomsList.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  enterChannel: PropTypes.func.isRequired,
 };
 
 export default connect(

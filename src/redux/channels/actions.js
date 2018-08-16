@@ -15,9 +15,9 @@ export const setChannel = channel => ({
   payload: channel,
 });
 
-export const enterChannel = channel => ({
+export const enterChannel = (url, type) => ({
   type: TYPES.ENTER_CHANNEL,
-  payload: channel,
+  payload: { url, type },
 });
 
 export const loadChannelsStart = () => ({

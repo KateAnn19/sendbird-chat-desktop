@@ -41,7 +41,7 @@ const Message = ({
 
 Message.propTypes = {
   user: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
+  time: PropTypes.number.isRequired,
   message: PropTypes.string.isRequired,
 };
 

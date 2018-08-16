@@ -7,14 +7,13 @@ import {
   loadChannelsStart,
   loadChannelsFinish,
 } from './actions';
-import {
-  loadMessagesStart
-} from '../chat/actions'
+import { loadMessagesStart } from '../chat/actions';
 import {
   getChannelsList,
   createOpenChannel,
   createGroupChannel,
-  enterChannel,
+  enterOpenChannel,
+  getGroupChannel,
 } from '../../services/SendBird';
 import * as TYPES from './types';
 import { CONNECTION_CHECKING_SUCCESS } from '../user/types';
@@ -65,8 +64,17 @@ function* getChannelsWorker() {
 
 function* enterChannelWorker(action) {
   try {
-    const channel = yield call(enterChannel, action.payload);
-    yield put(setChannel(channel));
+    const { url, type } = action.payload;
+    console.log(url, type);
+    if (type === 'open') {
+      const channel = yield call(enterOpenChannel, url);
+      yield put(setChannel(channel));
+    } else {
+      //  here will be getGroupChannel
+
+      const channel = yield call(getGroupChannel, url);
+      console.log(channel);
+    }
     yield put(loadMessagesStart());
   } catch (err) {
     console.log(err);

@@ -97,7 +97,7 @@ export const createGroupChannel = (userIds, name, coverUrl, data = null) =>
     );
   });
 
-export const enterChannel = channelUrl =>
+export const enterOpenChannel = channelUrl =>
   new Promise((res, rej) => {
     sb.OpenChannel.getChannel(channelUrl, (channel, error) => {
       if (error) {
@@ -111,6 +111,17 @@ export const enterChannel = channelUrl =>
 
         res(channel);
       });
+    });
+  });
+
+export const getGroupChannel = channelUrl =>
+  new Promise((res, rej) => {
+    sb.GroupChannel.getChannel(channelUrl, (channel, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      res(channel);
     });
   });
 
