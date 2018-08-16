@@ -62,8 +62,8 @@ function* getChannelsWorker() {
 
 function* enterChannelWorker(action) {
   try {
-    yield call(enterChannel, action.payload);
-    yield put(setChannel(action.payload));
+    const channel = yield call(enterChannel, action.payload);
+    yield put(setChannel(channel));
   } catch (err) {
     console.log(err);
   }

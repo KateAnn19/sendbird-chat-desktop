@@ -27,4 +27,3 @@ export const loadChannelsStart = () => ({
 export const loadChannelsFinish = () => ({
   type: TYPES.LOADING_CHANNELS_FINISH,
 });
-

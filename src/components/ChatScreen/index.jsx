@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
 
+import { sendMessage } from '../../redux/chat/actions';
 import RoomsList from '../RoomsList';
 import MessageInput from '../MessageInput';
 import MessagesList from '../MessagesList';
@@ -68,23 +69,30 @@ class ChatScreen extends Component {
   };
 
   sendMessageCallback = () => {
-    this.setState(
-      {
-        currentMessage: '',
-        mockMessages: [
-          ...this.state.mockMessages,
-          {
-            id: `${this.state.mockMessages.length + 1}`,
-            user: `tim${this.state.mockMessages.length + 1}`,
-            time: '3333',
-            text: this.state.currentMessage,
-          },
-        ],
-      },
-      () => {
-        console.log(this.state);
-      }
+    // this.setState(
+    // {
+    // currentMessage: '',
+    // mockMessages: [
+    // ...this.state.mockMessages,
+    // {
+    // id: `${this.state.mockMessages.length + 1}`,
+    // user: `tim${this.state.mockMessages.length + 1}`,
+    // time: '3333',
+    // text: this.state.currentMessage,
+    // },
+    // ],
+    // },
+    // () => {
+    // console.log(this.state);
+    // }
+    // );
+    this.props.sendMessage(
+      this.state.currentMessage
     );
+    this.setState({
+      currentMessage: '',
+      mockMessages: [...this.state.mockMessages],
+    });
   };
 
   handleInputCallback = (e) => {
@@ -113,4 +121,7 @@ class ChatScreen extends Component {
   }
 }
 
-export default connect()(ChatScreen);
+export default connect(
+  ({ channels }) => ({ currentChannel: channels.currentChannel }),
+  { sendMessage }
+)(ChatScreen);

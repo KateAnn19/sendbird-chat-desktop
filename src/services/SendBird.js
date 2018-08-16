@@ -109,7 +109,23 @@ export const enterChannel = channelUrl =>
           rej(err);
         }
 
-        res(response);
+        res(channel);
       });
+    });
+  });
+
+export const sendUserMessage = (
+  channel,
+  message,
+  data = null,
+  customType = null
+) =>
+  new Promise((res, rej) => {
+    channel.sendUserMessage(message, data, customType, (msg, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      console.log(msg);
     });
   });
