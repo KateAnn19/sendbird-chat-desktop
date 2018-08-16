@@ -6,9 +6,7 @@ import { currentChannelSelector } from '../selectors';
 
 function* sendMessageWorker(action) {
   try {
-    console.log(action);
     const channel = yield select(currentChannelSelector);
-    console.log(channel);
     yield call(sendUserMessage, channel, action.payload);
   } catch (err) {
     console.log(err);
