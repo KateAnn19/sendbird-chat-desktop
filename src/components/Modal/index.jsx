@@ -137,12 +137,24 @@ class Modal extends Component {
       roomType, roomName, coverUrl, inviteeId
     } = this.state;
 
-    if (inviterId === inviteeId) {
-      console.log('you cannot create room with yourself');
+    if (roomType === 'group') {
+      if (inviterId === inviteeId) {
+        console.log('you cannot create room with yourself');
+      } else if (roomName.length < 4) {
+        console.log('too short room name');
+      } else if (!this.props.successful) {
+        console.log('this user doesnt exist');
+      } else {
+        this.props.createChannel({
+          roomType,
+          roomName,
+          coverUrl,
+          inviterId,
+          inviteeId,
+        });
+      }
     } else if (roomName.length < 4) {
       console.log('too short room name');
-    } else if (!this.props.successful) {
-      console.log('this user doesnt exist');
     } else {
       this.props.createChannel({
         roomType,
