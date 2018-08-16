@@ -96,3 +96,20 @@ export const createGroupChannel = (userIds, name, coverUrl, data = null) =>
       }
     );
   });
+
+export const enterChannel = channelUrl =>
+  new Promise((res, rej) => {
+    sb.OpenChannel.getChannel(channelUrl, (channel, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      channel.enter((response, err) => {
+        if (err) {
+          rej(err);
+        }
+
+        res(response);
+      });
+    });
+  });

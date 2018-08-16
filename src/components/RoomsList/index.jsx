@@ -87,7 +87,7 @@ class RoomsList extends Component {
   renderRooms = rooms =>
     rooms.map(room => (
       <RoomsItem key={room.url}>
-        <RoomButton>{room.name}</RoomButton>
+        <RoomButton onClick={this.handleEnterRoom}>{room.name}</RoomButton>
       </RoomsItem>
     ));
 

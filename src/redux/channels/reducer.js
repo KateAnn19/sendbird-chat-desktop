@@ -9,7 +9,7 @@ const initState = {
 
 const setChannels = (state, channels) => ({ ...state, channels });
 
-const enterChannel = (state, channel) => ({
+const setChannel = (state, channel) => ({
   ...state,
   currentChannel: channel,
 });
@@ -19,8 +19,8 @@ const startLoading = state => ({ ...state, loading: true });
 const finishLoading = state => ({ ...state, loading: false });
 
 const handlers = {
+  [TYPES.SET_CHANNEL]: setChannel,
   [TYPES.SET_CHANNELS]: setChannels,
-  [TYPES.ENTER_CHANNEL]: enterChannel,
   [TYPES.LOADING_CHANNELS_START]: startLoading,
   [TYPES.LOADING_CHANNELS_FINISH]: finishLoading,
 };
