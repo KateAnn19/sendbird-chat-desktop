@@ -7,9 +7,18 @@ export const sendMessage = message => ({
 
 export const setMessage = message => ({
   type: TYPES.SET_MESSAGE,
-  payload: message
-})
+  payload: message,
+});
 
 export const receiveMessages = () => ({
   type: TYPES.RECEIVE_MESSAGES,
+});
+
+export const loadMessagesStart = () => ({
+  type: TYPES.LOAD_MESSAGES_START,
+});
+
+export const loadMessagesFinish = messages => ({
+  type: TYPES.LOAD_MESSAGES_FINISH,
+  payload: messages,
 });

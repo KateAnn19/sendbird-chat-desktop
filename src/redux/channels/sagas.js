@@ -8,6 +8,9 @@ import {
   loadChannelsFinish,
 } from './actions';
 import {
+  loadMessagesStart
+} from '../chat/actions'
+import {
   getChannelsList,
   createOpenChannel,
   createGroupChannel,
@@ -64,6 +67,7 @@ function* enterChannelWorker(action) {
   try {
     const channel = yield call(enterChannel, action.payload);
     yield put(setChannel(channel));
+    yield put(loadMessagesStart());
   } catch (err) {
     console.log(err);
   }

@@ -5,12 +5,10 @@ const initState = {
   messages: [],
 };
 
-const setMessage = (state, message) => ({
-  messages: [...state.messages, message],
-});
+const setMessages = (_, messages) => ({ messages });
 
 const handlers = {
-  [TYPES.SET_MESSAGE]: setMessage,
+  [TYPES.LOAD_MESSAGES_FINISH]: setMessages,
 };
 
 export const reducer = createReducer(initState, handlers);

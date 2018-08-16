@@ -129,3 +129,15 @@ export const sendUserMessage = (
       res(msg);
     });
   });
+
+export const loadMessages = channel =>
+  new Promise((res, rej) => {
+    const messageListQuery = channel.createPreviousMessageListQuery();
+    messageListQuery.load(30, true, (messageList, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      res(messageList);
+    });
+  });

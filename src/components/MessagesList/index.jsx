@@ -21,7 +21,7 @@ class MessagesList extends Component {
 
   scrollToMessage = index => (node) => {
     if (index === this.props.messages.length - 1) {
-      node.scrollIntoView();
+      // node.scrollIntoView();
     }
   };
 
@@ -31,10 +31,10 @@ class MessagesList extends Component {
         {this.props.messages.map((message, index) => (
           <Message
             innerRef={this.scrollToMessage(index)}
-            key={message.id}
-            user={message.user}
-            time={message.time}
-            message={message.text}
+            key={message.messageId}
+            user={message._sender.nickname}
+            time={message.createdAt}
+            message={message.message}
           />
         ))}
       </Container>
