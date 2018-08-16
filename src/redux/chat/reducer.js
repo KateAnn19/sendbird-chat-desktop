@@ -2,13 +2,11 @@ import { createReducer } from '../../utils/createReducer';
 import * as TYPES from './types';
 
 const initState = {
-  message: '',
-  history: [],
+  messages: [],
 };
 
 const setMessage = (state, message) => ({
-  history: state.history.concat(message),
-  message,
+  messages: [...state.messages, message],
 });
 
 const handlers = {
