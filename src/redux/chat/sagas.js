@@ -8,7 +8,8 @@ import { currentChannelSelector } from '../selectors';
 function* sendMessageWorker(action) {
   try {
     const channel = yield select(currentChannelSelector);
-    yield call(sendUserMessage, channel, action.payload);
+    const message = yield call(sendUserMessage, channel, action.payload);
+    yield put(setMessage(message));
   } catch (err) {
     console.log(err);
   }
