@@ -73,6 +73,7 @@ function* enterChannelWorker(action) {
       //  here will be getGroupChannel
 
       const channel = yield call(getGroupChannel, url);
+      yield put(setChannel(channel));
       console.log(channel);
     }
     yield put(loadMessagesStart());
