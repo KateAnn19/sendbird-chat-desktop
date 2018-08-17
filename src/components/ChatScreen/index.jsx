@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
@@ -44,17 +44,20 @@ class ChatScreen extends Component {
   };
 
   render() {
+    console.log(this.props.currentChannel);
     return (
       <Container>
         <RoomsList />
         <Chat>
-          <MessagesList messages={this.props.messages} />
           {this.props.currentChannel && (
-            <MessageInput
-              value={this.state.currentMessage}
-              handleInputCallback={this.handleInputCallback}
-              sendMessageCallback={this.sendMessageCallback}
-            />
+            <Fragment>
+              <MessagesList messages={this.props.messages} />
+              <MessageInput
+                value={this.state.currentMessage}
+                handleInputCallback={this.handleInputCallback}
+                sendMessageCallback={this.sendMessageCallback}
+              />
+            </Fragment>
           )}
         </Chat>
       </Container>
