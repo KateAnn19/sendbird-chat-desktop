@@ -49,11 +49,13 @@ class ChatScreen extends Component {
         <RoomsList />
         <Chat>
           <MessagesList messages={this.props.messages} />
-          <MessageInput
-            value={this.state.currentMessage}
-            handleInputCallback={this.handleInputCallback}
-            sendMessageCallback={this.sendMessageCallback}
-          />
+          {this.props.currentChannel && (
+            <MessageInput
+              value={this.state.currentMessage}
+              handleInputCallback={this.handleInputCallback}
+              sendMessageCallback={this.sendMessageCallback}
+            />
+          )}
         </Chat>
       </Container>
     );
@@ -63,6 +65,7 @@ class ChatScreen extends Component {
 ChatScreen.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   sendMessage: PropTypes.func.isRequired,
+  currentChannel: PropTypes.shape({}),
 };
 
 export default connect(

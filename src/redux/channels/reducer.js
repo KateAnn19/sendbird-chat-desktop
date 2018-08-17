@@ -3,7 +3,7 @@ import * as TYPES from './types';
 
 const initState = {
   channels: [],
-  currentChannel: '',
+  currentChannel: null,
   loading: false,
 };
 

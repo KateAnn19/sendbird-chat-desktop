@@ -21,8 +21,6 @@ class MessagesList extends Component {
     return true;
   }
 
-  //  this function is ruining everything
-
   scrollToMessage = index => (node) => {
     if (index === this.props.messages.length - 1) {
       node != null ? node.scrollIntoView() : null;
