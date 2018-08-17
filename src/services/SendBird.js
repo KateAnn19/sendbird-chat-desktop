@@ -1,8 +1,18 @@
 import SendBird from 'sendbird';
+import { store } from '../redux/store';
+import { setMessage } from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
 });
+
+const ChannelHandler = new sb.ChannelHandler();
+
+ChannelHandler.onMessageReceived = (channel, message) => {
+  store.dispatch(setMessage(message));
+};
+
+sb.addChannelHandler('234', ChannelHandler);
 
 export const SBconnect = (sbUserId, sbAccessToken) =>
   new Promise((res, rej) =>

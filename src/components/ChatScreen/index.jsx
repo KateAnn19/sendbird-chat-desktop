@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Chat = styled.div`
   width: 70%;
-  max-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: scroll;
