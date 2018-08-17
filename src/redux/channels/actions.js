@@ -10,6 +10,11 @@ export const createChannel = channel => ({
   payload: channel,
 });
 
+export const setCurrentChannel = channel => ({
+  type: TYPES.SET_CURRENT_CHANNEL,
+  payload: channel,
+});
+
 export const setChannel = channel => ({
   type: TYPES.SET_CHANNEL,
   payload: channel,

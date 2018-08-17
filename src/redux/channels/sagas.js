@@ -3,6 +3,7 @@ import { push } from 'connected-react-router';
 
 import {
   setChannel,
+  setCurrentChannel,
   setChannels,
   loadChannelsStart,
   loadChannelsFinish,
@@ -17,15 +18,10 @@ import {
 } from '../../services/SendBird';
 import * as TYPES from './types';
 import { CONNECTION_CHECKING_SUCCESS } from '../user/types';
-import {
-  connectionCheckingStart,
-  connectionCheckingSuccess,
-  connectionCheckingFinish,
-} from '../user/actions';
+import { connectionCheckingFinish } from '../user/actions';
 
 function* createChannelWorker(action) {
   try {
-    yield put(connectionCheckingStart());
     const {
       roomType,
       roomName,
@@ -33,17 +29,18 @@ function* createChannelWorker(action) {
       inviterId,
       inviteeId,
     } = action.payload;
+    let channel = null;
     if (roomType === 'open') {
-      yield call(createOpenChannel, roomName, coverUrl);
+      channel = yield call(createOpenChannel, roomName, coverUrl);
     } else {
-      yield call(
+      channel = yield call(
         createGroupChannel,
         [inviterId, inviteeId],
         roomName,
         coverUrl
       );
     }
-    yield put(connectionCheckingSuccess());
+    yield put(setChannel(channel));
   } catch (err) {
     console.log(err);
   }
@@ -68,12 +65,10 @@ function* enterChannelWorker(action) {
     console.log(url, type);
     if (type === 'open') {
       const channel = yield call(enterOpenChannel, url);
-      yield put(setChannel(channel));
+      yield put(setCurrentChannel(channel));
     } else {
-      //  here will be getGroupChannel
-
       const channel = yield call(getGroupChannel, url);
-      yield put(setChannel(channel));
+      yield put(setCurrentChannel(channel));
       console.log(channel);
     }
     yield put(loadMessagesStart());

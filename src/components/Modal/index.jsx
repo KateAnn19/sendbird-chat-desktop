@@ -261,7 +261,7 @@ Modal.propTypes = {
 };
 
 export default connect(
-  ({ user, search, channels }) => ({
+  ({ user, search }) => ({
     foundUsers: search.users,
     inviterId: user.user.sbUserId,
     loading: user.loading,
