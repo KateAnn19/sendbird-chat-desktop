@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   flex: 1;
+  overflow-y: scroll;
+  border-bottom: 1px solid black;
 `;
 
 class MessagesList extends Component {

@@ -23,7 +23,6 @@ const Chat = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
 `;
 
 class ChatScreen extends Component {
