@@ -44,7 +44,6 @@ class ChatScreen extends Component {
   };
 
   render() {
-    console.log(this.props.currentChannel);
     return (
       <Container>
         <RoomsList />
