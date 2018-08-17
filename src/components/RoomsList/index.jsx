@@ -1,25 +1,54 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import Modal from '../Modal';
-import { NavLink } from 'react-router-dom';
+
+import { RoomsLoader } from '../Loaders';
+import { enterChannel } from '../../redux/channels/actions';
 
 const Container = styled.div`
   width: 30%;
-  min-height: 100vh;
-  margin: -8px;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 `;
 
 const Header = styled.h3`
   text-align: center;
   padding-top: 20px;
-  margin: 0 0 50px;
+  margin: 0 0 20px;
+`;
+
+const RoomsTypeHeader = styled.h4`
+  text-align: center;
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 5px;
+    width: 20%;
+    border-bottom: 1px solid black;
+    transform: translateY(-50%);
+  }
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    height: 5px;
+    width: 20%;
+    border-bottom: 1px solid black;
+    transform: translateY(-50%);
+  }
 `;
 
 const Rooms = styled.ul`
@@ -28,6 +57,7 @@ const Rooms = styled.ul`
   padding: 10px;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 `;
 
 const RoomsItem = styled.li`
@@ -40,10 +70,10 @@ const RoomButton = styled.button`
 `;
 
 const CreateRoomButton = styled.button`
-  margin: 30px auto;
+  margin: 0px auto;
   text-align: center;
-  width: 50%;
-  height: 30px;
+  height: 50px;
+  padding: 10px 20px;
 `;
 
 const Link = styled(NavLink)`
@@ -61,7 +91,21 @@ class RoomsList extends Component {
     showModal: false,
   };
 
-  handleClick = () => {
+  getRoomUrl = (rooms, roomToFindName) =>
+    rooms.find(room => room.name === roomToFindName).url;
+
+  getRoomType = (rooms, roomToFindName) =>
+    rooms.find(room => room.name === roomToFindName).channelType;
+
+  handleEnterRoom = ({ target }) => {
+    const roomName = target.textContent;
+    const { rooms } = this.props;
+    const type = this.getRoomType(rooms, roomName);
+    const url = this.getRoomUrl(rooms, roomName);
+    this.props.enterChannel(url, type);
+  };
+
+  handleOpenModal = () => {
     this.setState({
       showModal: true,
     });
@@ -73,34 +117,52 @@ class RoomsList extends Component {
     });
   };
 
-  renderRooms = rooms =>
-    rooms.map(room => (
+  renderRooms = (rooms, type) =>
+    rooms.filter(room => room.channelType === type).map(room => (
       <RoomsItem key={room.url}>
-        <RoomButton>{room.name}</RoomButton>
+        <RoomButton onClick={this.handleEnterRoom}>{room.name}</RoomButton>
       </RoomsItem>
     ));
 
   render() {
-    const { rooms } = this.props;
+    const { rooms, loading } = this.props;
     const { showModal } = this.state;
-    return (
+    const data = loading ? (
       <Container>
         <Link to="/auth/logout">Выйти из учетной записи</Link>
         <Header>Доступные комнаты</Header>
-        <Rooms>{this.renderRooms(rooms)}</Rooms>
-        <Modal show={showModal} callback={this.handleModalClose} />
-        <CreateRoomButton onClick={this.handleClick}>
+        <RoomsLoader />
+      </Container>
+    ) : (
+      <Container>
+        <Link to="/auth/logout">Выйти из учетной записи</Link>
+        <Header>Доступные комнаты</Header>
+        <CreateRoomButton onClick={this.handleOpenModal}>
           Создать комнату
         </CreateRoomButton>
+        <RoomsTypeHeader>Закрытые</RoomsTypeHeader>
+        <Rooms>{this.renderRooms(rooms, 'group')}</Rooms>
+        <RoomsTypeHeader>Публичные</RoomsTypeHeader>
+        <Rooms>{this.renderRooms(rooms, 'open')}</Rooms>
+        <Rooms>{this.renderRooms(rooms)}</Rooms>
+        <Modal show={showModal} callback={this.handleModalClose} />
       </Container>
     );
+
+    return data;
   }
 }
 
 RoomsList.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+  enterChannel: PropTypes.func.isRequired,
 };
 
-export default connect(({ channels }) => ({
-  rooms: channels.channels,
-}))(RoomsList);
+export default connect(
+  ({ channels }) => ({
+    rooms: channels.channels,
+    loading: channels.loading,
+  }),
+  { enterChannel }
+)(RoomsList);

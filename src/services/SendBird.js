@@ -1,8 +1,18 @@
 import SendBird from 'sendbird';
+import { store } from '../redux/store';
+import { receiveMessage } from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
 });
+
+const ChannelHandler = new sb.ChannelHandler();
+
+ChannelHandler.onMessageReceived = (channel, message) => {
+  store.dispatch(receiveMessage(channel, message));
+};
+
+sb.addChannelHandler('234', ChannelHandler);
 
 export const SBconnect = (sbUserId, sbAccessToken) =>
   new Promise((res, rej) =>
@@ -95,4 +105,60 @@ export const createGroupChannel = (userIds, name, coverUrl, data = null) =>
         res(createdChannel);
       }
     );
+  });
+
+export const enterOpenChannel = channelUrl =>
+  new Promise((res, rej) => {
+    sb.OpenChannel.getChannel(channelUrl, (channel, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      channel.enter((response, err) => {
+        if (err) {
+          rej(err);
+        }
+
+        res(channel);
+      });
+    });
+  });
+
+export const getGroupChannel = channelUrl =>
+  new Promise((res, rej) => {
+    sb.GroupChannel.getChannel(channelUrl, (channel, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      res(channel);
+    });
+  });
+
+export const sendUserMessage = (
+  channel,
+  message,
+  data = null,
+  customType = null
+) =>
+  new Promise((res, rej) => {
+    channel.sendUserMessage(message, data, customType, (msg, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      res(msg);
+    });
+  });
+
+export const loadMessages = channel =>
+  new Promise((res, rej) => {
+    const messageListQuery = channel.createPreviousMessageListQuery();
+    messageListQuery.load(30, true, (messageList, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      res(messageList);
+    });
   });
