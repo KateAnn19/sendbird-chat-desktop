@@ -10,7 +10,7 @@ import { enterChannel } from '../../redux/channels/actions';
 
 const Container = styled.div`
   width: 30%;
-  max-height: 100vh;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.1);
   border-right: 1px solid black;
   display: flex;
@@ -57,6 +57,7 @@ const Rooms = styled.ul`
   padding: 10px;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 `;
 
 const RoomsItem = styled.li`

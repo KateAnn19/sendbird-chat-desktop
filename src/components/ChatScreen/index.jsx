@@ -26,11 +26,6 @@ const Chat = styled.div`
   overflow: scroll;
 `;
 
-const Messages = styled.ul`
-  list-style: none;
-  padding-left: 0;
-`;
-
 class ChatScreen extends Component {
   state = {
     currentMessage: '',
@@ -38,27 +33,6 @@ class ChatScreen extends Component {
 
   sendMessageCallback = () => {
     this.props.sendMessage(this.state.currentMessage);
-    // this.setState(
-    // {
-    // currentMessage: '',
-    // mockMessages: [
-    // ...this.state.mockMessages,
-    // {
-    // id: `${this.state.mockMessages.length + 1}`,
-    // user: `tim${this.state.mockMessages.length + 1}`,
-    // time: '3333',
-    // text: this.state.currentMessage,
-    // },
-    // ],
-    // },
-    // () => {
-    // console.log(this.state);
-    // }
-    // );
-    // this.setState({
-    // currentMessage: '',
-    // mockMessages: [...this.state.mockMessages],
-    // });
   };
 
   handleInputCallback = (e) => {
@@ -86,6 +60,11 @@ class ChatScreen extends Component {
     );
   }
 }
+
+ChatScreen.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sendMessage: PropTypes.func.isRequired,
+};
 
 export default connect(
   ({ channels, chat }) => ({
