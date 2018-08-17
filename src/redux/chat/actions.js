@@ -14,6 +14,11 @@ export const receiveMessages = () => ({
   type: TYPES.RECEIVE_MESSAGES,
 });
 
+export const receiveMessage = (receivedChannel, message) => ({
+  type: TYPES.RECEIVE_MESSAGE,
+  payload: { receivedChannel, message },
+});
+
 export const loadMessagesStart = () => ({
   type: TYPES.LOAD_MESSAGES_START,
 });

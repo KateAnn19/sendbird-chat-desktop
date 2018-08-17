@@ -25,7 +25,20 @@ function* loadMessagesWorker() {
   }
 }
 
+function* receiveMessageWorker(action) {
+  try {
+    const { receivedChannel, message } = action.payload;
+    const currentChannel = yield select(currentChannelSelector);
+    if (currentChannel === receivedChannel) {
+      yield put(setMessage(message));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* sagas() {
   yield takeEvery(TYPES.SEND_MESSAGE, sendMessageWorker);
   yield takeEvery(TYPES.LOAD_MESSAGES_START, loadMessagesWorker);
+  yield takeEvery(TYPES.RECEIVE_MESSAGE, receiveMessageWorker);
 }
