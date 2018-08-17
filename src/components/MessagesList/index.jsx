@@ -23,7 +23,7 @@ class MessagesList extends Component {
 
   scrollToMessage = index => (node) => {
     if (index === this.props.messages.length - 1) {
-      // node.scrollIntoView();
+      node != null ? node.scrollIntoView() : null;
     }
   };
 
