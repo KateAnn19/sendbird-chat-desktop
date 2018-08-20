@@ -8,7 +8,7 @@ import {
 import { setMessage, loadMessagesFinish, toggleTypingStatus } from './actions';
 import * as TYPES from './types';
 
-import { currentChannelSelector } from '../selectors';
+import { currentChannelSelector, userIdSelector } from '../selectors';
 
 function* sendMessageWorker(action) {
   try {
@@ -44,11 +44,12 @@ function* receiveMessageWorker(action) {
 
 function* typingStatusWorker(action) {
   try {
-    if (action.type === TYPES.START_TYPING) {
-      yield call(startTyping, action.payload);
+    const { userId, channel } = action.payload;
+    const currentUserId = yield select(userIdSelector);
+    if (action.type === TYPES.START_TYPING && currentUserId === userId) {
+      yield call(startTyping, channel);
     } else {
-      console.log('called endtyping from saga');
-      yield call(endTyping, action.payload);
+      yield call(endTyping, channel);
     }
   } catch (err) {
     console.log(err);
@@ -57,7 +58,6 @@ function* typingStatusWorker(action) {
 
 function* toggleTypingStatusWorker(action) {
   try {
-    console.log(action);
     const currentChannel = yield select(currentChannelSelector);
     if (currentChannel === action.payload) {
       yield put(toggleTypingStatus());

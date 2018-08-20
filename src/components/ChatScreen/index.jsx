@@ -43,18 +43,18 @@ class ChatScreen extends Component {
       this.state.currentMessage.length > 0 &&
       prevState.currentMessage.length === 0
     ) {
-      this.props.startTyping(this.props.currentChannel);
+      this.props.startTyping(this.props.userId, this.props.currentChannel);
     } else if (
       this.state.currentMessage.length === 0 &&
       prevState.currentMessage.length > 0
     ) {
-      this.props.endTyping(this.props.currentChannel);
+      this.props.endTyping(this.props.userId, this.props.currentChannel);
     }
   }
 
   sendMessageCallback = () => {
     this.props.sendMessage(this.state.currentMessage);
-    this.props.endTyping(this.props.currentChannel);
+    this.props.endTyping(this.props.currentChannel, this.props.userId);
   };
 
   handleInputCallback = (e) => {
@@ -97,13 +97,15 @@ ChatScreen.propTypes = {
   startTyping: PropTypes.func.isRequired,
   endTyping: PropTypes.func.isRequired,
   typing: PropTypes.bool.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 export default connect(
-  ({ channels, chat }) => ({
+  ({ channels, chat, user }) => ({
     currentChannel: channels.currentChannel,
     messages: chat.messages,
     typing: chat.typing,
+    userId: user.user.id,
   }),
   { sendMessage, startTyping, endTyping }
 )(ChatScreen);
