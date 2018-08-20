@@ -1,6 +1,6 @@
 import SendBird from 'sendbird';
 import { store } from '../redux/store';
-import { receiveMessage } from '../redux/chat/actions';
+import { receiveMessage, changeTypingStatus } from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
@@ -12,7 +12,11 @@ ChannelHandler.onMessageReceived = (channel, message) => {
   store.dispatch(receiveMessage(channel, message));
 };
 
-sb.addChannelHandler('234', ChannelHandler);
+ChannelHandler.onTypingStatusUpdated = (channel) => {
+  store.dispatch(changeTypingStatus(channel));
+};
+
+sb.addChannelHandler('111', ChannelHandler);
 
 export const SBconnect = (sbUserId, sbAccessToken) =>
   new Promise((res, rej) =>
@@ -161,4 +165,16 @@ export const loadMessages = channel =>
 
       res(messageList);
     });
+  });
+
+export const startTyping = channel =>
+  new Promise((res) => {
+    channel.startTyping();
+    res();
+  });
+
+export const endTyping = channel =>
+  new Promise((res) => {
+    channel.endTyping();
+    res();
   });

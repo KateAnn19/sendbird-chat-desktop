@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
 
-import { sendMessage } from '../../redux/chat/actions';
+import { sendMessage, startTyping, endTyping } from '../../redux/chat/actions';
 import RoomsList from '../RoomsList';
 import MessageInput from '../MessageInput';
 import MessagesList from '../MessagesList';
@@ -30,17 +30,24 @@ class ChatScreen extends Component {
     currentMessage: '',
   };
 
+  componentDidUpdate(_, prevState) {
+    if (
+      this.state.currentMessage.length === 1 &&
+      prevState.currentMessage.length === 0
+    ) {
+      this.props.startTyping(this.props.currentChannel);
+    }
+  }
+
   sendMessageCallback = () => {
     this.props.sendMessage(this.state.currentMessage);
+    this.props.endTyping(this.props.currentChannel);
   };
 
   handleInputCallback = (e) => {
-    this.setState(
-      {
-        currentMessage: e.target.value,
-      },
-      () => console.log(this.state.currentMessage)
-    );
+    this.setState({ currentMessage: e.target.value }, () => {
+      console.log(this.state.currentMessage);
+    });
   };
 
   render() {
@@ -68,6 +75,8 @@ ChatScreen.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   sendMessage: PropTypes.func.isRequired,
   currentChannel: PropTypes.shape({}),
+  startTyping: PropTypes.func.isRequired,
+  endTyping: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -75,5 +84,5 @@ export default connect(
     currentChannel: channels.currentChannel,
     messages: chat.messages,
   }),
-  { sendMessage }
+  { sendMessage, startTyping, endTyping }
 )(ChatScreen);
