@@ -16,6 +16,7 @@ injectGlobal`
 
 const Container = styled.div`
   display: flex;
+  position: relative;
 `;
 
 const Chat = styled.div`
@@ -25,6 +26,13 @@ const Chat = styled.div`
   flex-direction: column;
 `;
 
+const TypingBar = styled.h4`
+  position: absolute;
+  bottom: 10px;
+  left: 35%;
+  color: green;
+`;
+
 class ChatScreen extends Component {
   state = {
     currentMessage: '',
@@ -32,10 +40,15 @@ class ChatScreen extends Component {
 
   componentDidUpdate(_, prevState) {
     if (
-      this.state.currentMessage.length === 1 &&
+      this.state.currentMessage.length > 0 &&
       prevState.currentMessage.length === 0
     ) {
       this.props.startTyping(this.props.currentChannel);
+    } else if (
+      this.state.currentMessage.length === 0 &&
+      prevState.currentMessage.length > 0
+    ) {
+      this.props.endTyping(this.props.currentChannel);
     }
   }
 
@@ -50,6 +63,11 @@ class ChatScreen extends Component {
     });
   };
 
+  renderTypingBar = () => {
+    const data = this.props.typing ? <TypingBar>печатает...</TypingBar> : null;
+    return data;
+  };
+
   render() {
     return (
       <Container>
@@ -57,6 +75,7 @@ class ChatScreen extends Component {
         <Chat>
           {this.props.currentChannel && (
             <Fragment>
+              {this.renderTypingBar()}
               <MessagesList messages={this.props.messages} />
               <MessageInput
                 value={this.state.currentMessage}
@@ -77,12 +96,14 @@ ChatScreen.propTypes = {
   currentChannel: PropTypes.shape({}),
   startTyping: PropTypes.func.isRequired,
   endTyping: PropTypes.func.isRequired,
+  typing: PropTypes.bool.isRequired,
 };
 
 export default connect(
   ({ channels, chat }) => ({
     currentChannel: channels.currentChannel,
     messages: chat.messages,
+    typing: chat.typing,
   }),
   { sendMessage, startTyping, endTyping }
 )(ChatScreen);

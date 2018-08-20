@@ -169,12 +169,14 @@ export const loadMessages = channel =>
 
 export const startTyping = channel =>
   new Promise((res) => {
+    console.log('sendbird starttyping');
     channel.startTyping();
     res();
   });
 
 export const endTyping = channel =>
   new Promise((res) => {
+    console.log('sendbird endTyping');
     channel.endTyping();
     res();
   });
