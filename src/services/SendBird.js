@@ -6,18 +6,6 @@ const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
 });
 
-const ChannelHandler = new sb.ChannelHandler();
-
-ChannelHandler.onMessageReceived = (channel, message) => {
-  store.dispatch(receiveMessage(channel, message));
-};
-
-ChannelHandler.onTypingStatusUpdated = (channel) => {
-  store.dispatch(changeTypingStatus(channel));
-};
-
-sb.addChannelHandler('111', ChannelHandler);
-
 export const SBconnect = (sbUserId, sbAccessToken) =>
   new Promise((res, rej) =>
     sb.connect(
@@ -86,7 +74,6 @@ export const createOpenChannel = (name, coverUrl, data = null) =>
           rej();
         }
 
-        // onCreated
         res(createdChannel);
       }
     );
@@ -180,3 +167,29 @@ export const endTyping = channel =>
     channel.endTyping();
     res();
   });
+
+const getTypingUsers = channel =>
+  new Promise((res) => {
+    const toResolve = channel.getTypingMembers();
+    res(toResolve);
+  });
+
+async function resolveTypingUsers(channel) {
+  const users = await getTypingUsers(channel);
+  return [...users];
+}
+
+const ChannelHandler = new sb.ChannelHandler();
+
+ChannelHandler.onMessageReceived = (channel, message) => {
+  store.dispatch(receiveMessage(channel, message));
+};
+
+ChannelHandler.onTypingStatusUpdated = (channel) => {
+  const typers = resolveTypingUsers(channel);
+  typers.then((result) => {
+    store.dispatch(changeTypingStatus(channel, result));
+  });
+};
+
+sb.addChannelHandler('111', ChannelHandler);

@@ -5,10 +5,10 @@ import {
   startTyping,
   endTyping,
 } from '../../services/SendBird';
-import { setMessage, loadMessagesFinish, toggleTypingStatus } from './actions';
+import { setMessage, loadMessagesFinish, setTypers } from './actions';
 import * as TYPES from './types';
 
-import { currentChannelSelector, userIdSelector } from '../selectors';
+import { currentChannelSelector } from '../selectors';
 
 function* sendMessageWorker(action) {
   try {
@@ -44,23 +44,22 @@ function* receiveMessageWorker(action) {
 
 function* typingStatusWorker(action) {
   try {
-    const { userId, channel } = action.payload;
-    const currentUserId = yield select(userIdSelector);
-    if (action.type === TYPES.START_TYPING && currentUserId === userId) {
-      yield call(startTyping, channel);
+    if (action.type === TYPES.START_TYPING) {
+      yield call(startTyping, action.payload);
     } else {
-      yield call(endTyping, channel);
+      yield call(endTyping, action.payload);
     }
   } catch (err) {
     console.log(err);
   }
 }
 
-function* toggleTypingStatusWorker(action) {
+function* changeTypingStatusWorker(action) {
   try {
     const currentChannel = yield select(currentChannelSelector);
-    if (currentChannel === action.payload) {
-      yield put(toggleTypingStatus());
+    const { channel, typers } = action.payload;
+    if (currentChannel === channel) {
+      yield put(setTypers(typers));
     }
   } catch (err) {
     console.log(err);
@@ -73,5 +72,5 @@ export function* sagas() {
   yield takeEvery(TYPES.RECEIVE_MESSAGE, receiveMessageWorker);
   yield takeEvery(TYPES.START_TYPING, typingStatusWorker);
   yield takeEvery(TYPES.END_TYPING, typingStatusWorker);
-  yield takeEvery(TYPES.CHANGE_TYPING_STATUS, toggleTypingStatusWorker);
+  yield takeEvery(TYPES.CHANGE_TYPING_STATUS, changeTypingStatusWorker);
 }

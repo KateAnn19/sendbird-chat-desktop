@@ -4,6 +4,7 @@ import * as TYPES from './types';
 const initState = {
   messages: [],
   typing: false,
+  typers: [],
 };
 
 const setMessages = (state, messages) => ({ ...state, messages });
@@ -13,12 +14,12 @@ const setMessage = (state, message) => ({
   messages: [...state.messages, message],
 });
 
-const toggleTypingStatus = state => ({ ...state, typing: !state.typing });
+const setTypers = (state, typers) => ({ ...state, typers: [ ...typers ] });
 
 const handlers = {
   [TYPES.LOAD_MESSAGES_FINISH]: setMessages,
-  [TYPES.TOGGLE_TYPING_STATUS]: toggleTypingStatus,
   [TYPES.SET_MESSAGE]: setMessage,
+  [TYPES.SET_TYPERS]: setTypers,
 };
 
 export const reducer = createReducer(initState, handlers);

@@ -28,21 +28,22 @@ export const loadMessagesFinish = messages => ({
   payload: messages,
 });
 
-export const startTyping = (userId, channel) => ({
+export const startTyping = channel => ({
   type: TYPES.START_TYPING,
-  payload: { userId, channel },
-});
-
-export const endTyping = (userId, channel) => ({
-  type: TYPES.END_TYPING,
-  payload: { userId, channel },
-});
-
-export const changeTypingStatus = channel => ({
-  type: TYPES.CHANGE_TYPING_STATUS,
   payload: channel,
 });
 
-export const toggleTypingStatus = () => ({
-  type: TYPES.TOGGLE_TYPING_STATUS,
+export const endTyping = channel => ({
+  type: TYPES.END_TYPING,
+  payload: channel,
+});
+
+export const changeTypingStatus = (channel, typers) => ({
+  type: TYPES.CHANGE_TYPING_STATUS,
+  payload: { channel, typers },
+});
+
+export const setTypers = typers => ({
+  type: TYPES.SET_TYPERS,
+  payload: typers,
 });

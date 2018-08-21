@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
+import { debounce } from '../../utils/debounce';
 
 import { sendMessage, startTyping, endTyping } from '../../redux/chat/actions';
 import RoomsList from '../RoomsList';
@@ -26,11 +27,19 @@ const Chat = styled.div`
   flex-direction: column;
 `;
 
-const TypingBar = styled.h4`
+const TypingBar = styled.ul`
   position: absolute;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   bottom: 10px;
   left: 35%;
   color: green;
+`;
+
+const TypingBarItem = styled.li`
+  font-size: 15px;
+  font-style: italic;
 `;
 
 class ChatScreen extends Component {
@@ -38,34 +47,31 @@ class ChatScreen extends Component {
     currentMessage: '',
   };
 
-  componentDidUpdate(_, prevState) {
-    if (
-      this.state.currentMessage.length > 0 &&
-      prevState.currentMessage.length === 0
-    ) {
-      this.props.startTyping(this.props.userId, this.props.currentChannel);
-    } else if (
-      this.state.currentMessage.length === 0 &&
-      prevState.currentMessage.length > 0
-    ) {
-      this.props.endTyping(this.props.userId, this.props.currentChannel);
-    }
-  }
-
   sendMessageCallback = () => {
     this.props.sendMessage(this.state.currentMessage);
-    this.props.endTyping(this.props.currentChannel, this.props.userId);
   };
 
   handleInputCallback = (e) => {
     this.setState({ currentMessage: e.target.value }, () => {
       console.log(this.state.currentMessage);
+      this.props.startTyping(this.props.currentChannel);
+      debounce(300, this.props.endTyping(this.props.currentChannel));
     });
   };
 
   renderTypingBar = () => {
-    const data = this.props.typing ? <TypingBar>печатает...</TypingBar> : null;
-    return data;
+    if (this.props.typers) {
+      return (
+        <TypingBar>
+          {this.props.typers.map(typer => (
+            <TypingBarItem key={typer.lastSeenAt}>
+              {`${typer.nickname} печатает...`}
+            </TypingBarItem>
+          ))}
+        </TypingBar>
+      );
+    }
+    return null;
   };
 
   render() {
@@ -96,16 +102,14 @@ ChatScreen.propTypes = {
   currentChannel: PropTypes.shape({}),
   startTyping: PropTypes.func.isRequired,
   endTyping: PropTypes.func.isRequired,
-  typing: PropTypes.bool.isRequired,
-  userId: PropTypes.string.isRequired,
+  typers: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default connect(
-  ({ channels, chat, user }) => ({
+  ({ channels, chat }) => ({
     currentChannel: channels.currentChannel,
     messages: chat.messages,
-    typing: chat.typing,
-    userId: user.user.id,
+    typers: chat.typers,
   }),
   { sendMessage, startTyping, endTyping }
 )(ChatScreen);
