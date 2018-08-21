@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled, { injectGlobal } from 'styled-components';
 import { connect } from 'react-redux';
-import { debounce } from '../../utils/debounce';
 
 import { sendMessage, startTyping, endTyping } from '../../redux/chat/actions';
 import RoomsList from '../RoomsList';
@@ -47,15 +46,23 @@ class ChatScreen extends Component {
     currentMessage: '',
   };
 
+  timer = null;
+
   sendMessageCallback = () => {
     this.props.sendMessage(this.state.currentMessage);
   };
 
   handleInputCallback = (e) => {
     this.setState({ currentMessage: e.target.value }, () => {
-      console.log(this.state.currentMessage);
-      this.props.startTyping(this.props.currentChannel);
-      debounce(300, this.props.endTyping)(this.props.currentChannel);
+      if (!this.timer) {
+        this.props.startTyping(this.props.currentChannel);
+      }
+      // console.log(this.state.currentMessage);
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.props.endTyping(this.props.currentChannel);
+        this.timer = null;
+      }, 1000);
     });
   };
 
