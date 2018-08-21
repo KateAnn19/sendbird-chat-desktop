@@ -1,18 +1,10 @@
 import SendBird from 'sendbird';
 import { store } from '../redux/store';
-import { receiveMessage } from '../redux/chat/actions';
+import { receiveMessage, changeTypingStatus } from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
 });
-
-const ChannelHandler = new sb.ChannelHandler();
-
-ChannelHandler.onMessageReceived = (channel, message) => {
-  store.dispatch(receiveMessage(channel, message));
-};
-
-sb.addChannelHandler('234', ChannelHandler);
 
 export const SBconnect = (sbUserId, sbAccessToken) =>
   new Promise((res, rej) =>
@@ -82,7 +74,6 @@ export const createOpenChannel = (name, coverUrl, data = null) =>
           rej();
         }
 
-        // onCreated
         res(createdChannel);
       }
     );
@@ -162,3 +153,43 @@ export const loadMessages = channel =>
       res(messageList);
     });
   });
+
+export const startTyping = channel =>
+  new Promise((res) => {
+    console.log('sendbird starttyping');
+    channel.startTyping();
+    res();
+  });
+
+export const endTyping = channel =>
+  new Promise((res) => {
+    console.log('sendbird endTyping');
+    channel.endTyping();
+    res();
+  });
+
+const getTypingUsers = channel =>
+  new Promise((res) => {
+    const toResolve = channel.getTypingMembers();
+    res(toResolve);
+  });
+
+async function resolveTypingUsers(channel) {
+  const users = await getTypingUsers(channel);
+  return [...users];
+}
+
+const ChannelHandler = new sb.ChannelHandler();
+
+ChannelHandler.onMessageReceived = (channel, message) => {
+  store.dispatch(receiveMessage(channel, message));
+};
+
+ChannelHandler.onTypingStatusUpdated = (channel) => {
+  const typers = resolveTypingUsers(channel);
+  typers.then((result) => {
+    store.dispatch(changeTypingStatus(channel, result));
+  });
+};
+
+sb.addChannelHandler('111', ChannelHandler);
