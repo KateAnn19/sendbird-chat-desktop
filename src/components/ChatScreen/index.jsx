@@ -55,7 +55,7 @@ class ChatScreen extends Component {
     this.setState({ currentMessage: e.target.value }, () => {
       console.log(this.state.currentMessage);
       this.props.startTyping(this.props.currentChannel);
-      debounce(300, this.props.endTyping(this.props.currentChannel));
+      debounce(300, this.props.endTyping)(this.props.currentChannel);
     });
   };
 
